@@ -2,143 +2,236 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Sản phẩm - AeroGreen Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sản phẩm — AeroGreen Hub</title>
+  <meta name="description" content="Các gói giải pháp khí canh AeroGreen: Mini Kit, Family Kit, Rooftop Kit — phù hợp từ căn hộ nhỏ đến sân thượng lớn.">
+  <meta name="theme-color" content="#0c3d1f">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <div class="progress-bar"></div>
+
   <div class="top-bar">
-    <span>GIẢI PHÁP KHÍ CANH TOÀN DIỆN</span>
-    <span>f ◎ ✉</span>
+    <div class="container">
+      <span class="tb-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+        GIẢI PHÁP KHÍ CANH TOÀN DIỆN
+      </span>
+      <span class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="mailto:aerogreenhub@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+      </span>
+    </div>
   </div>
 
   <header class="header">
-    <div class="logo">
-      <div class="logo-icon">🌱</div>
-      <div>
-        <h2>AeroGreen Hub</h2>
-        <p>Sống xanh - Sống khỏe</p>
-      </div>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <span class="logo-text"><h2>AeroGreen Hub</h2><p>Sống xanh · Sống khỏe</p></span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="products.html" class="active">Sản phẩm</a>
+        <a href="contact.html">Liên hệ</a>
+      </nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
     </div>
-
-    <nav>
-      <a href="index.html">TRANG CHỦ</a>
-      <a href="about.html">GIỚI THIỆU</a>
-      <a href="services.html">DỊCH VỤ</a>
-      <a href="products.html">SẢN PHẨM</a>
-      <a href="contact.html">LIÊN HỆ</a>
-    </nav>
   </header>
 
-  <section class="product-page">
-  <h2 class="page-title">Sản phẩm / Gói giải pháp</h2>
+  <div class="overlay"></div>
+  <nav class="mobile-nav">
+    <a href="index.html">Trang chủ</a>
+    <a href="about.html">Giới thiệu</a>
+    <a href="services.html">Dịch vụ</a>
+    <a href="products.html" class="active">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+    <a href="contact.html" class="btn">Tư vấn miễn phí</a>
+  </nav>
 
-  <div class="product-grid">
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <span>Sản phẩm</span></div>
+      <h1>Sản phẩm &amp; gói giải pháp</h1>
+      <p>Chọn gói phù hợp với không gian của bạn — hoặc để chúng tôi gợi ý chỉ trong 30 giây.</p>
+    </div>
+  </section>
 
-    <div class="product-kit">
-      <img src="images/tower.png" alt="Mini Kit">
+  <section class="section">
+    <div class="container">
+      <div class="product-grid">
 
-      <div class="product-kit-content">
-        <h3>Mini Kit</h3>
-        <p class="product-desc">
-          Lý tưởng cho căn hộ và ban công nhỏ. Tự trồng rau thơm và rau ăn lá với diện tích tối thiểu.
-        </p>
-
-        <div class="product-info">
-          <span>Số lỗ trồng:</span>
-          <b>20 lỗ</b>
-        </div>
-
-        <div class="product-info">
-          <span>Phù hợp:</span>
-          <b>Ban công / Căn hộ nhỏ</b>
-        </div>
-
-        <div class="product-info">
-          <span>Kích thước:</span>
-          <b>40cm x 40cm x 120cm</b>
-        </div>
-
-        <div class="product-bottom">
-          <div>
-            <span>Giá tham khảo</span>
-            <h4> đ</h4>
+        <div class="product-kit reveal d1">
+          <div class="product-media"><img src="images/tower.jpg" alt="Mini Kit"></div>
+          <div class="product-body">
+            <h3>Mini Kit</h3>
+            <p class="product-desc">Lý tưởng cho căn hộ và ban công nhỏ. Tự trồng rau thơm và rau ăn lá với diện tích tối thiểu.</p>
+            <div class="product-specs">
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Số lỗ trồng</span><b>20 lỗ</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Phù hợp</span><b>Ban công / Căn hộ nhỏ</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 21M9 3H3v6M21 15v6h-6"/></svg>Kích thước</span><b>40 × 40 × 120 cm</b></div>
+            </div>
+            <div class="product-foot">
+              <div class="product-price"><div class="pl">Giá tham khảo</div><div class="pv">Liên hệ báo giá</div></div>
+              <button class="btn" onclick="chooseProduct('Mini Kit')">Tôi quan tâm</button>
+            </div>
           </div>
+        </div>
 
-          <button onclick="chooseProduct('Mini Kit')">Tôi quan tâm</button>
+        <div class="product-kit featured reveal d2">
+          <div class="product-media"><img src="images/Family Kit.jpg" alt="Family Kit"><span class="ribbon">Bán chạy nhất</span></div>
+          <div class="product-body">
+            <h3>Family Kit</h3>
+            <p class="product-desc">Mẫu bán chạy nhất. Đủ sản lượng cung cấp rau sạch cho cả gia đình mỗi ngày.</p>
+            <div class="product-specs">
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Số lỗ trồng</span><b>40 lỗ</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Phù hợp</span><b>Gia đình 4–6 người</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 21M9 3H3v6M21 15v6h-6"/></svg>Kích thước</span><b>60 × 60 × 160 cm</b></div>
+            </div>
+            <div class="product-foot">
+              <div class="product-price"><div class="pl">Giá tham khảo</div><div class="pv">Liên hệ báo giá</div></div>
+              <button class="btn" onclick="chooseProduct('Family Kit')">Tôi quan tâm</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-kit reveal d3">
+          <div class="product-media"><img src="images/Rooftop Kit.jpg" alt="Rooftop Kit"></div>
+          <div class="product-body">
+            <h3>Rooftop Kit</h3>
+            <p class="product-desc">Năng suất tối đa cho những ai muốn xây dựng vườn rau đô thị thực sự trên sân thượng.</p>
+            <div class="product-specs">
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Số lỗ trồng</span><b>80 lỗ</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Phù hợp</span><b>Sân thượng / Diện tích lớn</b></div>
+              <div class="row"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 21M9 3H3v6M21 15v6h-6"/></svg>Kích thước</span><b>100 × 100 × 180 cm</b></div>
+            </div>
+            <div class="product-foot">
+              <div class="product-price"><div class="pl">Giá tham khảo</div><div class="pv">Liên hệ báo giá</div></div>
+              <button class="btn" onclick="chooseProduct('Rooftop Kit')">Tôi quan tâm</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- KIT ADVISOR -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Trợ lý chọn gói</span>
+        <h2>Chưa biết chọn gói nào?</h2>
+        <p>Trả lời 3 câu hỏi nhanh — chúng tôi sẽ gợi ý gói khí canh phù hợp nhất với bạn.</p>
+      </div>
+      <div class="advisor-card reveal">
+        <div class="advisor-aside">
+          <h3>Gợi ý gói phù hợp trong 30 giây</h3>
+          <p>Công cụ giúp bạn định hướng nhanh trước khi được tư vấn chi tiết.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Miễn phí &amp; không ràng buộc</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Gợi ý theo không gian thực tế</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Kết nối tư vấn viên ngay</li>
+          </ul>
+        </div>
+        <div class="advisor-form">
+          <div class="field">
+            <label for="houseType">Loại không gian của bạn</label>
+            <select id="houseType">
+              <option value="nhapho">Nhà phố / Nhà riêng</option>
+              <option value="chungcu">Chung cư / Căn hộ</option>
+              <option value="biethu">Biệt thự / Sân vườn</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="area">Diện tích trồng</label>
+              <select id="area">
+                <option value="small">Nhỏ (ban công ~5m²)</option>
+                <option value="medium">Vừa (5–15m²)</option>
+                <option value="large">Lớn (trên 15m²)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="budget">Ngân sách dự kiến</label>
+              <select id="budget">
+                <option value="low">Tiết kiệm</option>
+                <option value="mid">Trung bình</option>
+                <option value="high">Đầu tư bài bản</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn" type="button" onclick="showAdvice()" style="width:100%;justify-content:center;">Gợi ý gói cho tôi
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <div class="advice-result" id="adviceResult"></div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="product-kit">
-      <img src="images/Family Kit.png" alt="Family Kit">
-
-      <div class="product-kit-content">
-        <h3>Family Kit</h3>
-        <p class="product-desc">
-          Mẫu bán chạy nhất. Đủ sản lượng cung cấp rau sạch cho cả gia đình mỗi ngày.
-        </p>
-
-        <div class="product-info">
-          <span>Số lỗ trồng:</span>
-          <b>40 lỗ</b>
-        </div>
-
-        <div class="product-info">
-          <span>Phù hợp:</span>
-          <b>Gia đình 4–6 người</b>
-        </div>
-
-        <div class="product-info">
-          <span>Kích thước:</span>
-          <b>60cm x 60cm x 160cm</b>
-        </div>
-
-        <div class="product-bottom">
-          <div>
-            <span>Giá tham khảo</span>
-            <h4> đ</h4>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo">
+            <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+            <span class="logo-text"><h2>AeroGreen Hub</h2><p>Sống xanh · Sống khỏe</p></span>
           </div>
-
-          <button onclick="chooseProduct('Family Kit')">Tôi quan tâm</button>
+          <p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p>
+          <div class="socials">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="mailto:aerogreenhub@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>Liên kết</h4>
+          <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="services.html">Dịch vụ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Sản phẩm</h4>
+          <ul>
+            <li><a href="products.html">Mini Kit</a></li>
+            <li><a href="products.html">Family Kit</a></li>
+            <li><a href="products.html">Rooftop Kit</a></li>
+            <li><a href="contact.html">Tư vấn chọn gói</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Liên hệ</h4>
+          <ul class="f-contact">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0900 000 000</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> aerogreenhub@gmail.com</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li>
+          </ul>
         </div>
       </div>
-    </div>
-
-    <div class="product-kit">
-      <img src="images/Rooftop Kit.png" alt="Rooftop Kit">
-
-      <div class="product-kit-content">
-        <h3>Rooftop Kit</h3>
-        <p class="product-desc">
-          Năng suất tối đa cho những ai muốn xây dựng vườn rau đô thị thực sự trên sân thượng.
-        </p>
-
-        <div class="product-info">
-          <span>Số lỗ trồng:</span>
-          <b>80 lỗ</b>
-        </div>
-
-        <div class="product-info">
-          <span>Phù hợp:</span>
-          <b>Sân thượng / Diện tích lớn</b>
-        </div>
-
-        <div class="product-info">
-          <span>Kích thước:</span>
-          <b>100cm x 100cm x 180cm</b>
-        </div>
-
-        <div class="product-bottom">
-          <div>
-            <span>Giá tham khảo</span>
-            <h4>đ</h4>
-          </div>
-
-          <button onclick="chooseProduct('Rooftop Kit')">Tôi quan tâm</button>
-        </div>
+      <div class="footer-bottom">
+        <span>© 2026 AeroGreen Hub. Đã đăng ký bản quyền.</span>
+        <span>Sống xanh · Sống khỏe · Bền vững</span>
       </div>
     </div>
+  </footer>
 
+  <div class="fab">
+    <a class="fab-phone" href="tel:0900000000" aria-label="Gọi điện"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+    <button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
   </div>
-</section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

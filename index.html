@@ -2,153 +2,283 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>AeroGreen Hub - Trang chủ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AeroGreen Hub — Giải pháp khí canh toàn diện tại nhà</title>
+  <meta name="description" content="AeroGreen Hub tư vấn, so sánh, lắp đặt và bảo trì hệ thống khí canh trọn gói cho gia đình. Biến ban công, sân thượng thành khu vườn rau sạch.">
+  <meta name="theme-color" content="#0c3d1f">
+  <meta property="og:title" content="AeroGreen Hub — Giải pháp khí canh toàn diện">
+  <meta property="og:description" content="Tư vấn – So sánh – Lắp đặt – Bảo trì hệ thống khí canh trọn gói cho gia đình.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <div class="progress-bar"></div>
+
+  <!-- TOP BAR -->
   <div class="top-bar">
-    <span>GIẢI PHÁP KHÍ CANH TOÀN DIỆN</span>
-    <span>f ◎ ✉</span>
+    <div class="container">
+      <span class="tb-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+        GIẢI PHÁP KHÍ CANH TOÀN DIỆN
+      </span>
+      <span class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="mailto:aerogreenhub@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+      </span>
+    </div>
   </div>
 
+  <!-- HEADER -->
   <header class="header">
-    <div class="logo">
-      <div class="logo-icon">🌱</div>
-      <div>
-        <h2>AeroGreen Hub</h2>
-        <p>Sống xanh - Sống khỏe</p>
-      </div>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <span class="logo-text"><h2>AeroGreen Hub</h2><p>Sống xanh · Sống khỏe</p></span>
+      </a>
+      <nav class="nav">
+        <a href="index.html" class="active">Trang chủ</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="products.html">Sản phẩm</a>
+        <a href="contact.html">Liên hệ</a>
+      </nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
     </div>
-
-    <nav>
-      <a href="index.html">TRANG CHỦ</a>
-      <a href="about.html">GIỚI THIỆU</a>
-      <a href="services.html">DỊCH VỤ</a>
-      <a href="products.html">SẢN PHẨM</a>
-      <a href="contact.html">LIÊN HỆ</a>
-    </nav>
   </header>
 
+  <!-- MOBILE NAV -->
+  <div class="overlay"></div>
+  <nav class="mobile-nav">
+    <a href="index.html" class="active">Trang chủ</a>
+    <a href="about.html">Giới thiệu</a>
+    <a href="services.html">Dịch vụ</a>
+    <a href="products.html">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+    <a href="contact.html" class="btn">Tư vấn miễn phí</a>
+  </nav>
+
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-content">
-        <h1>AEROGREEN HUB</h1>
-        <h2>Giải pháp khí canh toàn diện</h2>
-        <p>Tư vấn – So sánh – Lắp đặt – Bảo trì trọn gói</p>
-        <a href="contact.html" class="btn">Tư vấn</a>
+    <div class="hero-bg"><img src="images/hero-banner.jpg" alt="Khu vườn khí canh xanh tươi"></div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="eyebrow">Khí canh tại nhà · Trọn gói</span>
+        <h1>Biến ban công thành <span class="accent">khu vườn rau sạch</span> của riêng bạn</h1>
+        <p class="hero-lead">AeroGreen Hub đồng hành cùng bạn từ tư vấn, so sánh, lắp đặt đến bảo trì — để trồng rau sạch tại nhà trở nên dễ dàng, hiện đại và bền vững.</p>
+        <div class="hero-actions">
+          <a href="contact.html" class="btn">Nhận tư vấn miễn phí
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a href="products.html" class="btn btn-white">Xem sản phẩm</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="num"><span data-count="100" data-suffix="%">0%</span></div><div class="lbl">Rau sạch tại nhà</div></div>
+          <div><div class="num"><span data-count="4">0</span> bước</div><div class="lbl">Quy trình trọn gói</div></div>
+          <div><div class="num"><span data-count="24" data-suffix="h">0h</span></div><div class="lbl">Phản hồi tư vấn</div></div>
+        </div>
+      </div>
     </div>
-</section>
+    <div class="scroll-cue"><span class="mouse"></span>Cuộn xuống</div>
+  </section>
 
-
-   <section class="problem-section">
-  <div class="problem-container">
-    <h2>Bạn có đang gặp những vấn đề này?</h2>
-
-    <p class="problem-subtitle">
-      Những khó khăn phổ biến của người sống tại thành phố khi muốn trồng rau sạch tại nhà
-    </p>
-
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="problem-icon">⚡</div>
-        <h3>Cuộc sống quá áp lực và bận rộn</h3>
-        <p>Thiếu thời gian thư giãn và gần gũi thiên nhiên.</p>
-      </div>
-
-      <div class="problem-card">
-        <div class="problem-icon">🌿</div>
-        <h3>Muốn có góc xanh nhưng không biết bắt đầu từ đâu</h3>
-        <p>Chưa biết lựa chọn hệ thống phù hợp với nhà mình.</p>
-      </div>
-
-      <div class="problem-card">
-        <div class="problem-icon">🧭</div>
-        <h3>Quá nhiều lựa chọn</h3>
-        <p>Mất thời gian tìm hiểu giữa nhiều nhà cung cấp khác nhau.</p>
-      </div>
-
-      <div class="problem-card">
-        <div class="problem-icon">🛡️</div>
-        <h3>Lo ngại đầu tư sai</h3>
-        <p>Sợ mua hệ thống không phù hợp và không được hỗ trợ lâu.</p>
-      </div>
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="container">
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tư vấn trung lập</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Lắp đặt tận nơi</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Bảo trì dài hạn</span>
+      <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Không cần kinh nghiệm</span>
     </div>
   </div>
 
-  <!-- Giải pháp từ AeroGreen Hub -->
-
-</section>
-<section class="solution-section">
-  <div class="solution-wrapper">
-
-    <!-- BÊN TRÁI -->
-    <div class="solution-content">
-
-      <h2>Giải pháp từ AeroGreen Hub</h2>
-
-      <p class="solution-desc">
-        Từ lựa chọn giải pháp, thiết bị, giống cây, dinh dưỡng đến lắp đặt và bảo trì,
-        AeroGreen đồng hành cùng bạn trong toàn bộ hành trình xây dựng khu vườn khí canh tại nhà.
-      </p>
-
-      <div class="solution-grid">
-
-        <div class="solution-item">
-          <div class="solution-icon">☎</div>
-          <div>
-            <h3>Tư vấn giải pháp phù hợp</h3>
-            <p>Đánh giá nhu cầu, không gian và ngân sách của từng gia đình.</p>
-          </div>
-        </div>
-
-        <div class="solution-item">
-          <div class="solution-icon">✓</div>
-          <div>
-            <h3>So sánh nhiều lựa chọn</h3>
-            <p>Giúp khách hàng chọn mô hình phù hợp nhất.</p>
-          </div>
-        </div>
-
-        <div class="solution-item">
-          <div class="solution-icon">🧰</div>
-          <div>
-            <h3>Cung cấp thiết bị và vật tư</h3>
-            <p>Giống cây, dinh dưỡng và phụ kiện cần thiết.</p>
-          </div>
-        </div>
-
-        <div class="solution-item">
-          <div class="solution-icon">🔧</div>
-          <div>
-            <h3>Hỗ trợ lắp đặt và vận hành</h3>
-            <p>Đảm bảo hệ thống hoạt động hiệu quả.</p>
-          </div>
-        </div>
-
-        <div class="solution-item">
-          <div class="solution-icon">?</div>
-          <div>
-            <h3>Bảo trì và đồng hành lâu dài</h3>
-            <p>Hỗ trợ xuyên suốt trong quá trình sử dụng.</p>
-          </div>
-        </div>
-
-        <div class="solution-item">
-          <div class="solution-icon">🌿</div>
-          <div>
-            <h3>Tạo không gian xanh thư giãn</h3>
-            <p>Biến ban công và sân thượng thành góc xanh lý tưởng.</p>
-          </div>
-        </div>
-
+  <!-- PROBLEM -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Vấn đề</span>
+        <h2>Bạn có đang gặp những vấn đề này?</h2>
+        <p>Những khó khăn phổ biến của người sống tại thành phố khi muốn trồng rau sạch tại nhà.</p>
       </div>
-
+      <div class="problem-grid">
+        <div class="problem-card reveal d1">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h3>Cuộc sống quá bận rộn</h3>
+          <p>Thiếu thời gian thư giãn và gần gũi thiên nhiên.</p>
+        </div>
+        <div class="problem-card reveal d2">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></div>
+          <h3>Muốn góc xanh nhưng chưa biết bắt đầu</h3>
+          <p>Chưa biết chọn hệ thống phù hợp với nhà mình.</p>
+        </div>
+        <div class="problem-card reveal d3">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2 2-6.3z"/></svg></div>
+          <h3>Quá nhiều lựa chọn</h3>
+          <p>Mất thời gian tìm hiểu giữa nhiều nhà cung cấp khác nhau.</p>
+        </div>
+        <div class="problem-card reveal d4">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+          <h3>Lo ngại đầu tư sai</h3>
+          <p>Sợ mua hệ thống không phù hợp và không được hỗ trợ lâu dài.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- BÊN PHẢI -->
-    <div class="solution-image">
-      <img src="images/tower.png" alt="Hệ thống khí canh">
+  <!-- SOLUTION -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="solution-wrapper">
+        <div class="solution-content reveal">
+          <span class="eyebrow">Giải pháp</span>
+          <h2 style="font-size:clamp(28px,3.6vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;">Giải pháp toàn diện từ AeroGreen Hub</h2>
+          <p style="margin:14px 0 0;max-width:560px;color:var(--slate-500);font-size:17px;">Từ lựa chọn giải pháp, thiết bị, giống cây, dinh dưỡng đến lắp đặt và bảo trì — chúng tôi đồng hành cùng bạn trong toàn bộ hành trình xây dựng khu vườn khí canh tại nhà.</p>
+          <div class="solution-list">
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+              <div><h3>Tư vấn giải pháp phù hợp</h3><p>Đánh giá nhu cầu, không gian và ngân sách của từng gia đình.</p></div>
+            </div>
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+              <div><h3>So sánh nhiều lựa chọn</h3><p>Giúp khách hàng chọn mô hình phù hợp nhất.</p></div>
+            </div>
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+              <div><h3>Cung cấp thiết bị, vật tư</h3><p>Giống cây, dinh dưỡng và phụ kiện cần thiết.</p></div>
+            </div>
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <div><h3>Hỗ trợ lắp đặt, vận hành</h3><p>Đảm bảo hệ thống hoạt động hiệu quả ngay từ đầu.</p></div>
+            </div>
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span>
+              <div><h3>Bảo trì, đồng hành lâu dài</h3><p>Hỗ trợ xuyên suốt trong quá trình sử dụng.</p></div>
+            </div>
+            <div class="solution-item">
+              <span class="solution-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+              <div><h3>Tạo không gian xanh thư giãn</h3><p>Biến ban công và sân thượng thành góc xanh lý tưởng.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="solution-visual reveal d2">
+          <div class="frame"><img src="images/tower.jpg" alt="Hệ thống khí canh AeroGreen"></div>
+          <div class="solution-badge float">
+            <span class="b-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+            <div><strong>Tiết kiệm 90% nước</strong><span>So với trồng truyền thống</span></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
+  <!-- JOURNEY / USER FLOW -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Trải nghiệm khách hàng</span>
+        <h2>Chỉ 4 bước để có vườn rau sạch</h2>
+        <p>Một quy trình đơn giản, minh bạch — bạn chỉ cần nói nhu cầu, phần còn lại để AeroGreen lo.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal d1"><div class="step-num"></div><h3>Để lại nhu cầu</h3><p>Cho chúng tôi biết không gian, ngân sách và mong muốn của bạn.</p></div>
+        <div class="step reveal d2"><div class="step-num"></div><h3>Nhận tư vấn &amp; so sánh</h3><p>Chuyên gia đề xuất mô hình phù hợp và so sánh minh bạch.</p></div>
+        <div class="step reveal d3"><div class="step-num"></div><h3>Lắp đặt tận nơi</h3><p>Đội ngũ kỹ thuật triển khai và hướng dẫn vận hành chi tiết.</p></div>
+        <div class="step reveal d4"><div class="step-num"></div><h3>Thu hoạch &amp; bảo trì</h3><p>Thu rau sạch mỗi ngày, được hỗ trợ và bảo trì dài hạn.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES PREVIEW -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Dịch vụ</span>
+        <h2>Chúng tôi giúp bạn điều gì?</h2>
+      </div>
+      <div class="cards">
+        <a href="services.html" class="card reveal d1"><div class="card-media"><img src="images/tu-van-mo-hinh.jpg" alt="Tư vấn chọn mô hình"><span class="tag">Tư vấn</span></div><div class="card-content"><h3>Tư vấn chọn mô hình</h3><p>Phân tích nhu cầu, diện tích, ngân sách để đề xuất mô hình phù hợp.</p></div></a>
+        <a href="services.html" class="card reveal d2"><div class="card-media"><img src="images/so-sanh-giai-phap.jpg" alt="So sánh giải pháp"><span class="tag">So sánh</span></div><div class="card-content"><h3>So sánh &amp; lựa chọn</h3><p>So sánh các hệ thống khí canh, giúp bạn quyết định dễ dàng.</p></div></a>
+        <a href="services.html" class="card reveal d3"><div class="card-media"><img src="images/lap-dat-tan-noi.jpg" alt="Lắp đặt tận nơi"><span class="tag">Lắp đặt</span></div><div class="card-content"><h3>Lắp đặt tận nơi</h3><p>Đội ngũ uy tín, triển khai nhanh và hướng dẫn vận hành.</p></div></a>
+        <a href="services.html" class="card reveal d4"><div class="card-media"><img src="images/bao-tri.jpg" alt="Bảo trì"><span class="tag">Bảo trì</span></div><div class="card-content"><h3>Bảo trì &amp; hỗ trợ</h3><p>Đồng hành suốt quá trình sử dụng, xử lý sự cố và nâng cấp.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2>Sẵn sàng bắt đầu khu vườn xanh của bạn?</h2>
+        <p>Để lại thông tin ngay hôm nay — nhận tư vấn miễn phí và lộ trình phù hợp nhất với không gian của bạn.</p>
+        <div class="hero-actions">
+          <a href="contact.html" class="btn btn-white">Nhận tư vấn miễn phí</a>
+          <a href="products.html" class="btn btn-ghost" style="color:#eafff1;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)">Khám phá sản phẩm</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo">
+            <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+            <span class="logo-text"><h2>AeroGreen Hub</h2><p>Sống xanh · Sống khỏe</p></span>
+          </div>
+          <p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p>
+          <div class="socials">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="mailto:aerogreenhub@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>Liên kết</h4>
+          <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="services.html">Dịch vụ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Sản phẩm</h4>
+          <ul>
+            <li><a href="products.html">Mini Kit</a></li>
+            <li><a href="products.html">Family Kit</a></li>
+            <li><a href="products.html">Rooftop Kit</a></li>
+            <li><a href="contact.html">Tư vấn chọn gói</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Liên hệ</h4>
+          <ul class="f-contact">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0900 000 000</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> aerogreenhub@gmail.com</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AeroGreen Hub. Đã đăng ký bản quyền.</span>
+        <span>Sống xanh · Sống khỏe · Bền vững</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FAB -->
+  <div class="fab">
+    <a class="fab-phone" href="tel:0900000000" aria-label="Gọi điện"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+    <button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
   </div>
-</section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
