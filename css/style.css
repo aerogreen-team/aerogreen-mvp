@@ -7,16 +7,16 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  /* Brand greens */
-  --green-900: #0c3d1f;
-  --green-800: #11512a;
-  --green-700: #157a3c;
-  --green-600: #1c8a45;
-  --green-500: #25a25a;
-  --green-400: #4cbd7c;
-  --green-300: #8fd9ad;
-  --green-100: #e7f6ec;
-  --green-50:  #f3fbf6;
+/* Brand greens - Softer Premium */
+--green-900: #1f4d33;
+--green-800: #2b6b46;
+--green-700: #3a8b5b;
+--green-600: #4fa56f;
+--green-500: #67bc83;
+--green-400: #89d3a1;
+--green-300: #b4e8c3;
+--green-100: #eefaf2;
+--green-50:  #f8fdf9;
 
   --lime: #b8e986;
   --accent: #c6f000;
