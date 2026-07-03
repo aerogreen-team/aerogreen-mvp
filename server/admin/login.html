@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập — AeroGreen Hub Admin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 30%, #f0fdf4 60%, #e0f2fe 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative background circles */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(21, 92, 46, 0.06) 0%, transparent 70%);
+      top: -200px;
+      right: -150px;
+      border-radius: 50%;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+      bottom: -180px;
+      left: -120px;
+      border-radius: 50%;
+    }
+
+    /* Login container */
+    .login-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      padding: 24px;
+    }
+
+    /* Brand */
+    .brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .brand-icon {
+      font-size: 52px;
+      display: block;
+      margin-bottom: 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .brand h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #155c2e;
+      margin-bottom: 4px;
+    }
+
+    .brand p {
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Card */
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(21, 92, 46, 0.08);
+    }
+
+    .login-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .login-card .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      color: #0f172a;
+      background: #f8fafc;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #cbd5e1;
+    }
+
+    .input-wrapper input:focus {
+      border-color: #155c2e;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(21, 92, 46, 0.08);
+    }
+
+    .input-wrapper input:focus ~ .input-icon,
+    .input-wrapper input:focus + .input-icon {
+      color: #155c2e;
+    }
+
+    /* Fix icon color on focus */
+    .input-wrapper:focus-within .input-icon {
+      color: #155c2e;
+    }
+
+    /* Password toggle */
+    .toggle-password {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #94a3b8;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .toggle-password:hover {
+      color: #475569;
+    }
+
+    /* Remember me */
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .remember-me input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #155c2e;
+      cursor: pointer;
+    }
+
+    /* Error */
+    .error-message {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .error-message.show {
+      display: flex;
+    }
+
+    /* Submit button */
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #155c2e, #1a7339);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, #1a7339, #228b44);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(21, 92, 46, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .btn-login.loading .spinner {
+      display: inline-block;
+    }
+
+    .btn-login.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Hint */
+    .login-hint {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .login-hint code {
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-wrapper {
+        padding: 16px;
+      }
+
+      .login-card {
+        padding: 28px 22px;
+      }
+
+      .brand h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <!-- Brand -->
+    <div class="brand">
+      <span class="brand-icon">🌱</span>
+      <h1>AeroGreen Hub</h1>
+      <p>Admin Dashboard</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <h2>👋 Chào mừng trở lại</h2>
+      <p class="subtitle">Đăng nhập để quản lý hệ thống</p>
+
+      <!-- Error -->
+      <div class="error-message" id="error-message">
+        <span>⚠️</span>
+        <span id="error-text"></span>
+      </div>
+
+      <!-- Form -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="username"
+              placeholder="Nhập tên đăng nhập"
+              autocomplete="username"
+              required
+              autofocus
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="password"
+              placeholder="Nhập mật khẩu"
+              autocomplete="current-password"
+              required
+            >
+            <button type="button" class="toggle-password" onclick="togglePassword()" title="Hiện/ẩn mật khẩu">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <label class="remember-me">
+            <input type="checkbox" id="remember-me">
+            <span>Ghi nhớ đăng nhập</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-login" id="login-btn">
+          <span class="spinner"></span>
+          <span class="btn-text">🔐 Đăng nhập</span>
+        </button>
+      </form>
+    </div>
+
+    <p class="login-hint">
+      Mặc định: <code>admin</code> / <code>admin123</code>
+    </p>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin + "/api";
+
+    function showError(msg) {
+      const el = document.getElementById("error-message");
+      document.getElementById("error-text").textContent = msg;
+      el.classList.add("show");
+    }
+
+    function hideError() {
+      document.getElementById("error-message").classList.remove("show");
+    }
+
+    function togglePassword() {
+      const input = document.getElementById("password");
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    function setLoading(loading) {
+      const btn = document.getElementById("login-btn");
+      if (loading) {
+        btn.classList.add("loading");
+        btn.disabled = true;
+      } else {
+        btn.classList.remove("loading");
+        btn.disabled = false;
+      }
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      hideError();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        showError("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok || !result.success) {
+          showError(result.error || "Đăng nhập thất bại. Vui lòng thử lại.");
+          setLoading(false);
+          return;
+        }
+
+        // Save token
+        const storage = document.getElementById("remember-me").checked
+          ? localStorage
+          : sessionStorage;
+        storage.setItem("aerogreen_token", result.data.token);
+        storage.setItem("aerogreen_user", JSON.stringify(result.data.user));
+
+        // Redirect to admin dashboard
+        window.location.href = "/admin";
+      } catch (err) {
+        console.error("Login error:", err);
+        showError("Không thể kết nối đến server. Vui lòng thử lại sau.");
+        setLoading(false);
+      }
+    }
+
+    // Check if already logged in
+    (function checkExistingSession() {
+      const token =
+        localStorage.getItem("aerogreen_token") ||
+        sessionStorage.getItem("aerogreen_token");
+
+      if (token) {
+        // Verify token is still valid
+        fetch(`${API_BASE}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            if (result.data) {
+              // Token valid, redirect to admin
+              window.location.href = "/admin";
+            }
+          })
+          .catch(() => {
+            // Token invalid, clear and stay on login
+            localStorage.removeItem("aerogreen_token");
+            sessionStorage.removeItem("aerogreen_token");
+          });
+      }
+    })();
+  </script>
+</body>
+</html>

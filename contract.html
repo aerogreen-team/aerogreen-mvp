@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hợp đồng dịch vụ — AeroGreen Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #f0f4f8;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .contract-header {
+      background: linear-gradient(135deg, #155c2e, #1a7339);
+      color: white;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .contract-header .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .contract-header .brand-icon {
+      font-size: 40px;
+    }
+
+    .contract-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .contract-header .subtitle {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      width: 100%;
+    }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #155c2e;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .info-item {
+      background: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .info-item .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .info-item .value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Price breakdown */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .price-table th {
+      background: #f8fafc;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .price-table td {
+      font-size: 15px;
+    }
+
+    .price-table .amount {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .price-table .total-row {
+      background: #f0fdf4;
+      font-size: 18px;
+    }
+
+    .price-table .total-row td {
+      font-weight: 800;
+      color: #155c2e;
+      font-size: 17px;
+    }
+
+    .price-table .deposit-row td {
+      color: #92400e;
+    }
+
+    .price-table .remaining-row {
+      background: #eff6ff;
+    }
+
+    .price-table .remaining-row td {
+      font-weight: 800;
+      color: #1e40af;
+      font-size: 18px;
+    }
+
+    /* Timeline */
+    .timeline {
+      margin: 24px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-step {
+      width: 36px;
+      height: 36px;
+      background: #dcfce7;
+      color: #155c2e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .timeline-step.done {
+      background: #155c2e;
+      color: white;
+    }
+
+    .timeline-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .timeline-content p {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    /* Status banner */
+    .status-banner {
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .status-banner.draft {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .status-banner.sent {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    .status-banner.deposit_paid {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .status-banner.confirmed,
+    .status-banner.completed {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .status-banner.cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    /* Footer */
+    .contract-footer {
+      text-align: center;
+      padding: 24px;
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: auto;
+    }
+
+    /* Loading / Error */
+    .state-message {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .state-message .icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .state-message h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .state-message p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #155c2e;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Actions */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #155c2e;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1a7339;
+      box-shadow: 0 4px 12px rgba(21, 92, 46, 0.3);
+    }
+
+    .btn-outline {
+      background: white;
+      color: #155c2e;
+      border: 2px solid #155c2e;
+    }
+
+    .btn-outline:hover {
+      background: #f0fdf4;
+    }
+
+    @media (max-width: 600px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .contract-header h1 {
+        font-size: 22px;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+      }
+
+      .contract-header {
+        background: #155c2e !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .action-buttons,
+      .contract-footer {
+        display: none;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="contract-header">
+    <div class="brand">
+      <span class="brand-icon">🌱</span>
+      <h1>AeroGreen Hub</h1>
+    </div>
+    <p class="subtitle">Hợp đồng dịch vụ — Giải pháp khí canh</p>
+  </header>
+
+  <!-- Loading State -->
+  <div class="container" id="loading-state">
+    <div class="state-message">
+      <div class="spinner"></div>
+      <h3>Đang tải hợp đồng...</h3>
+      <p>Vui lòng chờ trong giây lát</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="container" id="error-state" style="display:none;">
+    <div class="state-message">
+      <div class="icon">🔍</div>
+      <h3 id="error-title">Không tìm thấy hợp đồng</h3>
+      <p id="error-message">Vui lòng kiểm tra lại mã báo giá hoặc liên hệ AeroGreen Hub để được hỗ trợ.</p>
+    </div>
+  </div>
+
+  <!-- Contract Content -->
+  <div class="container" id="contract-content" style="display:none;">
+    <!-- Status Banner -->
+    <div class="status-banner" id="status-banner"></div>
+
+    <!-- Contract Info -->
+    <div class="card">
+      <h2>📋 Thông tin hợp đồng</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Mã báo giá</div>
+          <div class="value" id="info-request-id">-</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Ngày tạo</div>
+          <div class="value" id="info-date">-</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Khách hàng</div>
+          <div class="value" id="info-name">-</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Số điện thoại</div>
+          <div class="value" id="info-phone">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Breakdown -->
+    <div class="card">
+      <h2>💰 Chi tiết báo giá</h2>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Hạng mục</th>
+            <th class="amount">Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🛠️ Thiết bị hệ thống khí canh</td>
+            <td class="amount" id="price-equipment">-</td>
+          </tr>
+          <tr>
+            <td>🔧 Phí lắp đặt & vận chuyển</td>
+            <td class="amount" id="price-install">-</td>
+          </tr>
+          <tr>
+            <td>🧪 Dinh dưỡng & vật tư ban đầu</td>
+            <td class="amount" id="price-nutrient">-</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>TỔNG GIÁ TRỊ HỢP ĐỒNG</strong></td>
+            <td class="amount" id="price-total">-</td>
+          </tr>
+          <tr class="deposit-row">
+            <td>📌 Tiền đặt cọc (<span id="deposit-pct">10</span>%)</td>
+            <td class="amount" id="price-deposit">-</td>
+          </tr>
+          <tr class="remaining-row">
+            <td><strong>💳 Số tiền còn lại sau đặt cọc</strong></td>
+            <td class="amount" id="price-remaining">-</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="background:#f8fafc;padding:14px 16px;border-radius:10px;margin-top:16px;" id="note-section" hidden>
+        <strong style="font-size:13px;color:#64748b;">📝 Ghi chú:</strong>
+        <p style="margin-top:4px;font-size:14px;" id="info-note"></p>
+      </div>
+    </div>
+
+    <!-- Process Timeline -->
+    <div class="card">
+      <h2>🔄 Tiến trình hợp đồng</h2>
+      <div class="timeline" id="timeline">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ In hợp đồng</button>
+      <a href="/" class="btn btn-outline">🏠 Về trang chủ</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="contract-footer">
+    © 2025 AeroGreen Hub. Mọi quyền được bảo lưu.<br>
+    Hotline: 1900 1234 | Email: contact@aerogreen.vn
+  </footer>
+
+  <script>
+    // ===== Config =====
+    const API_BASE = window.location.origin + "/api";
+
+    const STATUS_LABELS = {
+      draft: "Bản nháp",
+      sent: "Đã gửi khách hàng",
+      deposit_paid: "Đã đặt cọc",
+      confirmed: "Đã xác nhận",
+      completed: "Hoàn thành",
+      cancelled: "Đã hủy",
+    };
+
+    const STATUS_BANNER_TEXT = {
+      draft: "📝 Báo giá đang ở trạng thái bản nháp, chưa được gửi cho khách hàng.",
+      sent: "📤 Báo giá đã được gửi đến bạn. Vui lòng xem xét và xác nhận.",
+      deposit_paid: "💰 Đã nhận tiền đặt cọc. Hệ thống đang được chuẩn bị.",
+      confirmed: "✅ Hợp đồng đã được xác nhận. Đang tiến hành lắp đặt.",
+      completed: "🎉 Hợp đồng đã hoàn thành. Cảm ơn bạn đã tin tưởng AeroGreen Hub!",
+      cancelled: "❌ Hợp đồng này đã bị hủy.",
+    };
+
+    function formatCurrency(amount) {
+      if (!amount && amount !== 0) return "-";
+      return new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    }
+
+    function getTimelineSteps(status) {
+      return [
+        { label: "Tạo báo giá", desc: "Admin tạo báo giá cá nhân hóa", active: true },
+        { label: "Gửi khách hàng", desc: "Báo giá được gửi đến bạn", active: status !== "draft" },
+        { label: "Đặt cọc 10%", desc: "Khách hàng thanh toán tiền cọc", active: ["deposit_paid", "confirmed", "completed"].includes(status) },
+        { label: "Xác nhận & Lắp đặt", desc: "Hệ thống được lắp đặt và bàn giao", active: ["confirmed", "completed"].includes(status) },
+        { label: "Hoàn thành", desc: "Thanh toán phần còn lại & bảo hành", active: status === "completed" },
+      ];
+    }
+
+    // ===== Load Contract =====
+    async function loadContract() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+
+      if (!code) {
+        showError("Thiếu mã báo giá", "Vui lòng truy cập hợp đồng với mã báo giá hợp lệ. Ví dụ: /hop-dong?code=AGH001");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/quotations/by-request/${encodeURIComponent(code)}`);
+        const result = await res.json();
+
+        if (!result.data) {
+          showError("Không tìm thấy báo giá", `Không tìm thấy báo giá với mã <strong>${code}</strong>. Vui lòng kiểm tra lại hoặc liên hệ AeroGreen Hub.`);
+          return;
+        }
+
+        renderContract(result.data);
+      } catch (err) {
+        console.error("Load contract error:", err);
+        showError("Lỗi kết nối", "Không thể tải dữ liệu hợp đồng. Vui lòng thử lại sau.");
+      }
+    }
+
+    function showError(title, message) {
+      document.getElementById("loading-state").style.display = "none";
+      document.getElementById("error-state").style.display = "block";
+      document.getElementById("contract-content").style.display = "none";
+      document.getElementById("error-title").textContent = title;
+      document.getElementById("error-message").innerHTML = message;
+    }
+
+    function renderContract(q) {
+      document.getElementById("loading-state").style.display = "none";
+      document.getElementById("error-state").style.display = "none";
+      document.getElementById("contract-content").style.display = "block";
+
+      // Status banner
+      const banner = document.getElementById("status-banner");
+      banner.className = "status-banner " + q.status;
+      banner.textContent = STATUS_BANNER_TEXT[q.status] || "";
+
+      // Info
+      document.getElementById("info-request-id").textContent = q.requestId;
+      document.getElementById("info-date").textContent = formatDate(q.created_at);
+      document.getElementById("info-name").textContent = q.contactName || "-";
+      document.getElementById("info-phone").textContent = q.contactPhone || "-";
+
+      // Prices
+      document.getElementById("price-equipment").textContent = formatCurrency(q.equipmentPrice);
+      document.getElementById("price-install").textContent = formatCurrency(q.installPrice);
+      document.getElementById("price-nutrient").textContent = formatCurrency(q.nutrientPrice);
+      document.getElementById("price-total").textContent = formatCurrency(q.totalAmount);
+      document.getElementById("deposit-pct").textContent = q.depositPercent;
+      document.getElementById("price-deposit").textContent = formatCurrency(q.depositAmount);
+      document.getElementById("price-remaining").textContent = formatCurrency(q.remainingAmount);
+
+      // Note
+      if (q.note) {
+        document.getElementById("note-section").hidden = false;
+        document.getElementById("info-note").textContent = q.note;
+      }
+
+      // Timeline
+      const steps = getTimelineSteps(q.status);
+      let timelineHTML = "";
+      steps.forEach((step, idx) => {
+        timelineHTML += `
+          <div class="timeline-item">
+            <div class="timeline-step ${step.active ? 'done' : ''}">${step.active ? '✓' : idx + 1}</div>
+            <div class="timeline-content">
+              <h4>${step.label}</h4>
+              <p>${step.desc}</p>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("timeline").innerHTML = timelineHTML;
+    }
+
+    // ===== Init =====
+    loadContract();
+  </script>
+</body>
+</html>

@@ -43,7 +43,48 @@ function initSchema() {
       features TEXT DEFAULT '[]',
       created_at DATETIME DEFAULT (datetime('now', '+7 hours'))
     );
+
+    CREATE TABLE IF NOT EXISTS quotations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requestId TEXT NOT NULL UNIQUE,
+      contactId INTEGER NOT NULL,
+      equipmentPrice INTEGER DEFAULT 0,
+      installPrice INTEGER DEFAULT 0,
+      nutrientPrice INTEGER DEFAULT 0,
+      totalAmount INTEGER DEFAULT 0,
+      depositPercent REAL DEFAULT 10,
+      depositAmount INTEGER DEFAULT 0,
+      remainingAmount INTEGER DEFAULT 0,
+      note TEXT DEFAULT '',
+      status TEXT DEFAULT 'draft' CHECK(status IN ('draft','sent','deposit_paid','confirmed','completed','cancelled')),
+      created_at DATETIME DEFAULT (datetime('now', '+7 hours')),
+      updated_at DATETIME DEFAULT (datetime('now', '+7 hours')),
+      FOREIGN KEY (contactId) REFERENCES contacts(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
+      displayName TEXT DEFAULT '',
+      role TEXT DEFAULT 'admin' CHECK(role IN ('admin','staff')),
+      created_at DATETIME DEFAULT (datetime('now', '+7 hours'))
+    );
   `);
+
+  // Seed default admin if no users exist
+  const userCount = db.prepare("SELECT COUNT(*) as cnt FROM users").get();
+  if (userCount.cnt === 0) {
+    const bcrypt = require("bcryptjs");
+    const hashedPassword = bcrypt.hashSync("admin123", 10);
+    db.prepare("INSERT INTO users (username, password, displayName, role) VALUES (?, ?, ?, ?)").run(
+      "admin",
+      hashedPassword,
+      "Quản trị viên",
+      "admin"
+    );
+    console.log("👤 Default admin created: admin / admin123");
+  }
 }
 
 module.exports = { getDatabase };

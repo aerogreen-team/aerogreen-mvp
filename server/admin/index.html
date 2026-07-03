@@ -27,6 +27,9 @@
         <a href="#" class="nav-item" data-tab="products">
           <span>📦</span> Sản phẩm
         </a>
+        <a href="#" class="nav-item" data-tab="quotations">
+          <span>📄</span> Báo giá & Hợp đồng
+        </a>
       </nav>
     </aside>
 
@@ -36,7 +39,10 @@
       <header class="main-header">
         <h1 id="page-title">Dashboard</h1>
         <div class="header-info">
+          <span id="header-user">👤 Admin</span>
+          <span style="margin: 0 12px; color: #e2e8f0;">|</span>
           <span id="current-time"></span>
+          <button onclick="logout()" style="margin-left: 16px; padding: 6px 16px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;" title="Đăng xuất">🚪 Đăng xuất</button>
         </div>
       </header>
 
@@ -137,6 +143,108 @@
         <div class="card">
           <h3>Danh sách sản phẩm</h3>
           <div id="products-list"></div>
+        </div>
+      </section>
+
+      <!-- Quotations Tab -->
+      <section id="tab-quotations" class="tab-content">
+        <!-- Create/Edit Quotation -->
+        <div class="card" id="quotation-form-card" style="margin-bottom: 24px;">
+          <h3 id="quotation-form-title">➕ Tạo báo giá mới</h3>
+          <form id="quotation-form" onsubmit="handleQuotationSubmit(event)">
+            <input type="hidden" id="quotation-edit-id" value="">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="quotation-contact">Khách hàng (yêu cầu tư vấn)</label>
+                <select id="quotation-contact" required>
+                  <option value="">-- Chọn khách hàng --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="quotation-equipment">💰 Giá thiết bị (VNĐ)</label>
+                <input type="number" id="quotation-equipment" placeholder="VD: 8900000" min="0" required oninput="autoCalcQuotation()">
+              </div>
+              <div class="form-group">
+                <label for="quotation-install">🔧 Giá lắp đặt (VNĐ)</label>
+                <input type="number" id="quotation-install" placeholder="VD: 1000000" min="0" required oninput="autoCalcQuotation()">
+              </div>
+              <div class="form-group">
+                <label for="quotation-nutrient">🧪 Giá dinh dưỡng (VNĐ)</label>
+                <input type="number" id="quotation-nutrient" placeholder="VD: 600000" min="0" required oninput="autoCalcQuotation()">
+              </div>
+              <div class="form-group">
+                <label for="quotation-deposit">📌 % Đặt cọc</label>
+                <input type="number" id="quotation-deposit" value="10" min="0" max="100" step="0.1" required oninput="autoCalcQuotation()">
+              </div>
+              <div class="form-group">
+                <label for="quotation-note">📝 Ghi chú</label>
+                <textarea id="quotation-note" rows="2" placeholder="Ghi chú thêm cho báo giá..."></textarea>
+              </div>
+            </div>
+
+            <!-- Auto-calculated summary -->
+            <div class="calc-summary" id="calc-summary" style="display:none;">
+              <div class="calc-row">
+                <span>Tổng tiền:</span>
+                <strong id="calc-total">0 ₫</strong>
+              </div>
+              <div class="calc-row">
+                <span>Tiền cọc (<span id="calc-pct">10</span>%):</span>
+                <strong id="calc-deposit">0 ₫</strong>
+              </div>
+              <div class="calc-row calc-remaining">
+                <span>Số tiền còn lại:</span>
+                <strong id="calc-remaining">0 ₫</strong>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="quotation-submit-btn">📄 Tạo báo giá</button>
+              <button type="button" class="btn btn-secondary" id="quotation-cancel-btn" style="display:none;" onclick="cancelEdit()">❌ Hủy</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Quotation List -->
+        <div class="card">
+          <h3>📋 Danh sách báo giá</h3>
+          <div class="toolbar" style="margin-bottom: 16px;">
+            <div class="filter-group">
+              <label>Lọc trạng thái:</label>
+              <select id="filter-quotation-status" onchange="loadQuotations()">
+                <option value="">Tất cả</option>
+                <option value="draft">Bản nháp</option>
+                <option value="sent">Đã gửi</option>
+                <option value="deposit_paid">Đã đặt cọc</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="completed">Hoàn thành</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã BH</th>
+                  <th>Khách hàng</th>
+                  <th>SĐT</th>
+                  <th>Thiết bị</th>
+                  <th>Lắp đặt</th>
+                  <th>Dinh dưỡng</th>
+                  <th>Tổng tiền</th>
+                  <th>Cọc</th>
+                  <th>Còn lại</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="quotations-table-body">
+                <tr><td colspan="11" class="loading">Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </main>

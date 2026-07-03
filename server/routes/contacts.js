@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getDatabase } = require("../database");
+const { authMiddleware } = require("../middleware/auth");
 
 // POST /api/contact — Create a new contact
 router.post("/", (req, res) => {
@@ -39,8 +40,8 @@ router.post("/", (req, res) => {
   }
 });
 
-// GET /api/contacts — List all contacts (admin)
-router.get("/", (req, res) => {
+// GET /api/contacts — List all contacts (admin only)
+router.get("/", authMiddleware, (req, res) => {
   try {
     const db = getDatabase();
     const { status, page = 1, limit = 50 } = req.query;
@@ -79,8 +80,8 @@ router.get("/", (req, res) => {
   }
 });
 
-// PATCH /api/contacts/:id — Update contact status
-router.patch("/:id", (req, res) => {
+// PATCH /api/contacts/:id — Update contact status (admin only)
+router.patch("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -112,8 +113,8 @@ router.patch("/:id", (req, res) => {
   }
 });
 
-// DELETE /api/contacts/:id — Delete a contact
-router.delete("/:id", (req, res) => {
+// DELETE /api/contacts/:id — Delete a contact (admin only)
+router.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const db = getDatabase();

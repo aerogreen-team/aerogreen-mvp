@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 const { getDatabase } = require("./database");
+const { authMiddleware } = require("./middleware/auth");
 
 // Init DB
 getDatabase();
@@ -29,12 +30,16 @@ app.use(express.urlencoded({ extended: true }));
 // Serve admin dashboard as static files
 app.use("/admin", express.static(path.join(__dirname, "admin")));
 
-// API Routes
+// API Routes — Public (no auth required)
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contact", require("./routes/contacts"));
 app.use("/api/contacts", require("./routes/contacts"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/recommend", require("./routes/recommend"));
-app.use("/api/stats", require("./routes/stats"));
+
+// API Routes — Protected (auth required)
+app.use("/api/stats", authMiddleware, require("./routes/stats"));
+app.use("/api/quotations", authMiddleware, require("./routes/quotations"));
 
 // API root — welcome message
 app.get("/api", (req, res) => {
@@ -52,7 +57,12 @@ app.get("/api", (req, res) => {
       compare: "GET /api/products/compare?ids=1,2",
       recommend: "GET /api/recommend?house_type=&area=&budget=",
       stats: "GET /api/stats",
+      quotations: "GET/POST /api/quotations",
+      quotationById: "GET/PUT/DELETE /api/quotations/:id",
+      quotationByRequest: "GET /api/quotations/by-request/:requestId",
+      quotationStatus: "PATCH /api/quotations/:id/status",
     },
+    contract: "/hop-dong?code=AGH001",
     admin: "/admin",
   });
 });
@@ -60,6 +70,16 @@ app.get("/api", (req, res) => {
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Serve login page
+app.get("/login", (req, res) => {
+  const loginPath = path.join(__dirname, "admin", "login.html");
+  if (fs.existsSync(loginPath)) {
+    res.sendFile(loginPath);
+  } else {
+    res.status(404).json({ error: "Trang đăng nhập không tìm thấy." });
+  }
 });
 
 // Admin fallback (SPA-like)
@@ -72,9 +92,19 @@ app.get("/admin*", (req, res) => {
   }
 });
 
-// Root — redirect to admin
+// Root — redirect to login
 app.get("/", (req, res) => {
-  res.redirect("/admin");
+  res.redirect("/login");
+});
+
+// Public contract page (hợp đồng)
+app.get("/hop-dong", (req, res) => {
+  const contractPath = path.join(__dirname, "..", "contract.html");
+  if (fs.existsSync(contractPath)) {
+    res.sendFile(contractPath);
+  } else {
+    res.status(404).json({ error: "Trang hợp đồng không tìm thấy." });
+  }
 });
 
 // Start server
