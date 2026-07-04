@@ -107,6 +107,7 @@
     const val = (s) => { const el = $(s); return el ? el.value : ""; };
     const name = val("#name");
     const phone = val("#phone");
+    const email = val("#email");
     const houseType = val("#houseType");
     const areaInstall = val("#areaInstall");
     const budgetContact = val("#budgetContact");
@@ -116,7 +117,7 @@
     if (name.trim() === "") { toast("Vui lòng nhập họ và tên."); const n = $("#name"); n && n.focus(); return; }
     if (!/^[0-9 +().-]{8,15}$/.test(phone.trim())) { toast("Số điện thoại chưa hợp lệ."); const p = $("#phone"); p && p.focus(); return; }
 
-    const payload = { name: name.trim(), phone: phone.trim(), house_type: houseType, area: areaInstall, budget: budgetContact, goal, note };
+    const payload = { name: name.trim(), phone: phone.trim(), email: email.trim(), house_type: houseType, area: areaInstall, budget: budgetContact, goal, note };
 
     // Try sending to API, fall back to local-only if backend unavailable
     let apiSuccess = false;
@@ -141,7 +142,7 @@
       ok.classList.add("show");
     }
     toast("Gửi thông tin thành công!");
-    ["#name", "#phone", "#areaInstall", "#budgetContact", "#note"].forEach((s) => { const el = $(s); if (el) el.value = ""; });
+    ["#name", "#phone", "#email", "#areaInstall", "#budgetContact", "#note"].forEach((s) => { const el = $(s); if (el) el.value = ""; });
     try { localStorage.removeItem("selectedProduct"); } catch (e) {}
   };
 

@@ -6,7 +6,7 @@ const { authMiddleware } = require("../middleware/auth");
 // POST /api/contact — Create a new contact
 router.post("/", (req, res) => {
   try {
-    const { name, phone, house_type, area, budget, goal, note } = req.body;
+    const { name, phone, email, house_type, area, budget, goal, note } = req.body;
 
     if (!name || !phone) {
       return res
@@ -16,12 +16,13 @@ router.post("/", (req, res) => {
 
     const db = getDatabase();
     const stmt = db.prepare(`
-      INSERT INTO contacts (name, phone, house_type, area, budget, goal, note)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO contacts (name, phone, email, house_type, area, budget, goal, note)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
     const result = stmt.run(
       name.trim(),
       phone.trim(),
+      email ? email.trim() : "",
       house_type || "",
       area || "",
       budget || "",

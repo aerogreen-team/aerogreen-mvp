@@ -182,7 +182,7 @@ function renderRecentContacts(contacts) {
       <div class="recent-item">
         <div>
           <div class="recent-name">${c.name}</div>
-          <div style="font-size:12px;color:#64748b;">${c.phone} · ${formatDate(c.created_at)}</div>
+          <div style="font-size:12px;color:#64748b;">${c.phone}${c.email ? ' · ' + c.email : ''} · ${formatDate(c.created_at)}</div>
         </div>
         <span class="status-badge status-${c.status}">${STATUS_MAP[c.status] || c.status}</span>
       </div>
@@ -213,7 +213,7 @@ function renderContactsTable(contacts, pagination) {
   const tbody = document.getElementById("contacts-table-body");
 
   if (!contacts || contacts.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" class="loading">Không có yêu cầu nào</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" class="loading">Không có yêu cầu nào</td></tr>';
     document.getElementById("pagination").innerHTML = "";
     return;
   }
@@ -227,6 +227,7 @@ function renderContactsTable(contacts, pagination) {
         <td>${offset + idx + 1}</td>
         <td><strong>${c.name}</strong></td>
         <td>${c.phone}</td>
+        <td>${c.email || "-"}</td>
         <td>${c.house_type || "-"}</td>
         <td>${c.area || "-"}</td>
         <td>${c.budget || "-"}</td>

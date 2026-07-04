@@ -21,6 +21,7 @@ function initSchema() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       phone TEXT NOT NULL,
+      email TEXT DEFAULT '',
       house_type TEXT DEFAULT '',
       area TEXT DEFAULT '',
       budget TEXT DEFAULT '',
@@ -71,6 +72,13 @@ function initSchema() {
       created_at DATETIME DEFAULT (datetime('now', '+7 hours'))
     );
   `);
+
+  // Migration: add email column to existing databases
+  try {
+    db.exec("ALTER TABLE contacts ADD COLUMN email TEXT DEFAULT ''");
+  } catch (e) {
+    // column already exists — safe to ignore
+  }
 
   // Seed default admin if no users exist
   const userCount = db.prepare("SELECT COUNT(*) as cnt FROM users").get();
