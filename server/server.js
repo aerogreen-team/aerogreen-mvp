@@ -30,6 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve admin dashboard as static files
 app.use("/admin", express.static(path.join(__dirname, "admin")));
 
+// Serve main website static files (HTML, CSS, JS, images) from parent folder
+app.use(express.static(path.join(__dirname, "..")));
+
 // API Routes — Public (no auth required)
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contact", require("./routes/contacts"));
@@ -92,9 +95,14 @@ app.get("/admin*", (req, res) => {
   }
 });
 
-// Root — redirect to login
+// Root — serve main website
 app.get("/", (req, res) => {
-  res.redirect("/login");
+  const indexPath = path.join(__dirname, "..", "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ error: "Trang chủ không tìm thấy." });
+  }
 });
 
 // Public contract page (hợp đồng)
