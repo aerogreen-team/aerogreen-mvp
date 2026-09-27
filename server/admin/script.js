@@ -97,6 +97,14 @@ const STATUS_MAP = {
   closed: "Đã đóng",
 };
 
+const TAB_TITLES = {
+  dashboard: "Dashboard",
+  contacts: "Yêu cầu tư vấn",
+  products: "Sản phẩm",
+  quotations: "Báo giá & Hợp đồng",
+  account: "Tài khoản",
+};
+
 // ===== Navigation =====
 document.querySelectorAll(".nav-item").forEach((item) => {
   item.addEventListener("click", (e) => {
@@ -109,13 +117,13 @@ document.querySelectorAll(".nav-item").forEach((item) => {
     document.querySelectorAll(".tab-content").forEach((t) => t.classList.remove("active"));
     document.getElementById(`tab-${tab}`).classList.add("active");
 
-    document.getElementById("page-title").textContent =
-      tab === "dashboard" ? "Dashboard" : tab === "contacts" ? "Yêu cầu tư vấn" : tab === "products" ? "Sản phẩm" : "Báo giá & Hợp đồng";
+    document.getElementById("page-title").textContent = TAB_TITLES[tab] || "Dashboard";
 
     if (tab === "dashboard") loadDashboard();
     if (tab === "contacts") loadContacts();
     if (tab === "products") loadProducts();
     if (tab === "quotations") { loadQuotations(); loadContactsForQuotation(); }
+    if (tab === "account") resetPasswordForm();
   });
 });
 
@@ -588,6 +596,101 @@ async function deleteQuotation(id) {
 
 function viewContract(requestId) {
   window.open(`/hop-dong?code=${requestId}`, "_blank");
+}
+
+// ===== Account: đổi mật khẩu =====
+function showPasswordMessage(text, ok) {
+  const msg = document.getElementById("pw-message");
+  if (!msg) return;
+  msg.textContent = text;
+  msg.style.display = "block";
+  msg.style.background = ok ? "#f0fdf4" : "#fef2f2";
+  msg.style.color = ok ? "#166534" : "#991b1b";
+  msg.style.border = "1px solid " + (ok ? "#86efac" : "#fecaca");
+}
+
+function resetPasswordForm() {
+  const form = document.getElementById("password-form");
+  if (form) form.reset();
+  const msg = document.getElementById("pw-message");
+  if (msg) msg.style.display = "none";
+  const show = document.getElementById("pw-show");
+  if (show) show.checked = false;
+  togglePasswordVisibility();
+
+  // Hiển thị tên tài khoản đang đăng nhập
+  const usernameEl = document.getElementById("pw-username");
+  const userData = localStorage.getItem("aerogreen_user") || sessionStorage.getItem("aerogreen_user");
+  if (usernameEl && userData) {
+    try {
+      const user = JSON.parse(userData);
+      usernameEl.textContent = user.username || "admin";
+    } catch (e) {}
+  }
+}
+
+function togglePasswordVisibility() {
+  const show = document.getElementById("pw-show");
+  const type = show && show.checked ? "text" : "password";
+  ["pw-old", "pw-new", "pw-confirm"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.type = type;
+  });
+}
+
+async function handleChangePassword(event) {
+  event.preventDefault();
+
+  const oldPassword = document.getElementById("pw-old").value;
+  const newPassword = document.getElementById("pw-new").value;
+  const confirmPassword = document.getElementById("pw-confirm").value;
+
+  // Kiểm tra ngay trên trình duyệt để báo lỗi nhanh
+  if (newPassword.length < 6) {
+    showPasswordMessage("Mật khẩu mới phải có ít nhất 6 ký tự.", false);
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    showPasswordMessage("Mật khẩu nhập lại không khớp.", false);
+    return;
+  }
+  if (newPassword === oldPassword) {
+    showPasswordMessage("Mật khẩu mới phải khác mật khẩu hiện tại.", false);
+    return;
+  }
+
+  const btn = document.getElementById("pw-submit");
+  btn.disabled = true;
+  btn.textContent = "Đang xử lý...";
+
+  try {
+    const res = await apiFetch(`${API_BASE}/auth/change-password`, {
+      method: "PUT",
+      body: JSON.stringify({ oldPassword, newPassword }),
+    });
+    const result = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      showPasswordMessage(result.error || "Đổi mật khẩu thất bại.", false);
+      return;
+    }
+
+    document.getElementById("password-form").reset();
+    showPasswordMessage(
+      "✅ Đổi mật khẩu thành công. Đang đưa bạn về trang đăng nhập để xác nhận mật khẩu mới...",
+      true
+    );
+
+    // Đăng xuất để buộc đăng nhập lại bằng mật khẩu mới (xác nhận đã lưu đúng)
+    setTimeout(logout, 3000);
+  } catch (err) {
+    if (err.message !== "Unauthorized") {
+      showPasswordMessage("Không kết nối được tới server. Vui lòng thử lại.", false);
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔐 Đổi mật khẩu";
+  }
 }
 
 // ===== Init =====

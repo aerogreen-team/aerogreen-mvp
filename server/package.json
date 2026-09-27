@@ -9,7 +9,9 @@
     "dev": "node --watch server.js",
     "smoke": "node smoke-test.js",
     "db:info": "node db-info.js",
-    "db:clean": "node clear-test-data.js"
+    "db:clean": "node clear-test-data.js",
+    "check-secret": "node check-secret.js",
+    "set-password": "node admin-set-password.js"
   },
   "engines": {
     "node": ">=20.12"

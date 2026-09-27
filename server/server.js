@@ -122,6 +122,18 @@ async function start() {
 
   app.listen(PORT, "0.0.0.0", () => {
     const dbLabel = DB_URL.startsWith("file:") ? "file (local)" : "Turso (remote)";
+
+    // Cảnh báo bảo mật: nếu thiếu JWT_SECRET, token được ký bằng chuỗi mặc định
+    // nằm ngay trong mã nguồn công khai => ai cũng giả được token quản trị.
+    if (!process.env.JWT_SECRET) {
+      console.log("");
+      console.log("⚠️  CẢNH BÁO BẢO MẬT: chưa đặt biến môi trường JWT_SECRET.");
+      console.log("    Hệ thống đang dùng chuỗi mặc định đã công khai trong mã nguồn,");
+      console.log("    nghĩa là bất kỳ ai đọc được repo cũng tạo được token quản trị giả.");
+      console.log("    ➜ Đặt JWT_SECRET (Render → Environment) trước khi công khai.");
+      console.log("");
+    }
+
     console.log(`
 ╔══════════════════════════════════════════╗
 ║        🌿 VƯỜN PHỐ Server               ║

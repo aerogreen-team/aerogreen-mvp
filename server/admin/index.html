@@ -30,6 +30,9 @@
         <a href="#" class="nav-item" data-tab="quotations">
           <span>📄</span> Báo giá & Hợp đồng
         </a>
+        <a href="#" class="nav-item" data-tab="account">
+          <span>🔐</span> Tài khoản
+        </a>
       </nav>
     </aside>
 
@@ -246,6 +249,45 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- Account Tab -->
+      <section id="tab-account" class="tab-content">
+        <div class="card" style="max-width: 560px;">
+          <h3>🔐 Đổi mật khẩu quản trị</h3>
+          <p style="font-size: 13px; color: #64748b; margin: 0 0 20px;">
+            Tài khoản đang đăng nhập: <strong id="pw-username">admin</strong>
+          </p>
+
+          <form id="password-form" onsubmit="handleChangePassword(event)">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="pw-old">Mật khẩu hiện tại</label>
+              <input type="password" id="pw-old" autocomplete="current-password" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="pw-new">Mật khẩu mới (ít nhất 6 ký tự)</label>
+              <input type="password" id="pw-new" autocomplete="new-password" minlength="6" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="pw-confirm">Nhập lại mật khẩu mới</label>
+              <input type="password" id="pw-confirm" autocomplete="new-password" minlength="6" required>
+            </div>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; cursor: pointer; margin-bottom: 4px;">
+              <input type="checkbox" id="pw-show" onchange="togglePasswordVisibility()" style="width: auto; cursor: pointer;">
+              Hiện mật khẩu
+            </label>
+
+            <div id="pw-message" style="display: none; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-top: 16px;"></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="pw-submit">🔐 Đổi mật khẩu</button>
+              <button type="button" class="btn btn-secondary" onclick="resetPasswordForm()">Xoá form</button>
+            </div>
+          </form>
         </div>
       </section>
     </main>
