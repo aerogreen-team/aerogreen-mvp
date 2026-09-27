@@ -11,7 +11,8 @@
     "db:info": "node db-info.js",
     "db:clean": "node clear-test-data.js",
     "check-secret": "node check-secret.js",
-    "set-password": "node admin-set-password.js"
+    "set-password": "node admin-set-password.js",
+    "verify": "node verify-live.js"
   },
   "engines": {
     "node": ">=20.12"
