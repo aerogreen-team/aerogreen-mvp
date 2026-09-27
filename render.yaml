@@ -1,8 +1,9 @@
 # Render Blueprint — VƯỜN PHỐ
 # Tài liệu: https://render.com/docs/blueprint-spec
 #
-# Cách dùng: Render Dashboard → New → Blueprint → chọn repo này.
-# Render sẽ tự tạo Web Service theo cấu hình dưới đây; bạn chỉ cần nhập 3 biến bí mật.
+# Cách dùng: Render Dashboard → New → Blueprint → chọn repo này,
+# ở bước "specify a branch" CHỌN NHÁNH `api-engine`.
+# Render sẽ tạo Web Service theo cấu hình dưới đây.
 
 services:
   - type: web
@@ -16,16 +17,19 @@ services:
     startCommand: npm start
     # Render dùng endpoint này để biết service đã sẵn sàng
     healthCheckPath: /api/health
-    autoDeployTrigger: commit # tự deploy mỗi khi push lên nhánh api-engine
+    autoDeployTrigger: commit
+    # Region gần Việt Nam nhất. KHÔNG đổi được sau khi tạo service.
+    region: singapore
     envVars:
-      # Ba biến dưới đây là BÍ MẬT: sync: false nghĩa là Render sẽ hỏi giá trị
-      # lúc tạo service và không lưu vào repo.
+      # Hai giá trị BÍ MẬT của Turso: Render sẽ hỏi lúc tạo Blueprint
+      # và không lưu vào repo (sync: false).
       - key: TURSO_DATABASE_URL
         sync: false
       - key: TURSO_AUTH_TOKEN
         sync: false
+      # Render tự sinh chuỗi ngẫu nhiên 256-bit — không cần nhập tay
       - key: JWT_SECRET
-        sync: false
+        generateValue: true
       # Ghim phiên bản Node để có sẵn process.loadEnvFile (cần Node >= 20.12)
       - key: NODE_VERSION
         value: 22.15.1
