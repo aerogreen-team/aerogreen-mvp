@@ -1,0 +1,40 @@
+# Tự động deploy lên Render mỗi khi push nhánh `api-engine`.
+#
+# Vì sao cần file này?
+#   Cách C (Public Git Repository) không hỗ trợ auto-deploy của Render.
+#   Workflow này gọi "Deploy Hook" để lấy lại tính năng đó mà KHÔNG cần
+#   cài Render GitHub App cho tổ chức.
+#
+# Cách bật (làm 1 lần):
+#   1. Render Dashboard → service → Settings → Deploy Hook → copy URL
+#   2. GitHub repo → Settings → Secrets and variables → Actions
+#      → New repository secret
+#      → Name: RENDER_DEPLOY_HOOK   Value: <dán URL>
+#
+# Nếu CHƯA đặt secret, workflow tự bỏ qua và ghi chú (không báo lỗi).
+# Khi đó deploy tay: Render → Manual Deploy → Deploy latest commit.
+
+name: Deploy lên Render
+
+on:
+  push:
+    branches: [api-engine]
+  # Cho phép bấm chạy tay từ tab Actions
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Gọi Render Deploy Hook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kích hoạt deploy
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice title=Chưa cấu hình::Chưa đặt secret RENDER_DEPLOY_HOOK — bỏ qua bước deploy. Xem hướng dẫn ở đầu file .github/workflows/deploy-render.yml"
+            exit 0
+          fi
+          echo "Đang gọi Render deploy hook..."
+          curl -fsS -X POST "$HOOK" -o /dev/null -w "Render trả về HTTP %{http_code}\n"
+          echo "Đã kích hoạt. Theo dõi tiến trình tại Render Dashboard → service → Deploys."

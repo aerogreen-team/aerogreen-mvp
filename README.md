@@ -163,7 +163,7 @@ turso db tokens create vuonpho
 1. Đăng nhập **https://dashboard.render.com** bằng GitHub
 2. **New** → **Blueprint**
 3. Chọn repo `aerogreen-team/aerogreen-mvp` → Render đọc `render.yaml` và tạo service
-4. Render sẽ hỏi 3 biến môi trường → dán giá trị từ `server/.env`
+4. Render chỉ hỏi **2** biến (`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`) → dán từ `server/.env`; `JWT_SECRET` do Render tự sinh.
 5. Bấm **Apply** → chờ build (~2–3 phút)
 
 ### Cách B — Tạo Web Service thủ công
@@ -186,6 +186,42 @@ TURSO_DATABASE_URL = libsql://...
 TURSO_AUTH_TOKEN   = eyJ...
 JWT_SECRET         = <chuỗi ngẫu nhiên>
 ```
+
+### Cách C — Không cần cấp quyền GitHub (repo đang public)
+
+Dùng khi chưa được owner của tổ chức duyệt Render GitHub App. Render đọc repo
+public trực tiếp, **không cần cài GitHub App**, nhưng **mất auto-deploy**.
+
+1. **New** → **Web Service** → chọn tab **Public Git Repository**
+2. Dán `https://github.com/aerogreen-team/aerogreen-mvp` → **Connect**
+3. Điền:
+
+| Trường | Giá trị |
+|---|---|
+| **Name** | `vuonpho` |
+| **Branch** | `api-engine` |
+| **Runtime** | Node |
+| **Region** | Singapore |
+| **Build Command** | `cd server && npm install` |
+| **Start Command** | `cd server && npm start` |
+| **Instance Type** | Free |
+| **Health Check Path** | `/api/health` |
+
+> Vì `package.json` nằm trong `server/`, dùng `cd server && ...` thay cho Root Directory
+> (trường này có thể không có ở luồng Public Git Repository).
+
+4. **Advanced → Environment Variables**: thêm `TURSO_DATABASE_URL` và `TURSO_AUTH_TOKEN`
+
+#### Lấy lại auto-deploy bằng Deploy Hook
+
+1. Render → service → **Settings** → **Deploy Hook** → copy URL
+2. GitHub repo → **Settings → Secrets and variables → Actions** → **New repository secret**
+   - Name: `RENDER_DEPLOY_HOOK`
+   - Secret: dán URL vừa copy
+3. Xong. Workflow `.github/workflows/deploy-render.yml` sẽ tự gọi hook mỗi khi push `api-engine`
+
+> Chưa đặt được secret (cần quyền admin repo)? Workflow sẽ tự bỏ qua và ghi chú,
+> không báo lỗi. Khi đó deploy tay: Render → **Manual Deploy** → **Deploy latest commit**.
 
 ### Sau khi deploy
 
@@ -263,6 +299,7 @@ Nguồn kênh được ghi nhận tự động từ tham số UTM trên link:
 
 | Hiện tượng | Nguyên nhân | Cách xử lý |
 |---|---|---|
+| Render không thấy repo trong danh sách | Render GitHub App chưa được cài/duyệt cho tổ chức `aerogreen-team` | Owner duyệt tại `github.com/organizations/aerogreen-team/settings/installations`, hoặc dùng **Cách C** ở trên |
 | Trang mở được nhưng gửi form báo "Không kết nối được máy chủ" | Backend chưa chạy | Chạy `npm start` trong `server/`, hoặc đánh thức service Render |
 | `SQLITE_...` / lỗi kết nối DB | Sai `TURSO_DATABASE_URL` hoặc token hết hạn | Kiểm tra bằng `npm run db:info` |
 | `process.loadEnvFile is not a function` | Node cũ hơn 20.12 | Nâng Node lên 20.12+ (đã khai báo trong `engines`) |
