@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || "aerogreen_hub_secret_key_2026";
+// ⚠️ Chỉ dùng cho dev. Production BẮT BUỘC đặt JWT_SECRET trong biến môi trường.
+const JWT_SECRET = process.env.JWT_SECRET || "vuonpho_dev_secret_thay_khi_deploy";
 
 /**
  * Middleware: Verify JWT token from Authorization header

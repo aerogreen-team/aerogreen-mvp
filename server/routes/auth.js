@@ -5,7 +5,7 @@ const { getDatabase } = require("../database");
 const { authMiddleware, generateToken } = require("../middleware/auth");
 
 // POST /api/auth/login — Đăng nhập
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -14,9 +14,7 @@ router.post("/login", (req, res) => {
     }
 
     const db = getDatabase();
-    const user = db
-      .prepare("SELECT * FROM users WHERE username = ?")
-      .get(username.trim());
+    const user = await db.get("SELECT * FROM users WHERE username = ?", [username.trim()]);
 
     if (!user) {
       return res.status(401).json({ error: "Tên đăng nhập hoặc mật khẩu không đúng." });
@@ -49,12 +47,13 @@ router.post("/login", (req, res) => {
 });
 
 // GET /api/auth/me — Kiểm tra token hiện tại
-router.get("/me", authMiddleware, (req, res) => {
+router.get("/me", authMiddleware, async (req, res) => {
   try {
     const db = getDatabase();
-    const user = db
-      .prepare("SELECT id, username, displayName, role, created_at FROM users WHERE id = ?")
-      .get(req.user.id);
+    const user = await db.get(
+      "SELECT id, username, displayName, role, created_at FROM users WHERE id = ?",
+      [req.user.id]
+    );
 
     if (!user) {
       return res.status(404).json({ error: "Người dùng không tồn tại." });
@@ -68,7 +67,7 @@ router.get("/me", authMiddleware, (req, res) => {
 });
 
 // PUT /api/auth/change-password — Đổi mật khẩu
-router.put("/change-password", authMiddleware, (req, res) => {
+router.put("/change-password", authMiddleware, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
 
@@ -81,14 +80,14 @@ router.put("/change-password", authMiddleware, (req, res) => {
     }
 
     const db = getDatabase();
-    const user = db.prepare("SELECT * FROM users WHERE id = ?").get(req.user.id);
+    const user = await db.get("SELECT * FROM users WHERE id = ?", [req.user.id]);
 
     if (!bcrypt.compareSync(oldPassword, user.password)) {
       return res.status(400).json({ error: "Mật khẩu cũ không đúng." });
     }
 
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
-    db.prepare("UPDATE users SET password = ? WHERE id = ?").run(hashedPassword, req.user.id);
+    await db.run("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, req.user.id]);
 
     res.json({ success: true, message: "Đổi mật khẩu thành công." });
   } catch (error) {

@@ -1,0 +1,108 @@
+/* =========================================================
+   VƯỜN PHỐ — Trang tài khoản khách hàng (đăng ký / đăng nhập / hồ sơ)
+   ========================================================= */
+
+.auth-wrap {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.auth-card {
+  background: #fff;
+  border: 1px solid var(--green-100);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 40px 38px;
+}
+
+.auth-card > h2 { font-size: 26px; font-weight: 800; color: var(--green-800); }
+.auth-card > .auth-sub { color: var(--slate-500); font-size: 15px; margin: 8px 0 26px; }
+
+.auth-card .btn { width: 100%; justify-content: center; }
+
+.auth-switch { margin-top: 22px; font-size: 14.5px; color: var(--slate-500); text-align: center; }
+.auth-switch a { color: var(--green-700); font-weight: 700; }
+
+.auth-alert {
+  display: none;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.auth-alert.show { display: block; }
+.auth-alert.error { background: #fdecea; color: #a4231a; border: 1px solid #f6c9c4; }
+.auth-alert.success { background: var(--green-100); color: var(--green-800); border: 1px solid var(--green-300); }
+
+.auth-aside h1 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 800; letter-spacing: -.02em; color: var(--green-900); line-height: 1.15; }
+.auth-aside > p { margin-top: 16px; color: var(--slate-500); font-size: 16.5px; max-width: 480px; }
+.auth-benefits { list-style: none; margin-top: 28px; display: grid; gap: 14px; }
+.auth-benefits li { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; color: var(--slate-700); }
+.auth-benefits svg { width: 20px; height: 20px; min-width: 20px; margin-top: 2px; color: var(--green-600); }
+
+/* ---------- Trang hồ sơ ---------- */
+.account-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--grad-hero);
+  color: #fff;
+  border-radius: 22px;
+  padding: 34px 36px;
+}
+.account-head h1 { font-size: 28px; font-weight: 800; }
+.account-head p { color: #cfe9d8; margin-top: 6px; font-size: 15px; }
+.account-avatar {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: rgba(255,255,255,.16);
+  display: grid; place-items: center;
+  font-size: 24px; font-weight: 800; color: #fff;
+  border: 2px solid rgba(255,255,255,.35);
+}
+
+.account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 32px; }
+.account-panel {
+  background: #fff;
+  border: 1px solid var(--green-100);
+  border-radius: 20px;
+  padding: 30px 28px;
+  box-shadow: var(--shadow);
+}
+.account-panel h2 { font-size: 20px; font-weight: 800; color: var(--green-800); margin-bottom: 6px; }
+.account-panel .panel-sub { font-size: 14.5px; color: var(--slate-500); margin-bottom: 22px; }
+
+/* ---------- Danh sách yêu cầu ---------- */
+.req-list { display: grid; gap: 14px; }
+.req-item {
+  border: 1px solid var(--green-100);
+  border-left: 4px solid var(--green-400);
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: var(--green-50);
+}
+.req-item h4 { font-size: 15.5px; font-weight: 800; color: var(--green-800); margin-bottom: 6px; }
+.req-item p { font-size: 14px; color: var(--slate-500); line-height: 1.55; }
+.req-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 13.5px; color: var(--slate-500); }
+.req-badge {
+  display: inline-block;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: var(--green-300);
+  color: var(--green-900);
+}
+.empty-state { text-align: center; padding: 34px 10px; color: var(--slate-500); font-size: 15px; }
+.empty-state svg { width: 40px; height: 40px; color: var(--green-400); margin-bottom: 12px; }
+
+@media (max-width: 900px) {
+  .auth-wrap { grid-template-columns: 1fr; gap: 34px; }
+  .account-grid { grid-template-columns: 1fr; }
+  .auth-card { padding: 32px 24px; }
+}

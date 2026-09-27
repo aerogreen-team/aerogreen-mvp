@@ -3,10 +3,10 @@ const router = express.Router();
 const { getDatabase } = require("../database");
 
 // GET /api/products — List all products
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const db = getDatabase();
-    const products = db.prepare("SELECT * FROM products ORDER BY price ASC").all();
+    const products = await db.all("SELECT * FROM products ORDER BY price ASC");
     res.json({ data: products });
   } catch (error) {
     console.error("GET /api/products error:", error);
@@ -15,11 +15,11 @@ router.get("/", (req, res) => {
 });
 
 // GET /api/products/:id — Get single product
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const db = getDatabase();
-    const product = db.prepare("SELECT * FROM products WHERE id = ?").get(id);
+    const product = await db.get("SELECT * FROM products WHERE id = ?", [id]);
 
     if (!product) {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm." });
@@ -33,7 +33,7 @@ router.get("/:id", (req, res) => {
 });
 
 // GET /api/products/compare?ids=1,2,3 — Compare products
-router.get("/compare/list", (req, res) => {
+router.get("/compare/list", async (req, res) => {
   try {
     const { ids } = req.query;
     if (!ids) {
@@ -51,9 +51,10 @@ router.get("/compare/list", (req, res) => {
 
     const db = getDatabase();
     const placeholders = idList.map(() => "?").join(",");
-    const products = db
-      .prepare(`SELECT * FROM products WHERE id IN (${placeholders})`)
-      .all(...idList);
+    const products = await db.all(
+      `SELECT * FROM products WHERE id IN (${placeholders})`,
+      idList
+    );
 
     if (products.length === 0) {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm." });

@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json.bak
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database — regenerate with `npm run seed` in server/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/

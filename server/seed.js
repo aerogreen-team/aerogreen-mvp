@@ -1,15 +1,7 @@
-const { getDatabase } = require("./database");
+const { db, client, initDb } = require("./database");
 
-const db = getDatabase();
-
-// Check if products already seeded
-const count = db.prepare("SELECT COUNT(*) as cnt FROM products").get();
-if (count.cnt > 0) {
-  console.log("✅ Database already has products. Skipping seed.");
-  process.exit(0);
-}
-
-const products = [
+// Danh sách sản phẩm mẫu — dùng chung cho `npm run seed` và auto-seed khi server khởi động
+const PRODUCTS = [
   {
     name: "Mini Kit",
     description:
@@ -63,17 +55,55 @@ const products = [
   },
 ];
 
-const insert = db.prepare(`
-  INSERT INTO products (name, description, holes, suitable_for, size, price, price_label, image, features)
-  VALUES (@name, @description, @holes, @suitable_for, @size, @price, @price_label, @image, @features)
-`);
-
-const insertMany = db.transaction((items) => {
-  for (const item of items) {
-    insert.run(item);
+/**
+ * Seed sản phẩm mẫu nếu bảng products đang trống.
+ *
+ * Lưu ý: KHÔNG gọi process.exit() ở đây — server.js gọi hàm này lúc khởi động,
+ * nếu exit thì tiến trình server sẽ chết ngay khi DB còn trống.
+ *
+ * @returns {number} số sản phẩm đã thêm (0 nếu đã có dữ liệu)
+ */
+async function seedProducts() {
+  const count = await db.get("SELECT COUNT(*) as cnt FROM products");
+  if (Number(count && count.cnt) > 0) {
+    console.log("✅ Database already has products. Skipping seed.");
+    return 0;
   }
-});
 
-insertMany(products);
-console.log("✅ Seeded", products.length, "products successfully.");
-process.exit(0);
+  // client.batch gửi tất cả trong 1 transaction
+  await client.batch(
+    PRODUCTS.map((p) => ({
+      sql: `INSERT INTO products (name, description, holes, suitable_for, size, price, price_label, image, features)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        p.name,
+        p.description,
+        p.holes,
+        p.suitable_for,
+        p.size,
+        p.price,
+        p.price_label,
+        p.image,
+        p.features,
+      ],
+    })),
+    "write"
+  );
+
+  console.log("✅ Seeded", PRODUCTS.length, "products successfully.");
+  return PRODUCTS.length;
+}
+
+// Chạy trực tiếp: `node seed.js` hoặc `npm run seed`
+if (require.main === module) {
+  (async () => {
+    await initDb();
+    await seedProducts();
+    process.exit(0);
+  })().catch((err) => {
+    console.error("❌ Seed thất bại:", err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { seedProducts, PRODUCTS };

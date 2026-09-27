@@ -1,5 +1,15 @@
 const express = require("express");
 const router = express.Router();
+
+/**
+ * Router công khai CHỈ chứa các endpoint khách hàng cần tự truy cập
+ * (trang hợp đồng mở bằng link chia sẻ).
+ * Được mount TRƯỚC router cần auth trong server.js.
+ *
+ * Lưu ý bảo mật: requestId dạng AGH001 có thể đoán được. Với MVP thì chấp nhận
+ * vì link hợp đồng được gửi trực tiếp cho khách; khi mở rộng nên đổi sang token ngẫu nhiên.
+ */
+const publicRouter = express.Router();
 const { getDatabase } = require("../database");
 
 /**
@@ -11,7 +21,7 @@ function generateRequestId(contactId) {
 }
 
 // POST /api/quotations — Tạo báo giá mới
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       contactId,
@@ -39,7 +49,7 @@ router.post("/", (req, res) => {
     const db = getDatabase();
 
     // Verify contact exists
-    const contact = db.prepare("SELECT id FROM contacts WHERE id = ?").get(contactId);
+    const contact = await db.get("SELECT id FROM contacts WHERE id = ?", [contactId]);
     if (!contact) {
       return res.status(404).json({ error: "Không tìm thấy yêu cầu tư vấn." });
     }
@@ -47,33 +57,33 @@ router.post("/", (req, res) => {
     const requestId = generateRequestId(contactId);
 
     // Check if quotation already exists for this contact
-    const existing = db
-      .prepare("SELECT id FROM quotations WHERE contactId = ?")
-      .get(contactId);
+    const existing = await db.get("SELECT id FROM quotations WHERE contactId = ?", [contactId]);
     if (existing) {
       return res
         .status(409)
         .json({ error: "Báo giá cho yêu cầu này đã tồn tại. Vui lòng cập nhật báo giá cũ.", existingId: existing.id });
     }
 
-    const stmt = db.prepare(`
-      INSERT INTO quotations (requestId, contactId, equipmentPrice, installPrice, nutrientPrice, totalAmount, depositPercent, depositAmount, remainingAmount, note)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-    const result = stmt.run(
-      requestId,
-      contactId,
-      eq,
-      ins,
-      nut,
-      totalAmount,
-      pct,
-      depositAmount,
-      remainingAmount,
-      note || ""
+    const result = await db.run(
+      `INSERT INTO quotations (requestId, contactId, equipmentPrice, installPrice, nutrientPrice, totalAmount, depositPercent, depositAmount, remainingAmount, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        requestId,
+        contactId,
+        eq,
+        ins,
+        nut,
+        totalAmount,
+        pct,
+        depositAmount,
+        remainingAmount,
+        note || "",
+      ]
     );
 
-    const quotation = db.prepare("SELECT * FROM quotations WHERE id = ?").get(result.lastInsertRowid);
+    const quotation = await db.get("SELECT * FROM quotations WHERE id = ?", [
+      result.lastInsertRowid,
+    ]);
 
     res.status(201).json({
       success: true,
@@ -87,7 +97,7 @@ router.post("/", (req, res) => {
 });
 
 // PUT /api/quotations/:id — Cập nhật báo giá
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -109,21 +119,22 @@ router.put("/:id", (req, res) => {
 
     const db = getDatabase();
 
-    const existing = db.prepare("SELECT * FROM quotations WHERE id = ?").get(id);
+    const existing = await db.get("SELECT * FROM quotations WHERE id = ?", [id]);
     if (!existing) {
       return res.status(404).json({ error: "Không tìm thấy báo giá." });
     }
 
-    db.prepare(`
-      UPDATE quotations
-      SET equipmentPrice = ?, installPrice = ?, nutrientPrice = ?,
-          totalAmount = ?, depositPercent = ?, depositAmount = ?,
-          remainingAmount = ?, note = ?,
-          updated_at = datetime('now', '+7 hours')
-      WHERE id = ?
-    `).run(eq, ins, nut, totalAmount, pct, depositAmount, remainingAmount, note || "", id);
+    await db.run(
+      `UPDATE quotations
+       SET equipmentPrice = ?, installPrice = ?, nutrientPrice = ?,
+           totalAmount = ?, depositPercent = ?, depositAmount = ?,
+           remainingAmount = ?, note = ?,
+           updated_at = datetime('now', '+7 hours')
+       WHERE id = ?`,
+      [eq, ins, nut, totalAmount, pct, depositAmount, remainingAmount, note || "", id]
+    );
 
-    const quotation = db.prepare("SELECT * FROM quotations WHERE id = ?").get(id);
+    const quotation = await db.get("SELECT * FROM quotations WHERE id = ?", [id]);
 
     res.json({
       success: true,
@@ -137,7 +148,7 @@ router.put("/:id", (req, res) => {
 });
 
 // PATCH /api/quotations/:id/status — Cập nhật trạng thái
-router.patch("/:id/status", (req, res) => {
+router.patch("/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -148,9 +159,10 @@ router.patch("/:id/status", (req, res) => {
     }
 
     const db = getDatabase();
-    const result = db
-      .prepare("UPDATE quotations SET status = ?, updated_at = datetime('now', '+7 hours') WHERE id = ?")
-      .run(status, id);
+    const result = await db.run(
+      "UPDATE quotations SET status = ?, updated_at = datetime('now', '+7 hours') WHERE id = ?",
+      [status, id]
+    );
 
     if (result.changes === 0) {
       return res.status(404).json({ error: "Không tìm thấy báo giá." });
@@ -164,7 +176,7 @@ router.patch("/:id/status", (req, res) => {
 });
 
 // GET /api/quotations — Danh sách tất cả báo giá (admin)
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const db = getDatabase();
     const { status, page = 1, limit = 50 } = req.query;
@@ -187,9 +199,10 @@ router.get("/", (req, res) => {
     query += " ORDER BY q.created_at DESC LIMIT ? OFFSET ?";
     params.push(parseInt(limit), offset);
 
-    const quotations = db.prepare(query).all(...params);
+    const quotations = await db.all(query, params);
     const countParams = status ? [status] : [];
-    const { total } = db.prepare(countQuery).get(...countParams);
+    const totalRow = await db.get(countQuery, countParams);
+    const total = totalRow.total;
 
     res.json({
       data: quotations,
@@ -207,19 +220,18 @@ router.get("/", (req, res) => {
 });
 
 // GET /api/quotations/by-request/:requestId — Lấy báo giá theo requestId (trang hợp đồng)
-router.get("/by-request/:requestId", (req, res) => {
+publicRouter.get("/by-request/:requestId", async (req, res) => {
   try {
     const { requestId } = req.params;
     const db = getDatabase();
 
-    const quotation = db
-      .prepare(`
-        SELECT q.*, c.name as contactName, c.phone as contactPhone
-        FROM quotations q
-        LEFT JOIN contacts c ON q.contactId = c.id
-        WHERE q.requestId = ?
-      `)
-      .get(requestId);
+    const quotation = await db.get(
+      `SELECT q.*, c.name as contactName, c.phone as contactPhone
+       FROM quotations q
+       LEFT JOIN contacts c ON q.contactId = c.id
+       WHERE q.requestId = ?`,
+      [requestId]
+    );
 
     if (!quotation) {
       return res.status(404).json({ error: "Không tìm thấy báo giá." });
@@ -233,19 +245,18 @@ router.get("/by-request/:requestId", (req, res) => {
 });
 
 // GET /api/quotations/:id — Lấy báo giá theo ID
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const db = getDatabase();
 
-    const quotation = db
-      .prepare(`
-        SELECT q.*, c.name as contactName, c.phone as contactPhone
-        FROM quotations q
-        LEFT JOIN contacts c ON q.contactId = c.id
-        WHERE q.id = ?
-      `)
-      .get(id);
+    const quotation = await db.get(
+      `SELECT q.*, c.name as contactName, c.phone as contactPhone
+       FROM quotations q
+       LEFT JOIN contacts c ON q.contactId = c.id
+       WHERE q.id = ?`,
+      [id]
+    );
 
     if (!quotation) {
       return res.status(404).json({ error: "Không tìm thấy báo giá." });
@@ -259,12 +270,12 @@ router.get("/:id", (req, res) => {
 });
 
 // DELETE /api/quotations/:id — Xóa báo giá
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const db = getDatabase();
 
-    const result = db.prepare("DELETE FROM quotations WHERE id = ?").run(id);
+    const result = await db.run("DELETE FROM quotations WHERE id = ?", [id]);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: "Không tìm thấy báo giá." });
@@ -278,3 +289,4 @@ router.delete("/:id", (req, res) => {
 });
 
 module.exports = router;
+module.exports.publicRouter = publicRouter;

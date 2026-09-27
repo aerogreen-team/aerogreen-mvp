@@ -3,21 +3,8 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
-const { getDatabase } = require("./database");
+const { initDb, DB_URL } = require("./database");
 const { authMiddleware } = require("./middleware/auth");
-
-// Init DB
-getDatabase();
-try {
-  const db = getDatabase();
-  const count = db.prepare("SELECT COUNT(*) as cnt FROM products").get();
-  if (count.cnt === 0) {
-    console.log("🌱 Seeding products...");
-    require("./seed");
-  }
-} catch (e) {
-  console.log("⚠️ Seed check skipped:", e.message);
-}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +22,8 @@ app.use(express.static(path.join(__dirname, "..")));
 
 // API Routes — Public (no auth required)
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/customers", require("./routes/customers"));
+app.use("/api/track", require("./routes/track"));
 app.use("/api/contact", require("./routes/contacts"));
 app.use("/api/contacts", require("./routes/contacts"));
 app.use("/api/products", require("./routes/products"));
@@ -42,7 +31,12 @@ app.use("/api/recommend", require("./routes/recommend"));
 
 // API Routes — Protected (auth required)
 app.use("/api/stats", authMiddleware, require("./routes/stats"));
-app.use("/api/quotations", authMiddleware, require("./routes/quotations"));
+
+// Quotations: nhóm endpoint công khai (trang hợp đồng khách tự mở) phải
+// được đăng ký TRƯỚC nhóm cần đăng nhập, nếu không khách sẽ bị 401.
+const quotationRoutes = require("./routes/quotations");
+app.use("/api/quotations", quotationRoutes.publicRouter);
+app.use("/api/quotations", authMiddleware, quotationRoutes);
 
 // API root — welcome message
 app.get("/api", (req, res) => {
@@ -115,15 +109,30 @@ app.get("/hop-dong", (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`
+// Khởi động: tạo bảng + seed dữ liệu trước, rồi mới mở cổng
+async function start() {
+  try {
+    await initDb();
+    const { seedProducts } = require("./seed");
+    console.log("🌱 Checking seed data...");
+    await seedProducts();
+  } catch (e) {
+    console.log("⚠️ Khởi tạo dữ liệu thất bại:", e.message);
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    const dbLabel = DB_URL.startsWith("file:") ? "file (local)" : "Turso (remote)";
+    console.log(`
 ╔══════════════════════════════════════════╗
-║        🌿 AeroGreen Hub Server          ║
+║        🌿 VƯỜN PHỐ Server               ║
 ║──────────────────────────────────────────║
 ║  URL:   http://localhost:${PORT}          ║
 ║  Admin: http://localhost:${PORT}/admin    ║
 ║  API:   http://localhost:${PORT}/api      ║
+║  DB:    ${dbLabel}
 ╚══════════════════════════════════════════╝
   `);
-});
+  });
+}
+
+start();

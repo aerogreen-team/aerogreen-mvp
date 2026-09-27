@@ -3,11 +3,11 @@ const router = express.Router();
 const { getDatabase } = require("../database");
 
 // GET /api/recommend?house_type=...&area=...&budget=...
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { house_type, area, budget } = req.query;
     const db = getDatabase();
-    const products = db.prepare("SELECT * FROM products ORDER BY price ASC").all();
+    const products = await db.all("SELECT * FROM products ORDER BY price ASC");
 
     let recommended = null;
     let reason = "";

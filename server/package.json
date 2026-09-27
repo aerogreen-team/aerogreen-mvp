@@ -1,16 +1,22 @@
 {
   "name": "aerogreen-hub-server",
   "version": "1.0.0",
-  "description": "Backend API cho AeroGreen Hub MVP",
+  "description": "Backend API cho VƯỜN PHỐ (AeroGreen Hub) MVP — Express + Turso/libSQL",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "seed": "node seed.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "smoke": "node smoke-test.js",
+    "db:info": "node db-info.js",
+    "db:clean": "node clear-test-data.js"
+  },
+  "engines": {
+    "node": ">=20.12"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^11.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.3"

@@ -4,9 +4,9 @@ const { getDatabase } = require("../database");
 const { authMiddleware } = require("../middleware/auth");
 
 // POST /api/contact — Create a new contact
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const { name, phone, email, house_type, area, budget, goal, note } = req.body;
+    const { name, phone, email, house_type, area, budget, goal, note, source } = req.body;
 
     if (!name || !phone) {
       return res
@@ -15,24 +15,37 @@ router.post("/", (req, res) => {
     }
 
     const db = getDatabase();
-    const stmt = db.prepare(`
-      INSERT INTO contacts (name, phone, email, house_type, area, budget, goal, note)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-    const result = stmt.run(
-      name.trim(),
-      phone.trim(),
-      email ? email.trim() : "",
-      house_type || "",
-      area || "",
-      budget || "",
-      goal || "",
-      note || ""
+    const result = await db.run(
+      `INSERT INTO contacts (name, phone, email, house_type, area, budget, goal, note, source)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        name.trim(),
+        phone.trim(),
+        email ? email.trim() : "",
+        house_type || "",
+        area || "",
+        budget || "",
+        goal || "",
+        note || "",
+        source || "",
+      ]
     );
+
+    // Ghi nhận event phục vụ đo lường OC2 (không làm hỏng request)
+    try {
+      await db.run("INSERT INTO events (type, label, path, source) VALUES (?, ?, ?, ?)", [
+        "request",
+        "contact_page",
+        "/contact.html",
+        source || "",
+      ]);
+    } catch (e) {
+      console.error("track request event failed:", e.message);
+    }
 
     res.status(201).json({
       success: true,
-      message: "Đã ghi nhận thông tin. AeroGreen Hub sẽ liên hệ tư vấn.",
+      message: "Đã ghi nhận thông tin. VƯỜN PHỐ sẽ liên hệ tư vấn.",
       id: result.lastInsertRowid,
     });
   } catch (error) {
@@ -42,7 +55,7 @@ router.post("/", (req, res) => {
 });
 
 // GET /api/contacts — List all contacts (admin only)
-router.get("/", authMiddleware, (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const db = getDatabase();
     const { status, page = 1, limit = 50 } = req.query;
@@ -63,8 +76,9 @@ router.get("/", authMiddleware, (req, res) => {
     query += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
     params.push(parseInt(limit), offset);
 
-    const contacts = db.prepare(query).all(...params);
-    const { total } = db.prepare(countQuery).get(...countParams);
+    const contacts = await db.all(query, params);
+    const totalRow = await db.get(countQuery, countParams);
+    const total = totalRow.total;
 
     res.json({
       data: contacts,
@@ -82,7 +96,7 @@ router.get("/", authMiddleware, (req, res) => {
 });
 
 // PATCH /api/contacts/:id — Update contact status (admin only)
-router.patch("/:id", authMiddleware, (req, res) => {
+router.patch("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -95,17 +109,13 @@ router.patch("/:id", authMiddleware, (req, res) => {
     }
 
     const db = getDatabase();
-    const result = db
-      .prepare("UPDATE contacts SET status = ? WHERE id = ?")
-      .run(status, id);
+    const result = await db.run("UPDATE contacts SET status = ? WHERE id = ?", [status, id]);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: "Không tìm thấy contact." });
     }
 
-    const contact = db
-      .prepare("SELECT * FROM contacts WHERE id = ?")
-      .get(id);
+    const contact = await db.get("SELECT * FROM contacts WHERE id = ?", [id]);
 
     res.json({ success: true, data: contact });
   } catch (error) {
@@ -115,12 +125,12 @@ router.patch("/:id", authMiddleware, (req, res) => {
 });
 
 // DELETE /api/contacts/:id — Delete a contact (admin only)
-router.delete("/:id", authMiddleware, (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const db = getDatabase();
 
-    const result = db.prepare("DELETE FROM contacts WHERE id = ?").run(id);
+    const result = await db.run("DELETE FROM contacts WHERE id = ?", [id]);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: "Không tìm thấy contact." });

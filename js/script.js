@@ -116,24 +116,27 @@
 
     if (name.trim() === "") { toast("Vui lòng nhập họ và tên."); const n = $("#name"); n && n.focus(); return; }
     if (!/^[0-9 +().-]{8,15}$/.test(phone.trim())) { toast("Số điện thoại chưa hợp lệ."); const p = $("#phone"); p && p.focus(); return; }
+    if (email.trim() === "") { toast("Vui lòng nhập email."); const em = $("#email"); em && em.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast("Email chưa hợp lệ."); const em2 = $("#email"); em2 && em2.focus(); return; }
 
-    const payload = { name: name.trim(), phone: phone.trim(), email: email.trim(), house_type: houseType, area: areaInstall, budget: budgetContact, goal, note };
+    // Nguồn kênh (utm_source) — dùng cho báo cáo OC2
+    const utmSource =
+      typeof window.VuonPho !== "undefined" && window.VuonPho.utm
+        ? window.VuonPho.utm().source || ""
+        : "";
 
-    // Try sending to API, fall back to local-only if backend unavailable
+    const payload = { name: name.trim(), phone: phone.trim(), email: email.trim(), house_type: houseType, area: areaInstall, budget: budgetContact, goal, note, source: utmSource };
+
+    // Gửi lên API (base URL do js/auth.js quyết định), fallback local nếu backend không chạy
     let apiSuccess = false;
-    if (typeof API_BASE !== "undefined") {
-      try {
-        const res = await fetch(API_BASE + "/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const result = await res.json();
-        apiSuccess = result.success;
-        if (!apiSuccess) console.warn("API returned error:", result.error);
-      } catch (err) {
-        console.warn("API unavailable, using local fallback:", err.message);
+    try {
+      if (window.VuonPho && window.VuonPho.api) {
+        const r = await window.VuonPho.api("/contact", { method: "POST", body: payload });
+        apiSuccess = !!(r.ok && r.json && r.json.success);
+        if (!apiSuccess) console.warn("API trả lỗi:", r.json && r.json.error);
       }
+    } catch (err) {
+      console.warn("Không gọi được API, dùng fallback local:", err.message);
     }
 
     const ok = $("#success");
