@@ -66,6 +66,37 @@ async function main() {
     for (const l of leads) console.log(`     - ${l.name} · nguồn: ${l.source} · ${l.status}`);
   }
 
+  // ---- Số liệu đo lường cho Outcome 2 ----
+  const byType = await db.all(
+    "SELECT type, COUNT(*) as c FROM events GROUP BY type ORDER BY c DESC"
+  );
+  if (byType.length) {
+    console.log("\n   Sự kiện theo loại:");
+    for (const e of byType) console.log(`     - ${e.type}: ${e.c}`);
+  }
+
+  const traffic = await db.all(
+    "SELECT COALESCE(NULLIF(source, ''), '(trực tiếp)') as src, COUNT(*) as c FROM events GROUP BY src ORDER BY c DESC"
+  );
+  if (traffic.length) {
+    console.log("\n   Lượt truy cập theo nguồn kênh:");
+    for (const t of traffic) console.log(`     - ${t.src}: ${t.c}`);
+  }
+
+  const recent = await db.all(
+    "SELECT type, path, source, visitor_id, created_at FROM events ORDER BY id DESC LIMIT 8"
+  );
+  if (recent.length) {
+    console.log("\n   8 sự kiện mới nhất:");
+    for (const e of recent) {
+      console.log(
+        `     - ${e.created_at} · ${e.type} · ${e.path || "-"} · nguồn: ${e.source || "-"} · khách: ${String(
+          e.visitor_id || "-"
+        ).slice(0, 10)}`
+      );
+    }
+  }
+
   console.log("\n   Kết nối thành công.\n");
 }
 

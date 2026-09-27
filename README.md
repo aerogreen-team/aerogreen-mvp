@@ -11,9 +11,10 @@
 
 | | |
 |---|---|
-| **Website (demo)** | `https://<ten-mien>.me` — *(cập nhật sau khi gắn tên miền)* |
-| **Bản deploy Render** | `https://<ten-service>.onrender.com` — *(cập nhật sau khi tạo service)* |
-| **Trang quản trị** | `<địa-chỉ-website>/login` |
+| **Website (đang chạy)** | **https://vuonpho.onrender.com** |
+| **Trang quản trị** | https://vuonpho.onrender.com/login — `admin` / `admin123` *(đổi ngay)* |
+| **Database** | Turso `vuonpho` — region `aws-ap-northeast-1` (Tokyo) |
+| **Tên miền riêng** | *(cập nhật sau khi gắn tên miền .me từ GitHub Student Pack)* |
 | **Tài liệu** | `EXE201/User_Manual_VuonPho.md` · `EXE201/User_Manual_Video_Script_NAM.md` · `../OC1_OC2_Readiness_Plan.md` |
 
 ---
