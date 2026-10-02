@@ -194,7 +194,7 @@ turso db tokens create vuonpho
 | Trường | Giá trị |
 |---|---|
 | **Repository** | `aerogreen-team/aerogreen-mvp` |
-| **Branch** | `api-engine` |
+| **Branch** | `main` |
 | **Root Directory** | `server` |
 | **Runtime** | Node |
 | **Build Command** | `npm install` |
@@ -222,7 +222,7 @@ public trực tiếp, **không cần cài GitHub App**, nhưng **mất auto-depl
 | Trường | Giá trị |
 |---|---|
 | **Name** | `vuonpho` |
-| **Branch** | `api-engine` |
+| **Branch** | `main` |
 | **Runtime** | Node |
 | **Region** | Singapore |
 | **Build Command** | `cd server && npm install` |
@@ -241,7 +241,7 @@ public trực tiếp, **không cần cài GitHub App**, nhưng **mất auto-depl
 2. GitHub repo → **Settings → Secrets and variables → Actions** → **New repository secret**
    - Name: `RENDER_DEPLOY_HOOK`
    - Secret: dán URL vừa copy
-3. Xong. Workflow `.github/workflows/deploy-render.yml` sẽ tự gọi hook mỗi khi push `api-engine`
+3. Xong. Workflow `.github/workflows/deploy-render.yml` sẽ tự gọi hook mỗi khi push `main`
 
 > Chưa đặt được secret (cần quyền admin repo)? Workflow sẽ tự bỏ qua và ghi chú,
 > không báo lỗi. Khi đó deploy tay: Render → **Manual Deploy** → **Deploy latest commit**.
@@ -347,7 +347,7 @@ Nguồn kênh được ghi nhận tự động từ tham số UTM trên link:
 
 ## 📌 Ghi chú về môi trường
 
-- **Nhánh deploy:** `api-engine`. Nhánh `main` chứa bản frontend tĩnh cũ và **đã nằm trọn trong `api-engine`**, nên `api-engine` luôn là bản mới nhất.
+- **Nhánh deploy:** `main` — đã hợp nhất toàn bộ `api-engine`, nên `main` luôn là bản mới nhất. `api-engine` chỉ còn là nhánh phát triển.
 - **Không dùng AI tạo số liệu.** Mọi số liệu trong báo cáo Outcome 2 phải truy xuất được về dashboard gốc (Meta Business Suite, TikTok Analytics) hoặc `GET /api/stats/funnel`.
 - **Dữ liệu khách hàng là thật** — không xoá bảng `customers`/`contacts` trên Turso.
 

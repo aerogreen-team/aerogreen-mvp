@@ -2,7 +2,7 @@
 # Tài liệu: https://render.com/docs/blueprint-spec
 #
 # Cách dùng: Render Dashboard → New → Blueprint → chọn repo này,
-# ở bước "specify a branch" CHỌN NHÁNH `api-engine`.
+# ở bước "specify a branch" CHỌN NHÁNH `main`.
 # Render sẽ tạo Web Service theo cấu hình dưới đây.
 
 services:
@@ -10,7 +10,7 @@ services:
     name: vuonpho
     runtime: node
     plan: free
-    branch: api-engine
+    branch: main
     # Dependencies và code backend nằm trong thư mục server/
     rootDir: server
     buildCommand: npm install

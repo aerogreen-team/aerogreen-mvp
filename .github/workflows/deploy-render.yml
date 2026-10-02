@@ -1,4 +1,4 @@
-# Tự động deploy lên Render mỗi khi push nhánh `api-engine`.
+# Tự động deploy lên Render mỗi khi push nhánh `main`.
 #
 # Vì sao cần file này?
 #   Cách C (Public Git Repository) không hỗ trợ auto-deploy của Render.
@@ -18,7 +18,7 @@ name: Deploy lên Render
 
 on:
   push:
-    branches: [api-engine]
+    branches: [main]
   # Cho phép bấm chạy tay từ tab Actions
   workflow_dispatch:
 
