@@ -1,5 +1,5 @@
 /* =========================================================
-   AeroGreen Hub — Interactions
+   VƯỜN PHỐ — Interactions
    ========================================================= */
 (function () {
   "use strict";
@@ -141,7 +141,7 @@
 
     const ok = $("#success");
     if (ok) {
-      ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Đã ghi nhận! AeroGreen Hub sẽ liên hệ tư vấn trong vòng 24 giờ.</span>';
+      ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Đã ghi nhận! VƯỜN PHỐ sẽ liên hệ tư vấn trong vòng 24 giờ.</span>';
       ok.classList.add("show");
     }
     toast("Gửi thông tin thành công!");
@@ -174,7 +174,7 @@
       "<h3>Gợi ý phù hợp cho bạn: " + product + "</h3>" +
       '<p class="rec-price">Giá: Liên hệ báo giá — tư vấn miễn phí</p>' +
       "<p><b>Vì sao phù hợp:</b> " + reason + "</p>" +
-      "<p><b>Vai trò của AeroGreen Hub:</b> Tư vấn trung lập và kết nối bạn với giải pháp khí canh phù hợp nhất.</p>" +
+      "<p><b>Vai trò của VƯỜN PHỐ:</b> Tư vấn trung lập và kết nối bạn với giải pháp khí canh phù hợp nhất.</p>" +
       "<button class=\"btn\" type=\"button\" onclick=\"chooseProduct('" + product + "')\">Đăng ký tư vấn gói này" +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>';
     result.classList.add("show");

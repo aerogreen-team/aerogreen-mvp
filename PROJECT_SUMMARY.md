@@ -1,4 +1,4 @@
-# 🌿 AeroGreen Hub — Tổng kết dự án (CP2 → CP3)
+# 🌿 VƯỜN PHỐ — Tổng kết dự án (CP2 → CP3)
 
 > **Giải pháp khí canh toàn diện: Tư vấn — So sánh — Lắp đặt — Bảo trì**
 
@@ -197,4 +197,4 @@ http://localhost:3000/admin
 
 ---
 
-*Tạo ngày: 2026-06-28 — EXE101 - AeroGreen Hub*
+*Tạo ngày: 2026-06-28 — EXE101 - VƯỜN PHỐ*

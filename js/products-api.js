@@ -1,5 +1,5 @@
 /**
- * AeroGreen Hub — Products dynamic loader
+ * VƯỜN PHỐ — Products dynamic loader
  * Tự động thay thế sản phẩm tĩnh bằng dữ liệu từ API nếu backend đang chạy.
  */
 

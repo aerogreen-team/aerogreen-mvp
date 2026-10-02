@@ -41,7 +41,7 @@ app.use("/api/quotations", authMiddleware, quotationRoutes);
 // API root — welcome message
 app.get("/api", (req, res) => {
   res.json({
-    name: "AeroGreen Hub API",
+    name: "VƯỜN PHỐ API",
     version: "1.0.0",
     status: "running",
     endpoints: {

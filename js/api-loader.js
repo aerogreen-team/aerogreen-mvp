@@ -1,5 +1,5 @@
 /**
- * AeroGreen Hub — API Loader
+ * VƯỜN PHỐ — API Loader
  * Tự động tải dữ liệu từ backend nếu server đang chạy,
  * fallback về dữ liệu tĩnh nếu không kết nối được.
  *
