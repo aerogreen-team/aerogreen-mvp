@@ -12,7 +12,7 @@
 | | |
 |---|---|
 | **Website (đang chạy)** | **https://vuonpho.onrender.com** |
-| **Trang quản trị** | https://vuonpho.onrender.com/login — `admin` / `admin123` *(đổi ngay)* |
+| **Trang quản trị** | https://vuonpho.onrender.com/login — tài khoản `admin` *(mật khẩu mặc định `admin123` đã được đổi; quên thì chạy `node admin-reset-password.js`)* |
 | **Database** | Turso `vuonpho` — region `aws-ap-northeast-1` (Tokyo) |
 | **Tên miền riêng** | *(cập nhật sau khi gắn tên miền .me từ GitHub Student Pack)* |
 | **Tài liệu** | `EXE201/User_Manual_VuonPho.md` · `EXE201/User_Manual_Video_Script_NAM.md` · `../OC1_OC2_Readiness_Plan.md` |
@@ -99,6 +99,28 @@ Mở http://localhost:3000
 | `http://localhost:3000/admin` | Dashboard quản trị |
 
 **Tài khoản quản trị mặc định:** `admin` / `admin123` → **hãy đổi ngay khi deploy thật.**
+
+**Đổi mật khẩu:**
+
+```bash
+cd server
+node admin-set-password.js <mật-khẩu-mới>       # đổi qua API (cần biết mật khẩu cũ)
+node admin-set-password.js <mật-khẩu-mới> local # đổi trên máy, không đụng production
+```
+
+**Quên mật khẩu?** Hash bcrypt là một chiều nên **không thể khôi phục** mật khẩu cũ —
+chỉ có thể ghi đè bằng mật khẩu mới bằng `admin-reset-password.js` (không cần mật khẩu cũ):
+
+```bash
+cd server
+node admin-reset-password.js             # hỏi mật khẩu mới, không hiện ký tự
+node admin-reset-password.js <tài-khoản> # tài khoản khác (mặc định: admin)
+node admin-reset-password.js --dry-run   # chỉ kiểm tra, KHÔNG ghi gì
+```
+
+Script ghi trực tiếp vào database mà `server/.env` chỉ tới. Bản deploy trên Render và máy local
+**dùng chung một database Turso**, nên đặt lại ở máy là đăng nhập được ngay trên bản deploy —
+không cần deploy lại. (Đăng nhập vẫn không cần xoá token cũ: token JWT sống tối đa 24 giờ.)
 
 ### Chạy bằng Turso (giống production)
 
@@ -231,6 +253,7 @@ cd server
 npm run smoke https://<ten-service>.onrender.com   # 14 kiểm tra trên bản deploy
 npm run db:info                                    # xem dữ liệu trên Turso
 npm run db:clean                                   # xoá dữ liệu test
+npm run reset-password                             # quên mật khẩu quản trị → đặt lại
 ```
 
 ⚠️ **Free tier ngủ sau ~15 phút** không có truy cập; lần truy cập đầu chậm ~30–60 giây.
@@ -305,6 +328,7 @@ Nguồn kênh được ghi nhận tự động từ tham số UTM trên link:
 | `SQLITE_...` / lỗi kết nối DB | Sai `TURSO_DATABASE_URL` hoặc token hết hạn | Kiểm tra bằng `npm run db:info` |
 | `process.loadEnvFile is not a function` | Node cũ hơn 20.12 | Nâng Node lên 20.12+ (đã khai báo trong `engines`) |
 | Trang tài khoản tự chuyển về Đăng nhập | Phiên hết hạn (30 ngày) | Đăng nhập lại |
+| Quên mật khẩu quản trị (cả trên bản deploy) | Hash bcrypt một chiều, không khôi phục được | `cd server && node admin-reset-password.js` (dùng chung database Turso nên có hiệu lực ngay trên bản deploy) |
 | Bản deploy mất dữ liệu sau khi restart | Đang dùng file SQLite trên hosting | Bắt buộc dùng Turso ở production |
 
 ---

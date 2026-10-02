@@ -1,7 +1,7 @@
 {
   "name": "aerogreen-hub-server",
   "version": "1.0.0",
-  "description": "Backend API cho VƯỜN PHỐ (AeroGreen Hub) MVP — Express + Turso/libSQL",
+  "description": "Backend API cho VƯỜN PHỐ MVP — Express + Turso/libSQL",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,6 +12,7 @@
     "db:clean": "node clear-test-data.js",
     "check-secret": "node check-secret.js",
     "set-password": "node admin-set-password.js",
+    "reset-password": "node admin-reset-password.js",
     "verify": "node verify-live.js"
   },
   "engines": {
