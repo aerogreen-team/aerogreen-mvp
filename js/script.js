@@ -97,8 +97,16 @@
   }
 
   /* ---------- Product carry-over ---------- */
+  // Thông số khách chọn trong "Trợ lý chọn gói" — chỉ có giá trị khi khách
+  // thật sự bấm "Gợi ý gói cho tôi" ở trang này (xem showAdvice bên dưới)
+  let advisorParams = null;
+
   window.chooseProduct = function (productName) {
-    try { localStorage.setItem("selectedProduct", productName); } catch (e) {}
+    try {
+      localStorage.setItem("selectedProduct", productName);
+      if (advisorParams) localStorage.setItem("selectedParams", JSON.stringify(advisorParams));
+      else localStorage.removeItem("selectedParams");
+    } catch (e) {}
     window.location.href = "contact.html";
   };
 
@@ -157,14 +165,27 @@
     toast("Gửi thông tin thành công!");
     ["#name", "#phone", "#email", "#areaInstall", "#budgetContact", "#note"].forEach((s) => { const el = $(s); if (el) el.value = ""; });
     try { localStorage.removeItem("selectedProduct"); } catch (e) {}
+    try { localStorage.removeItem("selectedParams"); } catch (e) {}
   };
 
   /* ---------- Kit advisor ---------- */
   window.showAdvice = function () {
     const val = (s) => { const el = $(s); return el ? el.value : ""; };
+    // Lấy nhãn hiển thị của <select> (vd "Vừa (5–15m²)") để điền vào ô văn bản
+    const label = (s) => {
+      const el = $(s);
+      return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text.trim() : "";
+    };
     const houseType = val("#houseType");
     const area = val("#area");
     const budget = val("#budget");
+
+    // Ghi nhớ thông số để mang sang trang Liên hệ khi khách bấm đăng ký tư vấn
+    advisorParams = {
+      house_type: houseType,
+      area: label("#area"),
+      budget: label("#budget"),
+    };
 
     let product, reason;
     if (houseType === "chungcu" || area === "small" || budget === "low") {
@@ -191,13 +212,30 @@
     result.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
-  /* ---------- Prefill note from chosen product ---------- */
+  /* ---------- Prefill note + thông số từ trợ lý chọn gói ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     let selected = null;
-    try { selected = localStorage.getItem("selectedProduct"); } catch (e) {}
+    let params = null;
+    try {
+      selected = localStorage.getItem("selectedProduct");
+      params = JSON.parse(localStorage.getItem("selectedParams") || "null");
+    } catch (e) {}
+
     const note = $("#note");
     if (selected && note && !note.value) {
       note.value = "Tôi muốn được tư vấn gói " + selected + ".";
+    }
+
+    // Thông số khách vừa chọn ở trợ lý được ưu tiên hơn hồ sơ đã lưu,
+    // vì đây là nhu cầu khách vừa xác nhận.
+    if (params) {
+      const fill = (sel, value) => {
+        const el = $(sel);
+        if (el && value) el.value = value;
+      };
+      fill("#houseType", params.house_type);
+      fill("#areaInstall", params.area);
+      fill("#budgetContact", params.budget);
     }
   });
 })();
