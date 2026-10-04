@@ -2,9 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { getDatabase } = require("../database");
 const { authMiddleware } = require("../middleware/auth");
+const { optionalCustomerAuth } = require("../middleware/customer-auth");
 
 // POST /api/contact — Create a new contact
-router.post("/", async (req, res) => {
+// Khách vãng lai: customer_id = NULL (sẽ được gắn vào tài khoản khi họ đăng ký
+//                bằng đúng email này — xem routes/customers.js).
+// Khách đã đăng nhập: tự động gắn customer_id vào yêu cầu.
+router.post("/", optionalCustomerAuth, async (req, res) => {
   try {
     const { name, phone, email, house_type, area, budget, goal, note, source } = req.body;
 
@@ -15,30 +19,44 @@ router.post("/", async (req, res) => {
     }
 
     const db = getDatabase();
+
+    // Nếu người gửi đang đăng nhập, gắn yêu cầu vào tài khoản của họ
+    let customer = null;
+    if (req.customer && req.customer.id) {
+      customer = await db.get("SELECT * FROM customers WHERE id = ?", [req.customer.id]);
+    }
+    const customerId = customer ? customer.id : null;
+
+    // Chuẩn hoá email để việc gắn lại yêu cầu theo email hoạt động chính xác
+    const normalizedEmail = email
+      ? email.trim().toLowerCase()
+      : customer
+      ? customer.email
+      : "";
+
     const result = await db.run(
-      `INSERT INTO contacts (name, phone, email, house_type, area, budget, goal, note, source)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO contacts (name, phone, email, house_type, area, budget, goal, note, source, customer_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name.trim(),
         phone.trim(),
-        email ? email.trim() : "",
+        normalizedEmail,
         house_type || "",
         area || "",
         budget || "",
         goal || "",
         note || "",
         source || "",
+        customerId,
       ]
     );
 
     // Ghi nhận event phục vụ đo lường OC2 (không làm hỏng request)
     try {
-      await db.run("INSERT INTO events (type, label, path, source) VALUES (?, ?, ?, ?)", [
-        "request",
-        "contact_page",
-        "/contact.html",
-        source || "",
-      ]);
+      await db.run(
+        "INSERT INTO events (type, label, path, source, customer_id) VALUES (?, ?, ?, ?, ?)",
+        ["request", "contact_page", "/contact.html", source || "", customerId]
+      );
     } catch (e) {
       console.error("track request event failed:", e.message);
     }
@@ -47,6 +65,7 @@ router.post("/", async (req, res) => {
       success: true,
       message: "Đã ghi nhận thông tin. VƯỜN PHỐ sẽ liên hệ tư vấn.",
       id: result.lastInsertRowid,
+      linked_to_account: !!customerId,
     });
   } catch (error) {
     console.error("POST /api/contact error:", error);

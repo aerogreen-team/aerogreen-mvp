@@ -37,6 +37,34 @@ function publicCustomer(c) {
   };
 }
 
+/**
+ * Gắn các yêu cầu tư vấn "mồ côi" (gửi khi chưa có tài khoản → customer_id = NULL)
+ * vào tài khoản khách hàng dựa trên EMAIL trùng khớp.
+ *
+ * Chạy mỗi lần đăng ký và đăng nhập nên:
+ *   - khách gửi form liên hệ trước, đăng ký sau  → thấy lại yêu cầu cũ
+ *   - tài khoản đã tạo trước bản cập nhật này    → tự "vá" dữ liệu cũ khi đăng nhập
+ *
+ * @returns {Promise<number>} số yêu cầu vừa được liên kết
+ */
+async function claimGuestRequests(db, customer) {
+  if (!customer || !customer.email) return 0;
+
+  const email = String(customer.email).trim().toLowerCase();
+  if (!email) return 0;
+
+  const result = await db.run(
+    `UPDATE contacts SET customer_id = ?
+      WHERE customer_id IS NULL
+        AND email IS NOT NULL
+        AND trim(email) <> ''
+        AND lower(trim(email)) = ?`,
+    [customer.id, email]
+  );
+
+  return result.changes || 0;
+}
+
 // POST /api/customers/register — Đăng ký tài khoản khách hàng
 router.post("/register", async (req, res) => {
   try {
@@ -83,12 +111,20 @@ router.post("/register", async (req, res) => {
     const customer = await db.get("SELECT * FROM customers WHERE id = ?", [
       result.lastInsertRowid,
     ]);
+
+    // Gắn lại các yêu cầu tư vấn đã gửi trước đó bằng cùng email
+    const linkedRequests = await claimGuestRequests(db, customer);
+
     await track("register", customer.id, source);
 
     res.status(201).json({
       success: true,
       message: "Đăng ký thành công.",
-      data: { token: generateCustomerToken(customer), user: publicCustomer(customer) },
+      data: {
+        token: generateCustomerToken(customer),
+        user: publicCustomer(customer),
+        linked_requests: linkedRequests,
+      },
     });
   } catch (error) {
     console.error("POST /api/customers/register error:", error);
@@ -114,12 +150,19 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Email hoặc mật khẩu không đúng." });
     }
 
+    // Vá dữ liệu cũ: gắn các yêu cầu mồ côi trùng email (nếu có)
+    const linkedRequests = await claimGuestRequests(db, customer);
+
     await track("login", customer.id, "");
 
     res.json({
       success: true,
       message: "Đăng nhập thành công.",
-      data: { token: generateCustomerToken(customer), user: publicCustomer(customer) },
+      data: {
+        token: generateCustomerToken(customer),
+        user: publicCustomer(customer),
+        linked_requests: linkedRequests,
+      },
     });
   } catch (error) {
     console.error("POST /api/customers/login error:", error);
@@ -189,9 +232,18 @@ router.get("/me/requests", customerAuth, async (req, res) => {
   try {
     const db = getDatabase();
 
+    // Lấy email hiện tại của khách từ DB (JWT có thể cũ)
+    const me = await db.get("SELECT email FROM customers WHERE id = ?", [req.customer.id]);
+    const email = me && me.email ? String(me.email).trim().toLowerCase() : "";
+
+    // Lấy yêu cầu đã gắn tài khoản + yêu cầu mồ côi trùng email
+    // (phòng trường hợp việc gắn lại ở bước đăng ký/đăng nhập chưa chạy)
     const requests = await db.all(
-      "SELECT * FROM contacts WHERE customer_id = ? ORDER BY created_at DESC",
-      [req.customer.id]
+      `SELECT * FROM contacts
+        WHERE customer_id = ?
+           OR (customer_id IS NULL AND ? <> '' AND lower(trim(email)) = ?)
+        ORDER BY created_at DESC`,
+      [req.customer.id, email, email]
     );
 
     const data = [];

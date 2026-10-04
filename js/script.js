@@ -139,9 +139,19 @@
       console.warn("Không gọi được API, dùng fallback local:", err.message);
     }
 
+    // Khách đã đăng nhập: yêu cầu được lưu thẳng vào "Yêu cầu tư vấn của tôi"
+    const loggedIn =
+      typeof window.VuonPho !== "undefined" &&
+      window.VuonPho.isLoggedIn &&
+      window.VuonPho.isLoggedIn();
+
     const ok = $("#success");
     if (ok) {
-      ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Đã ghi nhận! VƯỜN PHỐ sẽ liên hệ tư vấn trong vòng 24 giờ.</span>';
+      const msg =
+        apiSuccess && loggedIn
+          ? 'Đã lưu vào <a href="account.html" style="color:inherit;text-decoration:underline">Yêu cầu tư vấn của tôi</a> — VƯỜN PHỐ sẽ liên hệ trong vòng 24 giờ.'
+          : "Đã ghi nhận! VƯỜN PHỐ sẽ liên hệ tư vấn trong vòng 24 giờ.";
+      ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>' + msg + "</span>";
       ok.classList.add("show");
     }
     toast("Gửi thông tin thành công!");

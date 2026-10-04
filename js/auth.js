@@ -9,6 +9,7 @@
   var USER_KEY = "vuonpho_user";
   var VISITOR_KEY = "vuonpho_visitor";
   var UTM_KEY = "vuonpho_utm";
+  var LINKED_KEY = "vuonpho_linked_requests";
 
   /* ---------- API base (nguồn duy nhất) ----------
      - Deploy: app Express phục vụ luôn frontend ⇒ dùng same-origin "/api"
@@ -94,6 +95,14 @@
   function saveSession(data) {
     store.set(TOKEN_KEY, data.token);
     store.set(USER_KEY, JSON.stringify(data.user || {}));
+  }
+
+  /** Ghi nhớ số yêu cầu khách vãng lai vừa được gắn vào tài khoản (báo ở trang Tài khoản) */
+  function rememberLinkedRequests(data) {
+    var n = data && Number(data.linked_requests);
+    if (n > 0) {
+      try { sessionStorage.setItem(LINKED_KEY, String(n)); } catch (e) {}
+    }
   }
 
   function logout(redirect) {
@@ -244,6 +253,7 @@
             return;
           }
           saveSession(r.json.data);
+          rememberLinkedRequests(r.json.data);
           var next = new URLSearchParams(location.search).get("next");
           location.href = next || "account.html";
         })
@@ -301,6 +311,7 @@
             return;
           }
           saveSession(r.json.data);
+          rememberLinkedRequests(r.json.data);
           track("register", "account_page");
           location.href = "account.html";
         })
@@ -396,6 +407,15 @@
     if (logoutBtn) logoutBtn.addEventListener("click", function () { logout(true); });
 
     track("account_view", "account_page");
+
+    // Nếu vừa đăng ký/đăng nhập và có yêu cầu cũ được liên kết → báo cho khách
+    try {
+      var linked = sessionStorage.getItem(LINKED_KEY);
+      if (linked) {
+        sessionStorage.removeItem(LINKED_KEY);
+        notify("Đã liên kết " + linked + " yêu cầu tư vấn bạn gửi trước đó");
+      }
+    } catch (e) {}
 
     api("/customers/me/requests").then(function (r) {
       var listEl = document.getElementById("reqList");
