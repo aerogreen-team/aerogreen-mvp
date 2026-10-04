@@ -338,7 +338,7 @@ Nguồn kênh được ghi nhận tự động từ tham số UTM trên link:
 | Thành viên | MSSV | Vai trò |
 |---|---|---|
 | Dương Thị Trinh Anh | HS163275 | Khối Kinh doanh/Marketing — nghiên cứu thị trường, mô hình kinh doanh |
-| Phạm Văn Kha | SE181984 | Frontend & Kế hoạch tài chính |
+| Phạm VƯỜN PHỐ | SE181984 | Frontend & Kế hoạch tài chính |
 | Trần Quốc Nam | SE194108 | Backend & Database — kiêm User manual (video) |
 | Nguyễn Tạ Khánh Duy | SE181945 | Frontend & UI/UX |
 | Lê Trọng Nhân | SS180854 | Truyền thông, thương hiệu, nội dung |
