@@ -307,6 +307,37 @@
       color: #475569;
     }
 
+    /* Link về trang chủ */
+    .back-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid rgba(21, 92, 46, 0.14);
+      color: #155c2e;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s;
+    }
+
+    .back-home:hover {
+      background: #f0fdf4;
+      border-color: rgba(21, 92, 46, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(21, 92, 46, 0.12);
+    }
+
+    .back-home svg {
+      width: 16px;
+      height: 16px;
+    }
+
     /* Responsive */
     @media (max-width: 480px) {
       .login-wrapper {
@@ -390,6 +421,11 @@
         </button>
       </form>
     </div>
+
+    <a class="back-home" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Về trang chủ
+    </a>
 
     <p class="login-hint">
       Dành cho quản trị viên. Quên mật khẩu? Liên hệ quản trị hệ thống.
