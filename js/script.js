@@ -10,14 +10,14 @@
 
   function setupSiteNavigation() {
     const page = window.location.pathname.split("/").pop() || "index.html";
-    const solutionPages = ["services.html", "products.html", "quotation.html", "materials.html"];
+    const solutionPages = ["services.html", "products.html"];
     const explorePages = ["customers.html", "guide.html", "news.html"];
     const link = (href, label) => `<a href="${href}"${page === href ? ' class="active"' : ""}>${label}</a>`;
     const desktop = $(".nav");
     const mobile = $(".mobile-nav");
 
     if (desktop) {
-      desktop.innerHTML = `${link("index.html", "Trang chủ")}${link("about.html", "Giới thiệu")}<div class="nav-group${solutionPages.includes(page) ? " active" : ""}"><button class="nav-group-toggle" type="button" aria-expanded="false">Giải pháp <span aria-hidden="true">⌄</span></button><div class="nav-dropdown">${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}</div></div><div class="nav-group${explorePages.includes(page) ? " active" : ""}"><button class="nav-group-toggle" type="button" aria-expanded="false">Khám phá <span aria-hidden="true">⌄</span></button><div class="nav-dropdown">${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}</div></div>${link("contact.html", "Liên hệ")}`;
+      desktop.innerHTML = `${link("index.html", "Trang chủ")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}${link("contact.html", "Liên hệ")}<div class="nav-group nav-more${solutionPages.includes(page) || page === "about.html" ? " active" : ""}"><button class="nav-group-toggle" type="button" aria-expanded="false">Thêm <span aria-hidden="true">⌄</span></button><div class="nav-dropdown">${link("about.html", "Giới thiệu")}${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}</div></div>`;
       const groups = $$(".nav-group", desktop);
       groups.forEach((group) => {
         const toggle = $(".nav-group-toggle", group);
@@ -43,7 +43,7 @@
     }
 
     if (mobile) {
-      mobile.innerHTML = `${link("index.html", "Trang chủ")}${link("about.html", "Giới thiệu")}<details class="mobile-nav-group"${solutionPages.includes(page) ? " open" : ""}><summary>Giải pháp</summary>${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}</details><details class="mobile-nav-group"${explorePages.includes(page) ? " open" : ""}><summary>Khám phá</summary>${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}</details>${link("contact.html", "Liên hệ")}<a href="contact.html" class="btn">Tư vấn miễn phí</a>`;
+      mobile.innerHTML = `${link("index.html", "Trang chủ")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}${link("contact.html", "Liên hệ")}<details class="mobile-nav-group"${solutionPages.includes(page) || page === "about.html" ? " open" : ""}><summary>Thêm</summary>${link("about.html", "Giới thiệu")}${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}</details><a href="contact.html" class="btn">Tư vấn miễn phí</a>`;
     }
   }
 

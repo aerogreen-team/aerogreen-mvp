@@ -11,164 +11,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .quote-benefit-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .quote-benefit {
-      padding: 28px 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--bg);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .quote-benefit .problem-icon { margin-bottom: 18px; }
-    .quote-benefit h3 { margin-bottom: 8px; font-size: 19px; }
-    .quote-benefit p { color: var(--slate-500); font-size: 14px; }
-
-    .quote-plans .product-kit { height: 100%; }
-    .quote-plans .product-foot { align-items: flex-end; }
-    .quote-plans .product-price .pv { color: var(--green-800); font-size: 18px; }
-    .quote-note {
-      margin-top: 28px;
-      padding: 16px 20px;
-      border-left: 4px solid var(--green-500);
-      background: var(--green-50);
-      color: var(--slate-700);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    }
-
-    .quote-table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      background: var(--bg);
-    }
-
-    .quote-table {
-      width: 100%;
-      min-width: 720px;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    .quote-table th,
-    .quote-table td {
-      padding: 17px 20px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-    }
-
-    .quote-table th {
-      color: #fff;
-      background: var(--green-800);
-      font-size: 14px;
-    }
-
-    .quote-table th:not(:first-child),
-    .quote-table td:not(:first-child) { text-align: center; }
-    .quote-table tbody tr:last-child td { border-bottom: 0; }
-    .quote-table tbody tr:nth-child(even) { background: var(--green-50); }
-    .quote-table td:first-child { font-weight: 700; color: var(--slate-700); }
-    .quote-table td:not(:first-child) { color: var(--slate-500); }
-    .quote-table .available { color: var(--green-700); font-weight: 800; }
-
-    .quote-process {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      counter-reset: process;
-    }
-
-    .quote-step {
-      position: relative;
-      padding: 26px 22px 24px;
-      border-top: 3px solid var(--green-500);
-      background: var(--bg);
-      box-shadow: var(--shadow-sm);
-      border-radius: 0 0 var(--radius) var(--radius);
-    }
-
-    .quote-step::before {
-      counter-increment: process;
-      content: "0" counter(process);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      margin-bottom: 18px;
-      border-radius: 50%;
-      color: var(--green-900);
-      background: var(--lime);
-      font-weight: 800;
-    }
-
-    .quote-step h3 { margin-bottom: 8px; font-size: 18px; }
+    .quote-layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 64px; align-items: start; }
+    .quote-article { max-width: 820px; }
+    .quote-article > p, .quote-article li { color: var(--slate-700); }
+    .quote-article > p { font-size: 17px; margin-bottom: 18px; }
+    .quote-article h2 { margin: 52px 0 16px; font-size: clamp(26px, 3vw, 36px); line-height: 1.2; }
+    .quote-article h3 { font-size: 24px; line-height: 1.25; }
+    .quote-article a:not(.btn) { color: var(--green-700); font-weight: 700; }
+    .quote-lead { font-size: 20px !important; color: var(--green-900) !important; font-weight: 600; }
+    .quote-note { margin: 24px 0; padding: 16px 20px; border-left: 4px solid var(--green-500); background: var(--green-50); color: var(--slate-700); }
+    .quote-index { position: sticky; top: 108px; padding: 22px; border: 1px solid var(--line); background: var(--green-50); }
+    .quote-index h2 { margin: 0 0 12px; font-size: 17px; }
+    .quote-index ul { display: grid; gap: 8px; list-style: none; font-size: 14px; }
+    .quote-index a { color: var(--slate-700); }
+    .quote-index a:hover { color: var(--green-700); }
+    .quote-category { margin-top: 42px; padding-top: 14px; border-top: 3px solid var(--green-300); }
+    .quote-category > p { color: var(--slate-500); }
+    .quote-kit { display: grid; grid-template-columns: minmax(260px, 42%) 1fr; margin-top: 28px; border: 1px solid var(--line); background: #fff; box-shadow: var(--shadow-sm); }
+    .quote-kit img { width: 100%; height: 100%; min-height: 300px; object-fit: cover; }
+    .quote-kit-body { padding: 28px 30px; }
+    .quote-kit-body h3 { margin-bottom: 10px; color: var(--green-900); }
+    .quote-kit-body p { color: var(--slate-500); }
+    .quote-specs { display: grid; gap: 8px; margin: 20px 0; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .quote-spec { display: flex; justify-content: space-between; gap: 18px; font-size: 14px; }
+    .quote-spec span { color: var(--slate-500); }
+    .quote-spec b { color: var(--slate-700); text-align: right; }
+    .quote-price { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .quote-price small { display: block; color: var(--slate-500); }
+    .quote-price strong { display: block; color: var(--green-800); font-size: 18px; }
+    .quote-process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: process; }
+    .quote-step { padding: 22px 18px; border-top: 3px solid var(--green-500); background: var(--green-50); }
+    .quote-step::before { counter-increment: process; content: "0" counter(process); display: block; margin-bottom: 12px; color: var(--green-700); font-weight: 800; }
+    .quote-step h3 { margin-bottom: 7px; font-size: 17px; }
     .quote-step p { color: var(--slate-500); font-size: 14px; }
-
-    .quote-support {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .quote-support-card {
-      padding: 30px;
-      border-radius: var(--radius);
-      background: var(--green-900);
-      color: #fff;
-    }
-
-    .quote-support-card.light {
-      background: var(--green-50);
-      color: var(--ink);
-      border: 1px solid var(--line);
-    }
-
-    .quote-support-card h3 { margin-bottom: 12px; font-size: 22px; }
-    .quote-support-card p { color: inherit; opacity: .82; }
-    .quote-support-card ul { display: grid; gap: 12px; margin-top: 18px; list-style: none; }
-    .quote-support-card li { display: flex; gap: 10px; align-items: flex-start; }
-    .quote-support-card li::before { content: "✓"; color: var(--lime); font-weight: 800; }
-    .quote-support-card.light li::before { color: var(--green-700); }
-
+    .quote-support { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .quote-support h3 { margin-bottom: 12px; font-size: 22px; }
+    .quote-support ul { display: grid; gap: 9px; margin-top: 16px; padding-left: 20px; color: var(--slate-700); }
     .quote-faq { max-width: 880px; margin: 0 auto; }
     .quote-faq details { border-bottom: 1px solid var(--line); }
-    .quote-faq summary {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 20px 0;
-      cursor: pointer;
-      list-style: none;
-      font-weight: 700;
-      color: var(--slate-700);
-    }
-
+    .quote-faq summary { display: flex; justify-content: space-between; gap: 20px; padding: 18px 0; cursor: pointer; list-style: none; font-weight: 700; color: var(--slate-700); }
     .quote-faq summary::-webkit-details-marker { display: none; }
     .quote-faq summary::after { content: "+"; color: var(--green-700); font-size: 22px; line-height: 1; }
     .quote-faq details[open] summary::after { content: "−"; }
-    .quote-faq details p { padding: 0 42px 20px 0; color: var(--slate-500); }
-
+    .quote-faq details p { padding: 0 42px 18px 0; color: var(--slate-500); }
     .quote-cta { text-align: center; }
     .quote-cta p { max-width: 620px; margin: 12px auto 24px; color: rgba(255,255,255,.82); }
     .quote-cta .hero-actions { justify-content: center; }
-
-    @media (max-width: 980px) {
-      .quote-benefit-grid, .quote-process { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 680px) {
-      .quote-benefit-grid, .quote-process, .quote-support { grid-template-columns: 1fr; }
-      .quote-benefit, .quote-support-card { padding: 24px; }
-      .quote-table th, .quote-table td { padding: 14px 12px; }
-    }
+    @media (max-width: 980px) { .quote-layout { grid-template-columns: 1fr; gap: 24px; } .quote-index { position: static; order: -1; } .quote-process { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 680px) { .quote-kit, .quote-support { grid-template-columns: 1fr; } .quote-kit img { height: 240px; min-height: 0; } .quote-kit-body { padding: 22px; } .quote-price { align-items: flex-start; flex-direction: column; } .quote-process { grid-template-columns: 1fr; } .quote-article > p { font-size: 16px; } }
   </style>
 </head>
 <body>
@@ -227,188 +117,48 @@
 
   <main>
     <section class="section">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Giải pháp trọn gói</span>
-          <h2>Bắt đầu khu vườn xanh theo cách đơn giản hơn</h2>
-          <p>VƯỜN PHỐ đồng hành từ bước chọn mô hình, tư vấn không gian đến lắp đặt và hướng dẫn sử dụng.</p>
-        </div>
-        <div class="quote-benefit-grid">
-          <article class="quote-benefit reveal d1">
-            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></div>
-            <h3>Chọn đúng quy mô</h3>
-            <p>Gợi ý theo diện tích, không gian và mục tiêu sử dụng của gia đình.</p>
-          </article>
-          <article class="quote-benefit reveal d2">
-            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
-            <h3>Tối ưu không gian</h3>
-            <p>Từ ban công căn hộ đến sân thượng, cấu hình được chọn theo thực tế lắp đặt.</p>
-          </article>
-          <article class="quote-benefit reveal d3">
-            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <h3>Minh bạch thông tin</h3>
-            <p>Thông số được trình bày rõ ràng; giá trọn gói sẽ xác nhận sau khi khảo sát nhu cầu.</p>
-          </article>
-          <article class="quote-benefit reveal d4">
-            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/><path d="M21 12a9 9 0 1 1-3-6.7"/></svg></div>
-            <h3>Đồng hành dài hạn</h3>
-            <p>Hỗ trợ tư vấn, lắp đặt và bảo trì theo phạm vi dịch vụ được xác nhận.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+      <div class="container quote-layout">
+        <article class="quote-article">
+          <span class="eyebrow">Tư vấn · Khảo sát · Lắp đặt</span>
+          <p class="quote-lead">VƯỜN PHỐ cung cấp giải pháp khí canh cho ban công, căn hộ, gia đình và sân thượng. Trang này giúp bạn hình dung các hệ mẫu đang có trước khi gửi thông tin để được tư vấn theo không gian thực tế.</p>
+          <p>Khí canh đưa dung dịch dinh dưỡng đến vùng rễ mà không cần đất. Cấu hình cuối cùng phụ thuộc vào vị trí đặt hệ, nhu cầu trồng và điều kiện lắp đặt, vì vậy giá trọn gói hiện được xác nhận sau khi tư vấn.</p>
+          <p class="quote-note"><strong>Thông tin báo giá:</strong> VƯỜN PHỐ chưa công bố giá chính thức cho các gói lắp đặt. Giá hiển thị tại đây là <strong>Liên hệ báo giá</strong>; không bao gồm con số ước đoán.</p>
 
-    <section class="section section-soft quote-plans">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Ba lựa chọn phổ biến</span>
-          <h2>Cấu hình khí canh tham khảo</h2>
-          <p>Thông số dưới đây được lấy từ dữ liệu sản phẩm hiện có của VƯỜN PHỐ.</p>
-        </div>
-        <div class="product-grid">
-          <article class="product-kit reveal d1">
-            <div class="product-media"><img src="images/tower.jpg" alt="Mini Kit khí canh"></div>
-            <div class="product-body">
-              <h3>Mini Kit</h3>
-              <p class="product-desc">Phù hợp căn hộ và ban công nhỏ, dành cho nhu cầu bắt đầu trồng rau tại nhà.</p>
-              <div class="product-specs">
-                <div class="row"><span>Số lỗ trồng</span><b>20 lỗ</b></div>
-                <div class="row"><span>Phù hợp</span><b>Ban công / Căn hộ nhỏ</b></div>
-                <div class="row"><span>Kích thước</span><b>40 × 40 × 120 cm</b></div>
-              </div>
-              <div class="product-foot">
-                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
-                <a class="btn" href="contact.html">Nhận tư vấn</a>
-              </div>
-            </div>
-          </article>
-          <article class="product-kit featured reveal d2">
-            <div class="product-media"><img src="images/Family Kit.jpg" alt="Family Kit khí canh"><span class="ribbon">Bán chạy nhất</span></div>
-            <div class="product-body">
-              <h3>Family Kit</h3>
-              <p class="product-desc">Mẫu phù hợp cho gia đình muốn có sản lượng rau sạch ổn định mỗi ngày.</p>
-              <div class="product-specs">
-                <div class="row"><span>Số lỗ trồng</span><b>40 lỗ</b></div>
-                <div class="row"><span>Phù hợp</span><b>Gia đình 4–6 người</b></div>
-                <div class="row"><span>Kích thước</span><b>60 × 60 × 160 cm</b></div>
-              </div>
-              <div class="product-foot">
-                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
-                <a class="btn" href="contact.html">Nhận tư vấn</a>
-              </div>
-            </div>
-          </article>
-          <article class="product-kit reveal d3">
-            <div class="product-media"><img src="images/Rooftop Kit.jpg" alt="Rooftop Kit khí canh"></div>
-            <div class="product-body">
-              <h3>Rooftop Kit</h3>
-              <p class="product-desc">Dành cho sân thượng hoặc không gian lớn cần năng suất trồng cao hơn.</p>
-              <div class="product-specs">
-                <div class="row"><span>Số lỗ trồng</span><b>80 lỗ</b></div>
-                <div class="row"><span>Phù hợp</span><b>Sân thượng / Diện tích lớn</b></div>
-                <div class="row"><span>Kích thước</span><b>100 × 100 × 180 cm</b></div>
-              </div>
-              <div class="product-foot">
-                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
-                <a class="btn" href="contact.html">Nhận tư vấn</a>
-              </div>
-            </div>
-          </article>
-        </div>
-        <p class="quote-note"><strong>Lưu ý:</strong> Giá trọn gói, chi phí vận chuyển và phạm vi lắp đặt chưa được công bố cố định trong dữ liệu hiện tại. Vui lòng gửi thông tin để nhận tư vấn theo không gian thực tế.</p>
-      </div>
-    </section>
+          <h2 id="he-mau">Các hệ mẫu khí canh</h2>
+          <p>Ba lựa chọn dưới đây dùng cùng dữ liệu sản phẩm hiện có, gồm số lỗ trồng, kích thước và không gian phù hợp.</p>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">So sánh nhanh</span>
-          <h2>Chọn cấu hình phù hợp</h2>
-        </div>
-        <div class="quote-table-wrap reveal">
-          <table class="quote-table">
-            <thead>
-              <tr><th>Tiêu chí</th><th>Mini Kit</th><th>Family Kit</th><th>Rooftop Kit</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Số lỗ trồng</td><td>20 lỗ</td><td>40 lỗ</td><td>80 lỗ</td></tr>
-              <tr><td>Không gian phù hợp</td><td>Ban công / Căn hộ nhỏ</td><td>Gia đình 4–6 người</td><td>Sân thượng / Diện tích lớn</td></tr>
-              <tr><td>Kích thước</td><td>40 × 40 × 120 cm</td><td>60 × 60 × 160 cm</td><td>100 × 100 × 180 cm</td></tr>
-              <tr><td>Tư vấn lựa chọn</td><td class="available">Có</td><td class="available">Có</td><td class="available">Có</td></tr>
-              <tr><td>Giá trọn gói</td><td>Liên hệ báo giá</td><td>Liên hệ báo giá</td><td>Liên hệ báo giá</td></tr>
-              <tr><td>Bảo hành/bảo trì</td><td>Đang cập nhật</td><td>Đang cập nhật</td><td>Đang cập nhật</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+          <section class="quote-category" id="mini-kit">
+            <h3>Nhóm Mini Kit</h3>
+            <p>Giải pháp gọn cho ban công hoặc căn hộ nhỏ, phù hợp để bắt đầu trồng rau tại nhà.</p>
+            <article class="quote-kit reveal"><img src="images/tower.jpg" alt="Hệ Mini Kit khí canh cho ban công và căn hộ nhỏ" loading="lazy"><div class="quote-kit-body"><h3>Mini Kit</h3><p>Mô hình quy mô nhỏ cho không gian hạn chế, với cấu hình dễ hình dung và dễ trao đổi khi tư vấn.</p><div class="quote-specs"><div class="quote-spec"><span>Số lỗ trồng</span><b>20 lỗ</b></div><div class="quote-spec"><span>Không gian</span><b>Ban công / Căn hộ nhỏ</b></div><div class="quote-spec"><span>Kích thước</span><b>40 × 40 × 120 cm</b></div></div><div class="quote-price"><div><small>Giá trọn gói</small><strong>Liên hệ báo giá</strong></div><a class="btn" href="contact.html">Yêu cầu tư vấn</a></div></div></article>
+          </section>
 
-    <section class="section section-soft">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Quy trình đồng hành</span>
-          <h2>Từ nhu cầu đến khu vườn xanh</h2>
-        </div>
-        <div class="quote-process">
-          <article class="quote-step reveal d1"><h3>Gửi nhu cầu</h3><p>Chia sẻ loại không gian, diện tích và mục tiêu trồng rau.</p></article>
-          <article class="quote-step reveal d2"><h3>Tư vấn cấu hình</h3><p>VƯỜN PHỐ đề xuất mô hình phù hợp với điều kiện thực tế.</p></article>
-          <article class="quote-step reveal d3"><h3>Xác nhận báo giá</h3><p>Chi phí và phạm vi triển khai được trao đổi rõ ràng trước khi thực hiện.</p></article>
-          <article class="quote-step reveal d4"><h3>Lắp đặt &amp; hướng dẫn</h3><p>Đồng hành trong quá trình lắp đặt, vận hành và chăm sóc hệ thống.</p></article>
-        </div>
-      </div>
-    </section>
+          <section class="quote-category" id="family-kit">
+            <h3>Nhóm Family Kit</h3>
+            <p>Lựa chọn cho gia đình muốn bố trí một hệ khí canh ổn định trong không gian sinh hoạt.</p>
+            <article class="quote-kit reveal"><img src="images/Family Kit.jpg" alt="Hệ Family Kit khí canh cho gia đình" loading="lazy"><div class="quote-kit-body"><h3>Family Kit</h3><p>Cấu hình gia đình với nhiều vị trí trồng hơn, phù hợp trao đổi cho nhu cầu sử dụng của 4–6 người.</p><div class="quote-specs"><div class="quote-spec"><span>Số lỗ trồng</span><b>40 lỗ</b></div><div class="quote-spec"><span>Không gian</span><b>Gia đình 4–6 người</b></div><div class="quote-spec"><span>Kích thước</span><b>60 × 60 × 160 cm</b></div></div><div class="quote-price"><div><small>Giá trọn gói</small><strong>Liên hệ báo giá</strong></div><a class="btn" href="contact.html">Yêu cầu tư vấn</a></div></div></article>
+          </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="quote-support">
-          <article class="quote-support-card reveal">
-            <h3>Hỗ trợ sau tư vấn</h3>
-            <p>Các nội dung đã có trong hệ thống dịch vụ của VƯỜN PHỐ:</p>
-            <ul>
-              <li>Tư vấn mô hình theo nhu cầu</li>
-              <li>Hỗ trợ lắp đặt tận nơi theo phạm vi triển khai</li>
-              <li>Hướng dẫn sử dụng và chăm sóc hệ thống</li>
-              <li>Hỗ trợ bảo trì theo chính sách xác nhận khi báo giá</li>
-            </ul>
-          </article>
-          <article class="quote-support-card light reveal d1">
-            <h3>Thông tin cần xác nhận</h3>
-            <p>Một số chi tiết chưa có dữ liệu chính thức trên website hiện tại:</p>
-            <ul>
-              <li>Thời hạn và điều kiện bảo hành cụ thể</li>
-              <li>Phí vận chuyển ngoài khu vực TP.HCM</li>
-              <li>Chi phí nhân công theo từng địa điểm</li>
-              <li>Danh mục vật tư đi kèm từng gói</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
+          <section class="quote-category" id="rooftop-kit">
+            <h3>Nhóm Rooftop Kit</h3>
+            <p>Dành cho sân thượng hoặc diện tích lớn hơn, cần khảo sát vị trí và cách bố trí trước khi chốt.</p>
+            <article class="quote-kit reveal"><img src="images/Rooftop Kit.jpg" alt="Hệ Rooftop Kit khí canh cho sân thượng" loading="lazy"><div class="quote-kit-body"><h3>Rooftop Kit</h3><p>Cấu hình có nhiều vị trí trồng hơn cho nhu cầu xây dựng vườn rau đô thị trên sân thượng.</p><div class="quote-specs"><div class="quote-spec"><span>Số lỗ trồng</span><b>80 lỗ</b></div><div class="quote-spec"><span>Không gian</span><b>Sân thượng / Diện tích lớn</b></div><div class="quote-spec"><span>Kích thước</span><b>100 × 100 × 180 cm</b></div></div><div class="quote-price"><div><small>Giá trọn gói</small><strong>Liên hệ báo giá</strong></div><a class="btn" href="contact.html">Yêu cầu tư vấn</a></div></div></article>
+          </section>
 
-    <section class="section section-soft">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Giải đáp nhanh</span>
-          <h2>Câu hỏi thường gặp</h2>
-        </div>
-        <div class="quote-faq reveal">
-          <details open><summary>Giá trọn gói đã bao gồm những gì?</summary><p>Phạm vi cụ thể sẽ được xác nhận theo không gian, cấu hình và yêu cầu lắp đặt. Hiện website chưa công bố bảng giá trọn gói cố định.</p></details>
-          <details><summary>Tôi nên chọn gói nào?</summary><p>Mini Kit phù hợp không gian nhỏ, Family Kit phù hợp gia đình 4–6 người, còn Rooftop Kit dành cho sân thượng hoặc diện tích lớn. Bạn có thể gửi yêu cầu để được tư vấn chi tiết.</p></details>
-          <details><summary>VƯỜN PHỐ có hỗ trợ lắp đặt không?</summary><p>Website hiện có dịch vụ lắp đặt và bảo trì tận nơi. Khu vực, chi phí và phạm vi triển khai sẽ được xác nhận trong quá trình tư vấn.</p></details>
-          <details><summary>Thời hạn bảo hành là bao lâu?</summary><p>Thông tin thời hạn bảo hành cụ thể hiện đang được cập nhật. Vui lòng hỏi lại tư vấn viên khi nhận báo giá.</p></details>
-        </div>
-      </div>
-    </section>
+          <h2 id="quy-trinh">Quy trình tư vấn và lắp đặt</h2>
+          <div class="quote-process"><article class="quote-step reveal d1"><h3>Gửi nhu cầu</h3><p>Chia sẻ loại không gian, diện tích và mục tiêu trồng rau.</p></article><article class="quote-step reveal d2"><h3>Khảo sát</h3><p>Trao đổi điều kiện thực tế để có cơ sở chọn mô hình.</p></article><article class="quote-step reveal d3"><h3>Chốt báo giá</h3><p>Phạm vi triển khai và chi phí được xác nhận trước khi thực hiện.</p></article><article class="quote-step reveal d4"><h3>Lắp đặt, hỗ trợ</h3><p>Hướng dẫn vận hành, chăm sóc và hỗ trợ sau lắp đặt theo chính sách.</p></article></div>
 
-    <section class="section">
-      <div class="container">
-        <div class="cta-band quote-cta reveal">
-          <h2>Nhận báo giá phù hợp với không gian của bạn</h2>
-          <p>Gửi thông tin để VƯỜN PHỐ tư vấn cấu hình, phạm vi lắp đặt và chi phí phù hợp.</p>
-          <div class="hero-actions"><a href="contact.html" class="btn btn-white">Nhận tư vấn báo giá</a></div>
-        </div>
+          <h2 id="ho-tro">Hỗ trợ sau lắp đặt</h2>
+          <p>VƯỜN PHỐ hiện có các nội dung tư vấn mô hình, lắp đặt tận nơi, hướng dẫn sử dụng và bảo trì. Khu vực phục vụ, chi phí vận chuyển, thời hạn bảo hành và danh mục vật tư đi kèm cần được xác nhận theo từng yêu cầu.</p>
+          <div class="quote-support"><div><h3>Đã có trong phạm vi tư vấn</h3><ul><li>Tư vấn chọn mô hình theo nhu cầu</li><li>Hỗ trợ lắp đặt tận nơi theo phạm vi triển khai</li><li>Hướng dẫn sử dụng và chăm sóc hệ thống</li></ul></div><div><h3>Cần xác nhận khi báo giá</h3><ul><li>Phí vận chuyển và chi phí nhân công</li><li>Điều kiện bảo hành, bảo trì cụ thể</li><li>Danh mục vật tư theo từng cấu hình</li></ul></div></div>
+
+          <h2 id="faq">Giải đáp nhanh</h2>
+          <div class="quote-faq"><details open><summary>Giá trọn gói đã bao gồm những gì?</summary><p>Phạm vi cụ thể sẽ được xác nhận theo không gian, cấu hình và yêu cầu lắp đặt. Hiện website chưa công bố bảng giá trọn gói cố định.</p></details><details><summary>Nên chọn hệ nào?</summary><p>Mini Kit phù hợp không gian nhỏ, Family Kit phù hợp gia đình, còn Rooftop Kit dành cho sân thượng hoặc diện tích lớn. VƯỜN PHỐ sẽ tư vấn sau khi nhận thông tin thực tế.</p></details><details><summary>VƯỜN PHỐ có hỗ trợ lắp đặt không?</summary><p>Website hiện có dịch vụ lắp đặt và bảo trì tận nơi. Khu vực, chi phí và phạm vi triển khai sẽ được xác nhận trong quá trình tư vấn.</p></details></div>
+        </article>
+        <aside class="quote-index" aria-label="Mục lục trang"><h2>Trong bài viết</h2><ul><li><a href="#he-mau">Các hệ mẫu khí canh</a></li><li><a href="#mini-kit">Mini Kit</a></li><li><a href="#family-kit">Family Kit</a></li><li><a href="#rooftop-kit">Rooftop Kit</a></li><li><a href="#quy-trinh">Quy trình triển khai</a></li><li><a href="#ho-tro">Hỗ trợ sau lắp đặt</a></li><li><a href="#faq">Giải đáp nhanh</a></li></ul></aside>
       </div>
     </section>
+    <section class="section"><div class="container"><div class="cta-band quote-cta reveal"><h2>Nhận tư vấn theo không gian thực tế</h2><p>Gửi thông tin để VƯỜN PHỐ tư vấn cấu hình, phạm vi lắp đặt và chi phí phù hợp.</p><div class="hero-actions"><a href="products.html" class="btn btn-white">Xem sản phẩm</a><a href="contact.html" class="btn btn-ghost" style="color:#eafff1;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)">Yêu cầu tư vấn</a></div></div></div></section>
   </main>
 
   <footer class="footer">
