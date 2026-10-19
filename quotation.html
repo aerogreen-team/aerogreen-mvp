@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Báo giá trọn gói — VƯỜN PHỐ</title>
+  <meta name="description" content="Tham khảo các gói giải pháp khí canh trọn gói của VƯỜN PHỐ và nhận tư vấn theo không gian thực tế.">
+  <meta name="theme-color" content="#0c3d1f">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .quote-benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .quote-benefit {
+      padding: 28px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .quote-benefit .problem-icon { margin-bottom: 18px; }
+    .quote-benefit h3 { margin-bottom: 8px; font-size: 19px; }
+    .quote-benefit p { color: var(--slate-500); font-size: 14px; }
+
+    .quote-plans .product-kit { height: 100%; }
+    .quote-plans .product-foot { align-items: flex-end; }
+    .quote-plans .product-price .pv { color: var(--green-800); font-size: 18px; }
+    .quote-note {
+      margin-top: 28px;
+      padding: 16px 20px;
+      border-left: 4px solid var(--green-500);
+      background: var(--green-50);
+      color: var(--slate-700);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .quote-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      background: var(--bg);
+    }
+
+    .quote-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .quote-table th,
+    .quote-table td {
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    .quote-table th {
+      color: #fff;
+      background: var(--green-800);
+      font-size: 14px;
+    }
+
+    .quote-table th:not(:first-child),
+    .quote-table td:not(:first-child) { text-align: center; }
+    .quote-table tbody tr:last-child td { border-bottom: 0; }
+    .quote-table tbody tr:nth-child(even) { background: var(--green-50); }
+    .quote-table td:first-child { font-weight: 700; color: var(--slate-700); }
+    .quote-table td:not(:first-child) { color: var(--slate-500); }
+    .quote-table .available { color: var(--green-700); font-weight: 800; }
+
+    .quote-process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      counter-reset: process;
+    }
+
+    .quote-step {
+      position: relative;
+      padding: 26px 22px 24px;
+      border-top: 3px solid var(--green-500);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .quote-step::before {
+      counter-increment: process;
+      content: "0" counter(process);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 18px;
+      border-radius: 50%;
+      color: var(--green-900);
+      background: var(--lime);
+      font-weight: 800;
+    }
+
+    .quote-step h3 { margin-bottom: 8px; font-size: 18px; }
+    .quote-step p { color: var(--slate-500); font-size: 14px; }
+
+    .quote-support {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .quote-support-card {
+      padding: 30px;
+      border-radius: var(--radius);
+      background: var(--green-900);
+      color: #fff;
+    }
+
+    .quote-support-card.light {
+      background: var(--green-50);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .quote-support-card h3 { margin-bottom: 12px; font-size: 22px; }
+    .quote-support-card p { color: inherit; opacity: .82; }
+    .quote-support-card ul { display: grid; gap: 12px; margin-top: 18px; list-style: none; }
+    .quote-support-card li { display: flex; gap: 10px; align-items: flex-start; }
+    .quote-support-card li::before { content: "✓"; color: var(--lime); font-weight: 800; }
+    .quote-support-card.light li::before { color: var(--green-700); }
+
+    .quote-faq { max-width: 880px; margin: 0 auto; }
+    .quote-faq details { border-bottom: 1px solid var(--line); }
+    .quote-faq summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 0;
+      cursor: pointer;
+      list-style: none;
+      font-weight: 700;
+      color: var(--slate-700);
+    }
+
+    .quote-faq summary::-webkit-details-marker { display: none; }
+    .quote-faq summary::after { content: "+"; color: var(--green-700); font-size: 22px; line-height: 1; }
+    .quote-faq details[open] summary::after { content: "−"; }
+    .quote-faq details p { padding: 0 42px 20px 0; color: var(--slate-500); }
+
+    .quote-cta { text-align: center; }
+    .quote-cta p { max-width: 620px; margin: 12px auto 24px; color: rgba(255,255,255,.82); }
+    .quote-cta .hero-actions { justify-content: center; }
+
+    @media (max-width: 980px) {
+      .quote-benefit-grid, .quote-process { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      .quote-benefit-grid, .quote-process, .quote-support { grid-template-columns: 1fr; }
+      .quote-benefit, .quote-support-card { padding: 24px; }
+      .quote-table th, .quote-table td { padding: 14px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar"></div>
+
+  <div class="top-bar">
+    <div class="container">
+      <span class="tb-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+        GIẢI PHÁP KHÍ CANH TOÀN DIỆN
+      </span>
+      <span class="socials">
+        <a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+        <a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a>
+        <a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+      </span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="products.html">Sản phẩm</a>
+        <a href="contact.html">Liên hệ</a>
+      </nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="overlay"></div>
+  <nav class="mobile-nav">
+    <a href="index.html">Trang chủ</a>
+    <a href="about.html">Giới thiệu</a>
+    <a href="services.html">Dịch vụ</a>
+    <a href="products.html">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+    <a href="contact.html" class="btn">Tư vấn miễn phí</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <span>Báo giá trọn gói</span></div>
+      <h1>Báo giá trọn gói hệ thống khí canh</h1>
+      <p>Tham khảo cấu hình phù hợp với không gian của bạn và nhận báo giá sau khi được tư vấn thực tế.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Giải pháp trọn gói</span>
+          <h2>Bắt đầu khu vườn xanh theo cách đơn giản hơn</h2>
+          <p>VƯỜN PHỐ đồng hành từ bước chọn mô hình, tư vấn không gian đến lắp đặt và hướng dẫn sử dụng.</p>
+        </div>
+        <div class="quote-benefit-grid">
+          <article class="quote-benefit reveal d1">
+            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <h3>Chọn đúng quy mô</h3>
+            <p>Gợi ý theo diện tích, không gian và mục tiêu sử dụng của gia đình.</p>
+          </article>
+          <article class="quote-benefit reveal d2">
+            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
+            <h3>Tối ưu không gian</h3>
+            <p>Từ ban công căn hộ đến sân thượng, cấu hình được chọn theo thực tế lắp đặt.</p>
+          </article>
+          <article class="quote-benefit reveal d3">
+            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <h3>Minh bạch thông tin</h3>
+            <p>Thông số được trình bày rõ ràng; giá trọn gói sẽ xác nhận sau khi khảo sát nhu cầu.</p>
+          </article>
+          <article class="quote-benefit reveal d4">
+            <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/><path d="M21 12a9 9 0 1 1-3-6.7"/></svg></div>
+            <h3>Đồng hành dài hạn</h3>
+            <p>Hỗ trợ tư vấn, lắp đặt và bảo trì theo phạm vi dịch vụ được xác nhận.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft quote-plans">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Ba lựa chọn phổ biến</span>
+          <h2>Cấu hình khí canh tham khảo</h2>
+          <p>Thông số dưới đây được lấy từ dữ liệu sản phẩm hiện có của VƯỜN PHỐ.</p>
+        </div>
+        <div class="product-grid">
+          <article class="product-kit reveal d1">
+            <div class="product-media"><img src="images/tower.jpg" alt="Mini Kit khí canh"></div>
+            <div class="product-body">
+              <h3>Mini Kit</h3>
+              <p class="product-desc">Phù hợp căn hộ và ban công nhỏ, dành cho nhu cầu bắt đầu trồng rau tại nhà.</p>
+              <div class="product-specs">
+                <div class="row"><span>Số lỗ trồng</span><b>20 lỗ</b></div>
+                <div class="row"><span>Phù hợp</span><b>Ban công / Căn hộ nhỏ</b></div>
+                <div class="row"><span>Kích thước</span><b>40 × 40 × 120 cm</b></div>
+              </div>
+              <div class="product-foot">
+                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
+                <a class="btn" href="contact.html">Nhận tư vấn</a>
+              </div>
+            </div>
+          </article>
+          <article class="product-kit featured reveal d2">
+            <div class="product-media"><img src="images/Family Kit.jpg" alt="Family Kit khí canh"><span class="ribbon">Bán chạy nhất</span></div>
+            <div class="product-body">
+              <h3>Family Kit</h3>
+              <p class="product-desc">Mẫu phù hợp cho gia đình muốn có sản lượng rau sạch ổn định mỗi ngày.</p>
+              <div class="product-specs">
+                <div class="row"><span>Số lỗ trồng</span><b>40 lỗ</b></div>
+                <div class="row"><span>Phù hợp</span><b>Gia đình 4–6 người</b></div>
+                <div class="row"><span>Kích thước</span><b>60 × 60 × 160 cm</b></div>
+              </div>
+              <div class="product-foot">
+                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
+                <a class="btn" href="contact.html">Nhận tư vấn</a>
+              </div>
+            </div>
+          </article>
+          <article class="product-kit reveal d3">
+            <div class="product-media"><img src="images/Rooftop Kit.jpg" alt="Rooftop Kit khí canh"></div>
+            <div class="product-body">
+              <h3>Rooftop Kit</h3>
+              <p class="product-desc">Dành cho sân thượng hoặc không gian lớn cần năng suất trồng cao hơn.</p>
+              <div class="product-specs">
+                <div class="row"><span>Số lỗ trồng</span><b>80 lỗ</b></div>
+                <div class="row"><span>Phù hợp</span><b>Sân thượng / Diện tích lớn</b></div>
+                <div class="row"><span>Kích thước</span><b>100 × 100 × 180 cm</b></div>
+              </div>
+              <div class="product-foot">
+                <div class="product-price"><div class="pl">Giá trọn gói</div><div class="pv">Liên hệ báo giá</div></div>
+                <a class="btn" href="contact.html">Nhận tư vấn</a>
+              </div>
+            </div>
+          </article>
+        </div>
+        <p class="quote-note"><strong>Lưu ý:</strong> Giá trọn gói, chi phí vận chuyển và phạm vi lắp đặt chưa được công bố cố định trong dữ liệu hiện tại. Vui lòng gửi thông tin để nhận tư vấn theo không gian thực tế.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">So sánh nhanh</span>
+          <h2>Chọn cấu hình phù hợp</h2>
+        </div>
+        <div class="quote-table-wrap reveal">
+          <table class="quote-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Mini Kit</th><th>Family Kit</th><th>Rooftop Kit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Số lỗ trồng</td><td>20 lỗ</td><td>40 lỗ</td><td>80 lỗ</td></tr>
+              <tr><td>Không gian phù hợp</td><td>Ban công / Căn hộ nhỏ</td><td>Gia đình 4–6 người</td><td>Sân thượng / Diện tích lớn</td></tr>
+              <tr><td>Kích thước</td><td>40 × 40 × 120 cm</td><td>60 × 60 × 160 cm</td><td>100 × 100 × 180 cm</td></tr>
+              <tr><td>Tư vấn lựa chọn</td><td class="available">Có</td><td class="available">Có</td><td class="available">Có</td></tr>
+              <tr><td>Giá trọn gói</td><td>Liên hệ báo giá</td><td>Liên hệ báo giá</td><td>Liên hệ báo giá</td></tr>
+              <tr><td>Bảo hành/bảo trì</td><td>Đang cập nhật</td><td>Đang cập nhật</td><td>Đang cập nhật</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Quy trình đồng hành</span>
+          <h2>Từ nhu cầu đến khu vườn xanh</h2>
+        </div>
+        <div class="quote-process">
+          <article class="quote-step reveal d1"><h3>Gửi nhu cầu</h3><p>Chia sẻ loại không gian, diện tích và mục tiêu trồng rau.</p></article>
+          <article class="quote-step reveal d2"><h3>Tư vấn cấu hình</h3><p>VƯỜN PHỐ đề xuất mô hình phù hợp với điều kiện thực tế.</p></article>
+          <article class="quote-step reveal d3"><h3>Xác nhận báo giá</h3><p>Chi phí và phạm vi triển khai được trao đổi rõ ràng trước khi thực hiện.</p></article>
+          <article class="quote-step reveal d4"><h3>Lắp đặt &amp; hướng dẫn</h3><p>Đồng hành trong quá trình lắp đặt, vận hành và chăm sóc hệ thống.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="quote-support">
+          <article class="quote-support-card reveal">
+            <h3>Hỗ trợ sau tư vấn</h3>
+            <p>Các nội dung đã có trong hệ thống dịch vụ của VƯỜN PHỐ:</p>
+            <ul>
+              <li>Tư vấn mô hình theo nhu cầu</li>
+              <li>Hỗ trợ lắp đặt tận nơi theo phạm vi triển khai</li>
+              <li>Hướng dẫn sử dụng và chăm sóc hệ thống</li>
+              <li>Hỗ trợ bảo trì theo chính sách xác nhận khi báo giá</li>
+            </ul>
+          </article>
+          <article class="quote-support-card light reveal d1">
+            <h3>Thông tin cần xác nhận</h3>
+            <p>Một số chi tiết chưa có dữ liệu chính thức trên website hiện tại:</p>
+            <ul>
+              <li>Thời hạn và điều kiện bảo hành cụ thể</li>
+              <li>Phí vận chuyển ngoài khu vực TP.HCM</li>
+              <li>Chi phí nhân công theo từng địa điểm</li>
+              <li>Danh mục vật tư đi kèm từng gói</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Giải đáp nhanh</span>
+          <h2>Câu hỏi thường gặp</h2>
+        </div>
+        <div class="quote-faq reveal">
+          <details open><summary>Giá trọn gói đã bao gồm những gì?</summary><p>Phạm vi cụ thể sẽ được xác nhận theo không gian, cấu hình và yêu cầu lắp đặt. Hiện website chưa công bố bảng giá trọn gói cố định.</p></details>
+          <details><summary>Tôi nên chọn gói nào?</summary><p>Mini Kit phù hợp không gian nhỏ, Family Kit phù hợp gia đình 4–6 người, còn Rooftop Kit dành cho sân thượng hoặc diện tích lớn. Bạn có thể gửi yêu cầu để được tư vấn chi tiết.</p></details>
+          <details><summary>VƯỜN PHỐ có hỗ trợ lắp đặt không?</summary><p>Website hiện có dịch vụ lắp đặt và bảo trì tận nơi. Khu vực, chi phí và phạm vi triển khai sẽ được xác nhận trong quá trình tư vấn.</p></details>
+          <details><summary>Thời hạn bảo hành là bao lâu?</summary><p>Thông tin thời hạn bảo hành cụ thể hiện đang được cập nhật. Vui lòng hỏi lại tư vấn viên khi nhận báo giá.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band quote-cta reveal">
+          <h2>Nhận báo giá phù hợp với không gian của bạn</h2>
+          <p>Gửi thông tin để VƯỜN PHỐ tư vấn cấu hình, phạm vi lắp đặt và chi phí phù hợp.</p>
+          <div class="hero-actions"><a href="contact.html" class="btn btn-white">Nhận tư vấn báo giá</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></div>
+          <p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p>
+          <div class="socials">
+            <a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+            <a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a>
+            <a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+          </div>
+        </div>
+        <div><h4>Liên kết</h4><ul><li><a href="index.html">Trang chủ</a></li><li><a href="about.html">Giới thiệu</a></li><li><a href="services.html">Dịch vụ</a></li><li><a href="products.html">Sản phẩm</a></li><li><a href="contact.html">Liên hệ</a></li></ul></div>
+        <div><h4>Sản phẩm</h4><ul><li><a href="products.html">Mini Kit</a></li><li><a href="products.html">Family Kit</a></li><li><a href="products.html">Rooftop Kit</a></li><li><a href="quotation.html">Báo giá trọn gói</a></li></ul></div>
+        <div><h4>Liên hệ</h4><ul class="f-contact"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0354841103</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> vuonphofarming@gmail.com</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 VƯỜN PHỐ. Đã đăng ký bản quyền.</span><span>Sống xanh · Sống khỏe · Bền vững</span></div>
+    </div>
+  </footer>
+
+  <div class="fab">
+    <a class="fab-zalo" href="https://zalo.me/0354841103" target="_blank" rel="noopener" aria-label="Chat Zalo"><span class="fab-zalo-label">Zalo</span></a>
+    <button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api-loader.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

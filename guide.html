@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hướng dẫn hệ thống khí canh — VƯỜN PHỐ</title>
+  <meta name="description" content="Hướng dẫn chuẩn bị, lắp đặt, vận hành và chăm sóc hệ thống khí canh VƯỜN PHỐ.">
+  <meta name="theme-color" content="#0c3d1f">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .guide-lead {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .guide-lead h2 { margin-bottom: 14px; }
+    .guide-lead p { color: var(--slate-500); }
+
+    .guide-visual {
+      overflow: hidden;
+      min-height: 270px;
+      border-radius: var(--radius-lg);
+      background: var(--green-100);
+      box-shadow: var(--shadow);
+    }
+
+    .guide-visual img { width: 100%; height: 100%; min-height: 270px; object-fit: cover; }
+
+    .guide-disclaimer {
+      margin-top: 26px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--green-500);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      background: var(--green-50);
+      color: var(--slate-700);
+      font-size: 14px;
+    }
+
+    .guide-principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .guide-principle {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-principle h3 { margin-bottom: 8px; color: var(--green-800); font-size: 18px; }
+    .guide-principle p { color: var(--slate-500); font-size: 14px; }
+
+    .guide-steps { display: grid; gap: 18px; counter-reset: guide-step; }
+
+    .guide-step {
+      display: grid;
+      grid-template-columns: 76px 1fr 220px;
+      gap: 24px;
+      align-items: center;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-step::before {
+      counter-increment: guide-step;
+      content: counter(guide-step, decimal-leading-zero);
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: var(--lime);
+      color: var(--green-900);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .guide-step h3 { margin-bottom: 8px; color: var(--green-800); font-size: 20px; }
+    .guide-step p { color: var(--slate-500); font-size: 14px; }
+    .guide-step ul { display: grid; gap: 7px; margin-top: 12px; padding-left: 18px; color: var(--slate-700); font-size: 14px; }
+
+    .guide-step-media {
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-sm);
+      background: var(--green-100);
+    }
+
+    .guide-step-media img { width: 100%; height: 100%; object-fit: cover; }
+
+    .guide-callout {
+      margin-top: 22px;
+      padding: 22px 24px;
+      border-radius: var(--radius);
+      background: var(--green-900);
+      color: #fff;
+    }
+
+    .guide-callout strong { display: block; margin-bottom: 6px; }
+    .guide-callout span { color: rgba(255,255,255,.8); font-size: 14px; }
+
+    .guide-errors {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .guide-error {
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+    }
+
+    .guide-error h3 { margin-bottom: 8px; color: var(--green-800); font-size: 18px; }
+    .guide-error p { color: var(--slate-500); font-size: 14px; }
+    .guide-error b { color: var(--slate-700); }
+
+    .guide-faq { max-width: 860px; margin: 0 auto; }
+    .guide-faq details { border-bottom: 1px solid var(--line); }
+    .guide-faq summary { display: flex; justify-content: space-between; gap: 18px; padding: 20px 0; cursor: pointer; list-style: none; color: var(--slate-700); font-weight: 700; }
+    .guide-faq summary::-webkit-details-marker { display: none; }
+    .guide-faq summary::after { content: "+"; color: var(--green-700); font-size: 22px; line-height: 1; }
+    .guide-faq details[open] summary::after { content: "−"; }
+    .guide-faq details p { padding: 0 40px 20px 0; color: var(--slate-500); font-size: 14px; }
+
+    .guide-cta { text-align: center; }
+    .guide-cta p { max-width: 650px; margin: 12px auto 24px; color: rgba(255,255,255,.82); }
+    .guide-cta .hero-actions { justify-content: center; }
+
+    @media (max-width: 900px) {
+      .guide-lead { grid-template-columns: 1fr; }
+      .guide-step { grid-template-columns: 64px 1fr; }
+      .guide-step-media { grid-column: 2; max-width: 280px; }
+      .guide-principles { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .guide-principles, .guide-errors { grid-template-columns: 1fr; }
+      .guide-step { grid-template-columns: 1fr; gap: 14px; padding: 20px; }
+      .guide-step::before { width: 48px; height: 48px; font-size: 17px; }
+      .guide-step-media { grid-column: auto; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar"></div>
+
+  <div class="top-bar">
+    <div class="container">
+      <span class="tb-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>GIẢI PHÁP KHÍ CANH TOÀN DIỆN</span>
+      <span class="socials"><a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a><a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a><a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a></span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></a>
+      <nav class="nav"><a href="index.html">Trang chủ</a><a href="about.html">Giới thiệu</a><a href="services.html">Dịch vụ</a><a href="products.html">Sản phẩm</a><a href="contact.html">Liên hệ</a></nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="overlay"></div>
+  <nav class="mobile-nav"><a href="index.html">Trang chủ</a><a href="about.html">Giới thiệu</a><a href="services.html">Dịch vụ</a><a href="products.html">Sản phẩm</a><a href="contact.html">Liên hệ</a><a href="contact.html" class="btn">Tư vấn miễn phí</a></nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <span>Hướng dẫn</span></div>
+      <h1>Hướng dẫn lắp đặt &amp; chăm sóc hệ thống khí canh</h1>
+      <p>Các bước tổng quan để chuẩn bị, vận hành và chăm sóc hệ thống Aeroponics an toàn hơn.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="guide-lead">
+          <div class="reveal"><span class="eyebrow">Khí canh Aeroponics</span><h2>Rễ cây nhận dinh dưỡng qua sương</h2><p>Trong hệ thống khí canh, cây được giữ tại vị trí trồng còn phần rễ nằm trong khoang riêng. Dung dịch dinh dưỡng được đưa tới vùng rễ qua đầu phun sương theo chu kỳ do từng hệ thống thiết lập.</p><p class="guide-disclaimer"><strong>Phạm vi hướng dẫn:</strong> Đây là hướng dẫn tổng quan cho mô hình khí canh gia đình. Lịch vận hành, nồng độ dung dịch, thông số điện và thời gian thu hoạch cần thực hiện theo tài liệu của nhà cung cấp cho đúng thiết bị.</p></div>
+          <div class="guide-visual reveal d1"><img src="images/tower.jpg" alt="Ảnh minh họa trụ khí canh"></div>
+        </div>
+        <div class="guide-principles">
+          <article class="guide-principle reveal d1"><h3>Khoang rễ riêng</h3><p>Giữ rễ trong môi trường phù hợp để dung dịch có thể tiếp cận vùng rễ.</p></article>
+          <article class="guide-principle reveal d2"><h3>Phun sương tuần hoàn</h3><p>Bơm và đầu phun phối hợp theo chu kỳ được xác nhận cho từng cấu hình.</p></article>
+          <article class="guide-principle reveal d3"><h3>Theo dõi liên tục</h3><p>Cần quan sát cây, đầu phun, bơm, dung dịch và vệ sinh hệ thống định kỳ.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow">Các bước chuẩn bị</span><h2>Lắp đặt từ nền tảng đúng</h2><p>Thực hiện theo hướng dẫn đi kèm thiết bị và xác nhận lại với tư vấn viên khi có điểm chưa rõ.</p></div>
+        <div class="guide-steps">
+          <article class="guide-step reveal d1"><div><h3>Chuẩn bị vị trí</h3><p>Chọn nơi đặt hệ thống phù hợp với mô hình Mini Kit, Family Kit hoặc Rooftop Kit.</p><ul><li>Kiểm tra mặt bằng, lối tiếp cận và khả năng chịu tải.</li><li>Bảo đảm vị trí có nguồn nước và nguồn điện phù hợp.</li><li>Tránh khu vực dễ ngập hoặc cản trở sinh hoạt.</li></ul></div><div class="guide-step-media"><img src="images/about.jpg" alt="Ảnh minh họa không gian trồng tại nhà"></div></article>
+          <article class="guide-step reveal d2"><div><h3>Kiểm tra thiết bị</h3><p>Đối chiếu các bộ phận trước khi lắp và không tự thay đổi thông số của thiết bị.</p><ul><li>Trụ, vị trí trồng và rọ trồng cây.</li><li>Bồn chứa, máy bơm, đầu phun và béc phun.</li><li>Ống dẫn, phụ kiện, bộ hẹn giờ và dung dịch dinh dưỡng.</li></ul></div><div class="guide-step-media"><img src="images/tower.png" alt="Ảnh minh họa thiết bị trụ khí canh"></div></article>
+          <article class="guide-step reveal d3"><div><h3>Lắp trụ và đường ống</h3><p>Lắp các bộ phận theo sơ đồ của bộ sản phẩm, bảo đảm các mối nối chắc chắn và dễ kiểm tra.</p><ul><li>Đặt trụ đúng hướng và cố định hệ thống.</li><li>Nối bồn, bơm, ống dẫn và cụm phun theo sơ đồ.</li><li>Kiểm tra rò rỉ trước khi đưa cây vào hệ.</li></ul></div><div class="guide-step-media"><img src="images/lap-dat-tan-noi.jpg" alt="Ảnh minh họa lắp đặt hệ thống"></div></article>
+          <article class="guide-step reveal d4"><div><h3>Chuẩn bị dung dịch dinh dưỡng</h3><p>Sử dụng đúng loại và liều lượng theo nhãn hoặc tài liệu của nhà cung cấp dung dịch.</p><ul><li>Không tự bịa nồng độ hoặc pha theo công thức chưa được xác nhận.</li><li>Ghi lại loại dung dịch và hướng dẫn đi kèm.</li><li>Thông số pH, EC và chu kỳ thay dung dịch: <strong>Đang cập nhật theo từng hệ.</strong></li></ul></div><div class="guide-step-media"><img src="images/Family Kit.jpg" alt="Ảnh minh họa hệ thống khí canh gia đình"></div></article>
+          <article class="guide-step reveal d1"><div><h3>Ươm giống và đưa cây vào trụ</h3><p>Chỉ đưa cây vào vị trí trồng khi cây đã đủ khỏe theo hướng dẫn của giống và bộ kit.</p><ul><li>Chọn giống phù hợp với điều kiện trồng và mục tiêu sử dụng.</li><li>Giữ cây chắc trong rọ, tránh làm tổn thương rễ.</li><li>Khoảng cách và thời điểm đưa cây vào trụ: <strong>Theo hướng dẫn của nhà cung cấp.</strong></li></ul></div><div class="guide-step-media"><img src="images/tu-van-mo-hinh.jpg" alt="Ảnh minh họa tư vấn mô hình trồng"></div></article>
+          <article class="guide-step reveal d2"><div><h3>Vận hành bơm và hệ thống phun sương</h3><p>Chạy thử hệ thống khi chưa có cây để kiểm tra dòng chảy, béc phun và các điểm rò rỉ.</p><ul><li>Quan sát bơm có hoạt động ổn định hay không.</li><li>Kiểm tra sương phân bố tới các vị trí rễ.</li><li>Lịch bật/tắt, điện áp và thời lượng phun: <strong>Theo hướng dẫn của nhà cung cấp.</strong></li></ul></div><div class="guide-step-media"><img src="images/Rooftop Kit.jpg" alt="Ảnh minh họa hệ thống khí canh quy mô lớn"></div></article>
+          <article class="guide-step reveal d3"><div><h3>Theo dõi cây và vệ sinh hệ thống</h3><p>Quan sát cây thường xuyên và giữ các bộ phận tiếp xúc với dung dịch ở trạng thái sạch.</p><ul><li>Kiểm tra lá, rễ, đầu phun, bơm và mực dung dịch.</li><li>Vệ sinh bồn, ống và béc theo chu kỳ hướng dẫn.</li><li>Thời gian vệ sinh và thay thế vật tư: <strong>Đang cập nhật theo cấu hình.</strong></li></ul></div><div class="guide-step-media"><img src="images/bao-tri.jpg" alt="Ảnh minh họa bảo trì hệ thống"></div></article>
+        </div>
+        <div class="guide-callout reveal"><strong>An toàn trước khi thao tác</strong><span>Ngắt nguồn điện trước khi tháo bơm, vệ sinh đầu phun hoặc kiểm tra dây điện. Nếu phát hiện rò điện, rò nước hoặc hư hỏng bất thường, dừng vận hành và liên hệ hỗ trợ kỹ thuật.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow">Xử lý sự cố</span><h2>Một số lỗi thường gặp</h2><p>Đây là hướng kiểm tra ban đầu; không thay thế hướng dẫn kỹ thuật của từng thiết bị.</p></div>
+        <div class="guide-errors">
+          <article class="guide-error reveal d1"><h3>Béc phun không ra sương</h3><p><b>Kiểm tra:</b> nguồn điện, máy bơm, mực dung dịch, ống dẫn và đầu béc. Không tự tăng áp lực hoặc thay béc khác chuẩn nếu chưa xác nhận tương thích.</p></article>
+          <article class="guide-error reveal d2"><h3>Dòng nước yếu hoặc không đều</h3><p><b>Kiểm tra:</b> đường ống có gập/tắc không, bồn có đủ dung dịch không và bơm có hoạt động không. Thông số lưu lượng cần theo nhà cung cấp.</p></article>
+          <article class="guide-error reveal d3"><h3>Cây có dấu hiệu héo</h3><p><b>Kiểm tra:</b> rễ có nhận được sương, cây có được cố định đúng trong rọ và dung dịch có đúng hướng dẫn không. Không tự đổi nồng độ khi chưa có chỉ dẫn.</p></article>
+          <article class="guide-error reveal d4"><h3>Mùi hoặc cặn trong bồn</h3><p><b>Thực hiện:</b> dừng hệ nếu cần, kiểm tra tình trạng dung dịch và vệ sinh theo tài liệu. Trường hợp bất thường nên liên hệ tư vấn kỹ thuật.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow">Giải đáp nhanh</span><h2>Câu hỏi thường gặp</h2></div>
+        <div class="guide-faq reveal">
+          <details open><summary>Khí canh có phải là aquaponics không?</summary><p>Không. VƯỜN PHỐ kinh doanh hệ thống khí canh Aeroponics. Trang này không sử dụng hướng dẫn vận hành hồ cá hoặc hệ aquaponics.</p></details>
+          <details><summary>Tôi có thể tự lắp hệ thống không?</summary><p>Có thể trao đổi với tư vấn viên về phạm vi tự lắp và vật tư phù hợp. Hãy dùng đúng sơ đồ, thiết bị và hướng dẫn của nhà cung cấp.</p></details>
+          <details><summary>Lịch phun sương và pha dinh dưỡng như thế nào?</summary><p>Chưa có một thông số chung được xác thực cho mọi cấu hình. Lịch phun và nồng độ cần theo tài liệu của bộ kit, loại cây và nhà cung cấp.</p></details>
+          <details><summary>Bao lâu thì thu hoạch?</summary><p>Thời gian phụ thuộc giống cây, điều kiện chăm sóc và cấu hình. Dữ liệu thời gian thu hoạch cụ thể hiện đang cập nhật.</p></details>
+          <details><summary>Khi nào cần liên hệ hỗ trợ kỹ thuật?</summary><p>Liên hệ khi có rò điện, rò nước, bơm không hoạt động, đầu phun tắc lặp lại hoặc cây có dấu hiệu bất thường sau khi đã kiểm tra theo hướng dẫn.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band guide-cta reveal"><h2>Cần hỗ trợ kỹ thuật cho hệ thống?</h2><p>Gửi thông tin không gian và tình trạng hệ thống để VƯỜN PHỐ tư vấn bước tiếp theo.</p><div class="hero-actions"><a href="contact.html" class="btn btn-white">Liên hệ hỗ trợ kỹ thuật</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></div><p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p><div class="socials"><a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a><a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a><a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a></div></div>
+        <div><h4>Liên kết</h4><ul><li><a href="index.html">Trang chủ</a></li><li><a href="about.html">Giới thiệu</a></li><li><a href="services.html">Dịch vụ</a></li><li><a href="products.html">Sản phẩm</a></li><li><a href="contact.html">Liên hệ</a></li></ul></div>
+        <div><h4>Sản phẩm</h4><ul><li><a href="products.html">Mini Kit</a></li><li><a href="products.html">Family Kit</a></li><li><a href="products.html">Rooftop Kit</a></li><li><a href="quotation.html">Báo giá trọn gói</a></li><li><a href="materials.html">Giá vật tư</a></li></ul></div>
+        <div><h4>Liên hệ</h4><ul class="f-contact"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0354841103</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> vuonphofarming@gmail.com</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 VƯỜN PHỐ. Đã đăng ký bản quyền.</span><span>Sống xanh · Sống khỏe · Bền vững</span></div>
+    </div>
+  </footer>
+
+  <div class="fab"><a class="fab-zalo" href="https://zalo.me/0354841103" target="_blank" rel="noopener" aria-label="Chat Zalo"><span class="fab-zalo-label">Zalo</span></a><button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api-loader.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

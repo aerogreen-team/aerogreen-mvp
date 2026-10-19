@@ -8,6 +8,68 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
+  function setupSiteNavigation() {
+    const page = window.location.pathname.split("/").pop() || "index.html";
+    const solutionPages = ["services.html", "products.html", "quotation.html", "materials.html"];
+    const explorePages = ["customers.html", "guide.html", "news.html"];
+    const link = (href, label) => `<a href="${href}"${page === href ? ' class="active"' : ""}>${label}</a>`;
+    const desktop = $(".nav");
+    const mobile = $(".mobile-nav");
+
+    if (desktop) {
+      desktop.innerHTML = `${link("index.html", "Trang chủ")}${link("about.html", "Giới thiệu")}<div class="nav-group${solutionPages.includes(page) ? " active" : ""}"><button class="nav-group-toggle" type="button" aria-expanded="false">Giải pháp <span aria-hidden="true">⌄</span></button><div class="nav-dropdown">${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}</div></div><div class="nav-group${explorePages.includes(page) ? " active" : ""}"><button class="nav-group-toggle" type="button" aria-expanded="false">Khám phá <span aria-hidden="true">⌄</span></button><div class="nav-dropdown">${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}</div></div>${link("contact.html", "Liên hệ")}`;
+      const groups = $$(".nav-group", desktop);
+      groups.forEach((group) => {
+        const toggle = $(".nav-group-toggle", group);
+        toggle.addEventListener("click", () => {
+          groups.forEach((other) => {
+            if (other !== group) {
+              other.classList.remove("open");
+              $(".nav-group-toggle", other).setAttribute("aria-expanded", "false");
+            }
+          });
+          const open = group.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(open));
+        });
+      });
+      document.addEventListener("click", (event) => {
+        if (!desktop.contains(event.target)) {
+          groups.forEach((group) => {
+            group.classList.remove("open");
+            $(".nav-group-toggle", group).setAttribute("aria-expanded", "false");
+          });
+        }
+      });
+    }
+
+    if (mobile) {
+      mobile.innerHTML = `${link("index.html", "Trang chủ")}${link("about.html", "Giới thiệu")}<details class="mobile-nav-group"${solutionPages.includes(page) ? " open" : ""}><summary>Giải pháp</summary>${link("services.html", "Dịch vụ")}${link("products.html", "Sản phẩm")}${link("quotation.html", "Báo giá trọn gói")}${link("materials.html", "Giá vật tư")}</details><details class="mobile-nav-group"${explorePages.includes(page) ? " open" : ""}><summary>Khám phá</summary>${link("customers.html", "Khách hàng")}${link("guide.html", "Hướng dẫn")}${link("news.html", "Tin tức")}</details>${link("contact.html", "Liên hệ")}<a href="contact.html" class="btn">Tư vấn miễn phí</a>`;
+    }
+  }
+
+  function setupSiteFooter() {
+    document.querySelectorAll(".footer-grid").forEach((grid) => {
+      const columns = Array.from(grid.querySelectorAll(":scope > div"));
+      const linksColumn = columns.find((column) => column.querySelector("h4")?.textContent.trim() === "Liên kết");
+      const productsColumn = columns.find((column) => column.querySelector("h4")?.textContent.trim() === "Sản phẩm");
+      const appendLink = (column, href, label) => {
+        if (!column || column.querySelector(`a[href="${href}"]`)) return;
+        const list = $("ul", column);
+        if (list) list.insertAdjacentHTML("beforeend", `<li><a href="${href}">${label}</a></li>`);
+      };
+      appendLink(linksColumn, "quotation.html", "Báo giá trọn gói");
+      appendLink(linksColumn, "materials.html", "Giá vật tư");
+      appendLink(linksColumn, "customers.html", "Khách hàng");
+      appendLink(linksColumn, "guide.html", "Hướng dẫn");
+      appendLink(linksColumn, "news.html", "Tin tức");
+      appendLink(productsColumn, "quotation.html", "Báo giá trọn gói");
+      appendLink(productsColumn, "materials.html", "Giá vật tư");
+    });
+  }
+
+  setupSiteNavigation();
+  setupSiteFooter();
+
   /* ---------- Sticky header + scroll progress + back-to-top ---------- */
   const header = $(".header");
   const onScroll = () => {
@@ -43,6 +105,9 @@
   burger && burger.addEventListener("click", toggleMenu);
   overlay && overlay.addEventListener("click", closeMenu);
   $$(".mobile-nav a").forEach((a) => a.addEventListener("click", closeMenu));
+  $$(".mobile-nav details").forEach((group) => group.addEventListener("toggle", () => {
+    if (group.open) $$(".mobile-nav details").filter((other) => other !== group).forEach((other) => { other.open = false; });
+  }));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
   /* ---------- Scroll reveal ---------- */

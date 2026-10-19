@@ -106,3 +106,16 @@
   .account-grid { grid-template-columns: 1fr; }
   .auth-card { padding: 32px 24px; }
 }
+
+@media (max-width: 640px) {
+  .auth-wrap { gap: 24px; }
+  .auth-aside h1 { font-size: 30px; }
+  .auth-aside > p { font-size: 15px; }
+  .auth-card { padding: 26px 20px; border-radius: 18px; }
+  .auth-card > h2 { font-size: 24px; }
+  .account-head { padding: 26px 22px; border-radius: 18px; }
+  .account-head h1 { font-size: 24px; }
+  .account-head > div:last-child { width: 100%; }
+  .account-head > div:last-child .btn { flex: 1; justify-content: center; }
+  .account-panel { padding: 24px 20px; border-radius: 18px; }
+}

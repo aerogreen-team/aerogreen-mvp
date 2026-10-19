@@ -43,8 +43,23 @@
       <nav class="nav">
         <a href="index.html" class="active">Trang chủ</a>
         <a href="about.html">Giới thiệu</a>
-        <a href="services.html">Dịch vụ</a>
-        <a href="products.html">Sản phẩm</a>
+        <div class="nav-group">
+          <button class="nav-group-toggle" type="button" aria-expanded="false">Giải pháp <span aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown">
+            <a href="services.html">Dịch vụ</a>
+            <a href="products.html">Sản phẩm</a>
+            <a href="quotation.html">Báo giá trọn gói</a>
+            <a href="materials.html">Giá vật tư</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-toggle" type="button" aria-expanded="false">Khám phá <span aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown">
+            <a href="customers.html">Khách hàng</a>
+            <a href="guide.html">Hướng dẫn</a>
+            <a href="news.html">Tin tức</a>
+          </div>
+        </div>
         <a href="contact.html">Liên hệ</a>
       </nav>
       <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
@@ -57,8 +72,19 @@
   <nav class="mobile-nav">
     <a href="index.html" class="active">Trang chủ</a>
     <a href="about.html">Giới thiệu</a>
-    <a href="services.html">Dịch vụ</a>
-    <a href="products.html">Sản phẩm</a>
+    <details class="mobile-nav-group">
+      <summary>Giải pháp</summary>
+      <a href="services.html">Dịch vụ</a>
+      <a href="products.html">Sản phẩm</a>
+      <a href="quotation.html">Báo giá trọn gói</a>
+      <a href="materials.html">Giá vật tư</a>
+    </details>
+    <details class="mobile-nav-group">
+      <summary>Khám phá</summary>
+      <a href="customers.html">Khách hàng</a>
+      <a href="guide.html">Hướng dẫn</a>
+      <a href="news.html">Tin tức</a>
+    </details>
     <a href="contact.html">Liên hệ</a>
     <a href="contact.html" class="btn">Tư vấn miễn phí</a>
   </nav>
@@ -69,21 +95,36 @@
     <div class="container">
       <div class="hero-content">
         <span class="eyebrow">Khí canh tại nhà · Trọn gói</span>
-        <h1>Kiến tạo <span class="accent">khu vườn xanh</span> trong ngôi nhà của bạn</h1>
-        <p class="hero-lead">Tư vấn - So sánh - Lắp đặt - Bảo trì trọn gói.</p>
+        <h1>Trồng rau xanh ngay tại nhà với giải pháp <span class="accent">khí canh VƯỜN PHỐ</span></h1>
+        <p class="hero-lead">Khám phá hệ thống trồng rau khí canh dành cho ban công, sân thượng và không gian sống đô thị.</p>
         <div class="hero-actions">
           <a href="contact.html" class="btn">Nhận tư vấn miễn phí
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a href="products.html" class="btn btn-white">Xem sản phẩm</a>
-        </div>
-        <div class="hero-stats">
-          <div><div class="num"><span data-count="100" data-suffix="%">0%</span></div><div class="lbl">Rau sạch tại nhà</div></div>
-          <div><div class="num"><span data-count="4">0</span> bước</div><div class="lbl">Quy trình trọn gói</div></div>
-          <div><div class="num"><span data-count="24" data-suffix="h">0h</span></div><div class="lbl">Phản hồi tư vấn</div></div>
+          <a href="products.html" class="btn btn-white">Khám phá giải pháp</a>
         </div>
       </div>
     </div>
     <div class="scroll-cue"><span class="mouse"></span>Cuộn xuống</div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits-section" aria-label="Lợi ích của giải pháp khí canh">
+    <div class="container">
+      <div class="benefits-grid">
+        <article class="benefit-card reveal">
+          <span class="benefit-icon">01</span>
+          <div><h2>Linh hoạt</h2><p>Phù hợp với nhiều không gian sống đô thị.</p></div>
+        </article>
+        <article class="benefit-card reveal d1">
+          <span class="benefit-icon">02</span>
+          <div><h2>Dễ dùng</h2><p>Hướng dẫn vận hành rõ ràng, dễ bắt đầu.</p></div>
+        </article>
+        <article class="benefit-card reveal d2">
+          <span class="benefit-icon">03</span>
+          <div><h2>Đồng hành</h2><p>Tư vấn và hỗ trợ theo nhu cầu thực tế.</p></div>
+        </article>
+      </div>
+    </div>
   </section>
 
   <!-- TRUST STRIP -->
@@ -208,6 +249,37 @@
     </div>
   </section>
 
+  <!-- SOLUTION LIBRARY -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Khám phá giải pháp</span>
+        <h2>Chọn đúng hệ thống cho không gian của bạn</h2>
+        <p>Tìm hiểu cấu hình, vật tư và cách VƯỜN PHỐ đồng hành trước khi đăng ký tư vấn.</p>
+      </div>
+      <div class="cards">
+        <a href="quotation.html" class="card reveal d1"><div class="card-media"><img src="images/Family Kit.jpg" alt="Báo giá trọn gói hệ thống khí canh"><span class="tag">Báo giá</span></div><div class="card-content"><h3>Báo giá trọn gói</h3><p>Tham khảo ba gói Mini Kit, Family Kit và Rooftop Kit theo cấu hình hiện có.</p></div></a>
+        <a href="materials.html" class="card reveal d2"><div class="card-media"><img src="images/tower.png" alt="Vật tư và thiết bị khí canh"><span class="tag">Vật tư</span></div><div class="card-content"><h3>Giá vật tư &amp; thiết bị</h3><p>Xem các nhóm thiết bị cần quan tâm khi lắp đặt hoặc bảo trì hệ thống.</p></div></a>
+        <a href="customers.html" class="card reveal d3"><div class="card-media"><img src="images/hero-banner.jpg" alt="Mô hình minh họa khí canh"><span class="tag">Mô hình</span></div><div class="card-content"><h3>Công trình &amp; mô hình</h3><p>Tham khảo các mô hình minh họa theo ban công, gia đình và sân thượng.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Tự tìm hiểu</span>
+        <h2>Hướng dẫn và kiến thức khí canh</h2>
+        <p>Đọc hướng dẫn tổng quan hoặc tìm hiểu các khái niệm cơ bản trước khi bắt đầu.</p>
+      </div>
+      <div class="cards">
+        <a href="guide.html" class="card reveal d1"><div class="card-media"><img src="images/bao-tri.jpg" alt="Hướng dẫn chăm sóc hệ thống khí canh"><span class="tag">Hướng dẫn</span></div><div class="card-content"><h3>Lắp đặt &amp; chăm sóc</h3><p>Các bước chuẩn bị, vận hành, vệ sinh và xử lý lỗi thường gặp.</p></div></a>
+        <a href="news.html" class="card reveal d2"><div class="card-media"><img src="images/tu-van-mo-hinh.jpg" alt="Tin tức và kiến thức khí canh"><span class="tag">Kiến thức</span></div><div class="card-content"><h3>Tin tức khí canh</h3><p>Nội dung tham khảo về lựa chọn hệ thống, cây trồng và bảo trì tại nhà.</p></div></a>
+        <a href="contact.html" class="card reveal d3"><div class="card-media"><img src="images/lap-dat-tan-noi.jpg" alt="Tư vấn giải pháp khí canh"><span class="tag">Tư vấn</span></div><div class="card-content"><h3>Cần tư vấn riêng?</h3><p>Gửi thông tin không gian để nhận đề xuất phù hợp từ VƯỜN PHỐ.</p></div></a>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA BAND -->
   <section class="section">
     <div class="container">
@@ -227,6 +299,31 @@
     <div class="container">
       <div class="footer-grid">
         <div>
+
+        <!-- PRODUCT PREVIEW -->
+        <section class="section product-preview-section">
+          <div class="container">
+            <div class="section-head reveal">
+              <span class="eyebrow">Gói giải pháp</span>
+              <h2>Chọn mô hình phù hợp với không gian của bạn</h2>
+              <p>Khám phá các lựa chọn Mini Kit, Family Kit và Rooftop Kit trước khi nhận tư vấn.</p>
+            </div>
+            <div class="product-preview-grid">
+              <a href="products.html" class="product-preview-card reveal d1">
+                <img src="images/tower.jpg" alt="Mini Kit">
+                <div><span class="tag">Ban công</span><h3>Mini Kit</h3><p>Gọn gàng cho căn hộ và không gian nhỏ.</p></div>
+              </a>
+              <a href="products.html" class="product-preview-card reveal d2">
+                <img src="images/Family Kit.jpg" alt="Family Kit">
+                <div><span class="tag">Gia đình</span><h3>Family Kit</h3><p>Cân bằng cho nhu cầu trồng rau tại nhà.</p></div>
+              </a>
+              <a href="products.html" class="product-preview-card reveal d3">
+                <img src="images/Rooftop Kit.jpg" alt="Rooftop Kit">
+                <div><span class="tag">Sân thượng</span><h3>Rooftop Kit</h3><p>Dành cho không gian sân thượng rộng hơn.</p></div>
+              </a>
+            </div>
+          </div>
+        </section>
           <div class="logo">
             <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
             <span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span>
@@ -276,7 +373,7 @@
   <!-- FAB -->
   <div class="fab">
     <a class="fab-zalo" href="https://zalo.me/0354841103" target="_blank" rel="noopener" aria-label="Chat Zalo">
-  <img src="images/zalo.png" alt="Zalo" loading="lazy">
+  <span class="fab-zalo-label">Zalo</span>
 </a>
     <button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
   </div>

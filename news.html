@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tin tức &amp; Kiến thức khí canh — VƯỜN PHỐ</title>
+  <meta name="description" content="Tin tức và kiến thức tham khảo về hệ thống khí canh Aeroponics cho gia đình.">
+  <meta name="theme-color" content="#0c3d1f">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .news-disclosure {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 18px 22px;
+      border: 1px solid var(--green-300);
+      border-radius: var(--radius);
+      background: var(--green-50);
+      color: var(--slate-700);
+      text-align: center;
+    }
+
+    .news-disclosure strong { color: var(--green-800); }
+
+    .news-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 34px auto 42px;
+    }
+
+    .news-filter {
+      padding: 10px 16px;
+      border: 1px solid var(--green-300);
+      border-radius: 100px;
+      background: var(--bg);
+      color: var(--green-800);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .news-filter:hover,
+    .news-filter.active { background: var(--green-800); color: #fff; border-color: var(--green-800); }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+
+    .news-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .news-card.is-hidden { display: none; }
+
+    .news-media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--green-100); }
+    .news-media img { width: 100%; height: 100%; object-fit: cover; }
+
+    .news-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 6px 10px;
+      border-radius: 100px;
+      background: rgba(255,255,255,.94);
+      color: var(--green-800);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .news-body { display: flex; flex: 1; flex-direction: column; padding: 24px; }
+    .news-meta { margin-bottom: 10px; color: var(--green-700); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+    .news-body h3 { margin-bottom: 10px; color: var(--green-800); font-size: 20px; line-height: 1.25; }
+    .news-body p { color: var(--slate-500); font-size: 14px; }
+    .news-read { align-self: flex-start; margin-top: auto; padding-top: 20px; color: var(--green-800); font-weight: 800; }
+    .news-read::after { content: " →"; }
+    .news-read:hover { color: var(--green-600); }
+
+    .news-empty { display: none; padding: 30px; color: var(--slate-500); text-align: center; }
+    .news-empty.show { display: block; }
+
+    .news-cta { margin-top: 72px; text-align: center; }
+    .news-cta p { max-width: 650px; margin: 12px auto 24px; color: rgba(255,255,255,.82); }
+    .news-cta .hero-actions { justify-content: center; }
+
+    .article-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(13, 38, 23, .68);
+    }
+
+    .article-modal.open { display: flex; }
+
+    .article-dialog {
+      position: relative;
+      width: min(760px, 100%);
+      max-height: min(720px, 90vh);
+      overflow-y: auto;
+      padding: 34px;
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .article-dialog h2 { margin: 8px 42px 14px 0; color: var(--green-800); font-size: clamp(25px, 4vw, 36px); line-height: 1.15; }
+    .article-dialog .article-category { color: var(--green-700); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .article-dialog .article-copy { display: grid; gap: 14px; color: var(--slate-700); }
+    .article-dialog .article-copy p { line-height: 1.75; }
+
+    .article-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .article-close:hover { background: var(--green-300); }
+
+    @media (max-width: 980px) { .news-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) {
+      .news-grid { grid-template-columns: 1fr; }
+      .article-dialog { padding: 26px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar"></div>
+
+  <div class="top-bar">
+    <div class="container">
+      <span class="tb-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>GIẢI PHÁP KHÍ CANH TOÀN DIỆN</span>
+      <span class="socials"><a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a><a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a><a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a></span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></a>
+      <nav class="nav"><a href="index.html">Trang chủ</a><a href="about.html">Giới thiệu</a><a href="services.html">Dịch vụ</a><a href="products.html">Sản phẩm</a><a href="contact.html">Liên hệ</a></nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="overlay"></div>
+  <nav class="mobile-nav"><a href="index.html">Trang chủ</a><a href="about.html">Giới thiệu</a><a href="services.html">Dịch vụ</a><a href="products.html">Sản phẩm</a><a href="contact.html">Liên hệ</a><a href="contact.html" class="btn">Tư vấn miễn phí</a></nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <span>Tin tức &amp; Kiến thức</span></div>
+      <h1>Tin tức &amp; Kiến thức khí canh</h1>
+      <p>Nội dung tham khảo giúp bạn hiểu, chọn và chăm sóc hệ thống Aeroponics tại nhà.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow">Thư viện kiến thức</span><h2>Hiểu đúng trước khi bắt đầu</h2><p>Các bài viết dưới đây là nội dung mẫu dành cho website VƯỜN PHỐ, không phải bài đăng chính thức có ngày hoặc tác giả xác thực.</p></div>
+        <p class="news-disclosure reveal"><strong>Nội dung tham khảo:</strong> Thông tin kỹ thuật cần được đối chiếu với hướng dẫn của nhà cung cấp và loại thiết bị cụ thể trước khi áp dụng.</p>
+        <div class="news-filters" aria-label="Lọc bài viết">
+          <button class="news-filter active" type="button" data-filter="all">Tất cả</button>
+          <button class="news-filter" type="button" data-filter="co-ban">Kiến thức cơ bản</button>
+          <button class="news-filter" type="button" data-filter="lua-chon">Lựa chọn hệ thống</button>
+          <button class="news-filter" type="button" data-filter="cham-soc">Chăm sóc &amp; bảo trì</button>
+        </div>
+        <div class="news-grid" id="newsGrid">
+          <article class="news-card reveal d1" data-category="co-ban" data-article="aeroponics-la-gi"><div class="news-media"><img src="images/tower.jpg" alt="Minh họa trụ khí canh"><span class="news-tag">Kiến thức cơ bản</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Khí canh là gì? Nguyên lý hoạt động cơ bản</h3><p>Tìm hiểu cách rễ cây nhận dung dịch dinh dưỡng qua sương và những thành phần chính của một hệ khí canh.</p><button class="news-read" type="button" data-article="aeroponics-la-gi">Đọc tiếp</button></div></article>
+          <article class="news-card reveal d2" data-category="co-ban" data-article="khi-canh-thuy-canh"><div class="news-media"><img src="images/so-sanh-giai-phap.jpg" alt="Minh họa so sánh giải pháp trồng"><span class="news-tag">Kiến thức cơ bản</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Khí canh và thủy canh khác nhau thế nào?</h3><p>So sánh cách đưa nước và dinh dưỡng tới rễ, yêu cầu thiết bị và tiêu chí chọn mô hình phù hợp.</p><button class="news-read" type="button" data-article="khi-canh-thuy-canh">Đọc tiếp</button></div></article>
+          <article class="news-card reveal d3" data-category="lua-chon" data-article="can-ho"><div class="news-media"><img src="images/about.jpg" alt="Minh họa không gian trồng tại nhà"><span class="news-tag">Lựa chọn hệ thống</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Lựa chọn hệ thống khí canh cho căn hộ</h3><p>Những câu hỏi nên trả lời về diện tích, vị trí, số lỗ trồng và thói quen chăm sóc trước khi chọn kit.</p><button class="news-read" type="button" data-article="can-ho">Đọc tiếp</button></div></article>
+          <article class="news-card reveal d1" data-category="lua-chon" data-article="rau-phu-hop"><div class="news-media"><img src="images/tu-van-mo-hinh.jpg" alt="Minh họa tư vấn mô hình khí canh"><span class="news-tag">Lựa chọn hệ thống</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Các loại rau phù hợp với khí canh</h3><p>Gợi ý cách bắt đầu từ nhóm cây có chu kỳ và kích thước phù hợp, đồng thời lưu ý việc kiểm tra từng giống.</p><button class="news-read" type="button" data-article="rau-phu-hop">Đọc tiếp</button></div></article>
+          <article class="news-card reveal d2" data-category="cham-soc" data-article="cham-soc-cay"><div class="news-media"><img src="images/Family Kit.jpg" alt="Minh họa hệ khí canh gia đình"><span class="news-tag">Chăm sóc &amp; bảo trì</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Những lưu ý khi chăm sóc cây khí canh</h3><p>Danh sách quan sát hằng ngày về cây, rễ, dung dịch, bơm và đầu phun mà người mới nên hình thành.</p><button class="news-read" type="button" data-article="cham-soc-cay">Đọc tiếp</button></div></article>
+          <article class="news-card reveal d3" data-category="cham-soc" data-article="bao-tri"><div class="news-media"><img src="images/bao-tri.jpg" alt="Minh họa bảo trì hệ thống khí canh"><span class="news-tag">Chăm sóc &amp; bảo trì</span></div><div class="news-body"><div class="news-meta">Nội dung tham khảo · Bài viết mẫu</div><h3>Bảo trì hệ thống khí canh tại nhà</h3><p>Các điểm cần kiểm tra khi vệ sinh bồn, đường ống, béc phun và thiết bị trước khi hệ thống hoạt động lại.</p><button class="news-read" type="button" data-article="bao-tri">Đọc tiếp</button></div></article>
+        </div>
+        <p class="news-empty" id="newsEmpty">Chưa có bài viết trong danh mục này.</p>
+        <div class="cta-band news-cta reveal"><h2>Tư vấn giải pháp khí canh</h2><p>Gửi thông tin không gian và mục tiêu trồng rau để VƯỜN PHỐ đề xuất mô hình phù hợp.</p><div class="hero-actions"><a href="contact.html" class="btn btn-white">Tư vấn giải pháp khí canh</a></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="article-modal" id="articleModal" role="presentation" aria-hidden="true">
+    <article class="article-dialog" role="dialog" aria-modal="true" aria-labelledby="articleTitle">
+      <button class="article-close" type="button" aria-label="Đóng bài viết">×</button>
+      <div class="article-category" id="articleCategory"></div>
+      <h2 id="articleTitle"></h2>
+      <div class="article-copy" id="articleCopy"></div>
+    </article>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></div><p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p><div class="socials"><a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a><a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a><a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a></div></div>
+        <div><h4>Liên kết</h4><ul><li><a href="index.html">Trang chủ</a></li><li><a href="about.html">Giới thiệu</a></li><li><a href="services.html">Dịch vụ</a></li><li><a href="products.html">Sản phẩm</a></li><li><a href="contact.html">Liên hệ</a></li></ul></div>
+        <div><h4>Sản phẩm</h4><ul><li><a href="products.html">Mini Kit</a></li><li><a href="products.html">Family Kit</a></li><li><a href="products.html">Rooftop Kit</a></li><li><a href="quotation.html">Báo giá trọn gói</a></li><li><a href="materials.html">Giá vật tư</a></li></ul></div>
+        <div><h4>Liên hệ</h4><ul class="f-contact"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0354841103</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> vuonphofarming@gmail.com</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 VƯỜN PHỐ. Đã đăng ký bản quyền.</span><span>Sống xanh · Sống khỏe · Bền vững</span></div>
+    </div>
+  </footer>
+
+  <div class="fab"><a class="fab-zalo" href="https://zalo.me/0354841103" target="_blank" rel="noopener" aria-label="Chat Zalo"><span class="fab-zalo-label">Zalo</span></a><button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api-loader.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const articles = {
+        "aeroponics-la-gi": {
+          category: "Kiến thức cơ bản · Nội dung tham khảo",
+          title: "Khí canh là gì? Nguyên lý hoạt động cơ bản",
+          paragraphs: [
+            "Khí canh là phương pháp trồng cây trong đó phần rễ được giữ trong một khoang riêng và nhận dung dịch dinh dưỡng dưới dạng sương. Cây không cần đất để giữ rễ; phần thân được cố định bằng rọ hoặc vị trí trồng phù hợp với thiết kế của hệ thống.",
+            "Một hệ khí canh gia đình thường có trụ hoặc khung trồng, bồn chứa dung dịch, máy bơm, ống dẫn, đầu phun và bộ điều khiển theo cấu hình. Khi bơm hoạt động, dung dịch được đưa tới vùng rễ rồi quay lại bồn theo thiết kế tuần hoàn.",
+            "Điểm cần nhớ là mỗi bộ kit có cách bố trí và chu kỳ vận hành riêng. Hãy dùng sơ đồ lắp đặt và hướng dẫn đi kèm sản phẩm thay vì áp dụng một lịch phun chung cho mọi hệ."
+          ]
+        },
+        "khi-canh-thuy-canh": {
+          category: "Kiến thức cơ bản · Nội dung tham khảo",
+          title: "Khí canh và thủy canh khác nhau thế nào?",
+          paragraphs: [
+            "Cả khí canh và thủy canh đều đưa nước cùng dưỡng chất tới vùng rễ mà không phụ thuộc vào đất. Khác biệt chính nằm ở cách rễ tiếp xúc với dung dịch: khí canh dùng sương, còn thủy canh thường dùng dòng dung dịch hoặc môi trường giữ rễ tùy mô hình.",
+            "Khí canh cần phối hợp chính xác giữa bơm, ống và đầu phun. Thủy canh có thể có cấu hình khác như dòng chảy, ngập rút hoặc màng dinh dưỡng. Vì vậy, vật tư và cách vận hành của hai hệ không nên hoán đổi tùy ý.",
+            "Khi chọn mô hình, nên bắt đầu từ không gian, mức độ chăm sóc mong muốn, loại cây và khả năng bảo trì. VƯỜN PHỐ tập trung tư vấn hệ khí canh Aeroponics cho nhu cầu gia đình."
+          ]
+        },
+        "can-ho": {
+          category: "Lựa chọn hệ thống · Nội dung tham khảo",
+          title: "Lựa chọn hệ thống khí canh cho căn hộ",
+          paragraphs: [
+            "Với căn hộ, hãy kiểm tra trước diện tích ban công hoặc vị trí đặt hệ, đường đi lại, nguồn điện, nguồn nước và khả năng thoát nước. Một hệ phù hợp cần thuận tiện để quan sát và vệ sinh, không chỉ vừa về kích thước.",
+            "Mini Kit trong dữ liệu sản phẩm hiện tại có 20 lỗ trồng và kích thước 40 × 40 × 120 cm, phù hợp tham khảo cho ban công hoặc căn hộ nhỏ. Thông số thực tế vẫn cần được xác nhận khi tư vấn.",
+            "Nên ưu tiên cấu hình dễ tiếp cận các bộ phận như bồn, bơm và đầu phun. Nếu vị trí đặt hệ khó thao tác, việc vệ sinh và xử lý sự cố sau này sẽ mất nhiều công sức hơn."
+          ]
+        },
+        "rau-phu-hop": {
+          category: "Lựa chọn hệ thống · Nội dung tham khảo",
+          title: "Các loại rau phù hợp với khí canh",
+          paragraphs: [
+            "Người mới nên bắt đầu với nhóm cây có kích thước vừa, thời gian sinh trưởng phù hợp và có thể quan sát phản ứng của cây thường xuyên. Rau ăn lá và một số loại rau thơm thường là nhóm được cân nhắc trong mô hình gia đình, nhưng giống cụ thể cần được kiểm tra theo hướng dẫn trồng.",
+            "Khi chọn cây, cần cân nhắc kích thước bộ rễ, nhu cầu ánh sáng, độ ổn định của thân và khoảng cách giữa các vị trí trồng. Không nên đặt cây quá lớn vào một trụ được thiết kế cho cây nhỏ.",
+            "Dữ liệu về giống cây và thời gian thu hoạch cụ thể chưa có trong repo. Hãy hỏi nhà cung cấp giống hoặc tư vấn viên trước khi lập kế hoạch sản lượng."
+          ]
+        },
+        "cham-soc-cay": {
+          category: "Chăm sóc & bảo trì · Nội dung tham khảo",
+          title: "Những lưu ý khi chăm sóc cây khí canh",
+          paragraphs: [
+            "Hãy hình thành thói quen quan sát lá, thân và rễ; kiểm tra mực dung dịch; đồng thời nghe tiếng bơm và quan sát đầu phun. Những thay đổi nhỏ nếu được phát hiện sớm thường dễ xử lý hơn.",
+            "Giữ khu vực quanh hệ thống sạch, tránh để lá rụng hoặc vật lạ đi vào bồn và đường ống. Khi cần vệ sinh hoặc tháo bơm, phải ngắt nguồn điện trước khi thao tác.",
+            "Lịch phun, nồng độ dinh dưỡng, pH và EC không được áp dụng một con số chung cho mọi hệ. Các thông số này cần theo hướng dẫn của nhà cung cấp và loại cây đang trồng."
+          ]
+        },
+        "bao-tri": {
+          category: "Chăm sóc & bảo trì · Nội dung tham khảo",
+          title: "Bảo trì hệ thống khí canh tại nhà",
+          paragraphs: [
+            "Bảo trì nên bắt đầu từ các bộ phận có ảnh hưởng trực tiếp tới dòng dung dịch: bồn, máy bơm, ống dẫn, đầu phun và béc. Kiểm tra từng vị trí theo sơ đồ của hệ để tránh bỏ sót mối nối.",
+            "Nếu sương yếu hoặc không đều, hãy kiểm tra nguồn điện, mực dung dịch, đường ống có bị gập/tắc và béc có đúng loại hay không. Không tự tăng áp lực hoặc thay phụ kiện khác chuẩn khi chưa xác nhận tương thích.",
+            "Chu kỳ vệ sinh, thay dung dịch và thay vật tư cần theo tài liệu của bộ kit. VƯỜN PHỐ hiện chưa công bố lịch bảo trì cố định, vì vậy các mốc cụ thể đang được cập nhật."
+          ]
+        }
+      };
+
+      const modal = document.querySelector("#articleModal");
+      const title = document.querySelector("#articleTitle");
+      const category = document.querySelector("#articleCategory");
+      const copy = document.querySelector("#articleCopy");
+      const closeButton = document.querySelector(".article-close");
+      let lastTrigger = null;
+
+      function closeArticle() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        if (lastTrigger) lastTrigger.focus();
+      }
+
+      document.querySelectorAll("[data-article]").forEach(function (trigger) {
+        if (!trigger.matches("button.news-read")) return;
+        trigger.addEventListener("click", function () {
+          const article = articles[trigger.dataset.article];
+          if (!article) return;
+          lastTrigger = trigger;
+          category.textContent = article.category;
+          title.textContent = article.title;
+          copy.replaceChildren(...article.paragraphs.map(function (paragraph) {
+            const element = document.createElement("p");
+            element.textContent = paragraph;
+            return element;
+          }));
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+          closeButton.focus();
+        });
+      });
+
+      closeButton.addEventListener("click", closeArticle);
+      modal.addEventListener("click", function (event) {
+        if (event.target === modal) closeArticle();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.classList.contains("open")) closeArticle();
+      });
+
+      const filters = document.querySelectorAll(".news-filter");
+      const cards = document.querySelectorAll(".news-card");
+      const empty = document.querySelector("#newsEmpty");
+      filters.forEach(function (filter) {
+        filter.addEventListener("click", function () {
+          const selected = filter.dataset.filter;
+          let visible = 0;
+          filters.forEach(function (item) { item.classList.toggle("active", item === filter); });
+          cards.forEach(function (card) {
+            const show = selected === "all" || card.dataset.category === selected;
+            card.classList.toggle("is-hidden", !show);
+            if (show) visible += 1;
+          });
+          empty.classList.toggle("show", visible === 0);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

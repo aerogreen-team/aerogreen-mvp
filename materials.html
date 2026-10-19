@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giá vật tư &amp; thiết bị khí canh — VƯỜN PHỐ</title>
+  <meta name="description" content="Danh sách vật tư và thiết bị tham khảo cho hệ thống khí canh VƯỜN PHỐ.">
+  <meta name="theme-color" content="#0c3d1f">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .materials-intro {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .materials-intro h2 { margin-bottom: 14px; }
+    .materials-intro p { color: var(--slate-500); }
+
+    .materials-note {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--green-900);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .materials-note strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .materials-note span { color: rgba(255,255,255,.8); font-size: 14px; }
+
+    .materials-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .materials-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .materials-table th,
+    .materials-table td {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    .materials-table th {
+      color: #fff;
+      background: var(--green-800);
+      font-size: 14px;
+    }
+
+    .materials-table th:not(:first-child),
+    .materials-table td:not(:first-child) { text-align: center; }
+    .materials-table tbody tr:last-child td { border-bottom: 0; }
+    .materials-table tbody tr:nth-child(even) { background: var(--green-50); }
+    .materials-table td:first-child { font-weight: 700; color: var(--slate-700); }
+    .materials-table td { color: var(--slate-500); font-size: 14px; }
+    .materials-table .price { color: var(--green-800); font-weight: 800; white-space: nowrap; }
+
+    .material-name { display: flex; gap: 14px; align-items: center; text-align: left; }
+    .material-placeholder {
+      display: grid;
+      place-items: center;
+      flex: 0 0 72px;
+      width: 72px;
+      height: 56px;
+      padding: 6px;
+      border: 1px dashed var(--green-400);
+      border-radius: var(--radius-sm);
+      color: var(--green-700);
+      background: var(--green-100);
+      font-size: 10px;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .kit-materials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .kit-material-card {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .kit-material-card.featured { border-color: var(--green-500); box-shadow: var(--shadow); }
+    .kit-material-card h3 { margin-bottom: 8px; color: var(--green-800); }
+    .kit-material-card p { color: var(--slate-500); font-size: 14px; }
+    .kit-material-card ul { display: grid; gap: 9px; margin-top: 18px; padding-left: 18px; color: var(--slate-700); font-size: 14px; }
+    .kit-material-card .btn { margin-top: 22px; }
+
+    .materials-guidance {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .guidance-card {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+
+    .guidance-card h3 { margin-bottom: 8px; font-size: 18px; }
+    .guidance-card p { color: var(--slate-500); font-size: 14px; }
+
+    .materials-cta { text-align: center; }
+    .materials-cta p { max-width: 650px; margin: 12px auto 24px; color: rgba(255,255,255,.82); }
+    .materials-cta .hero-actions { justify-content: center; }
+
+    @media (max-width: 900px) {
+      .materials-intro { grid-template-columns: 1fr; }
+      .kit-materials, .materials-guidance { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .kit-materials, .materials-guidance { grid-template-columns: 1fr; }
+      .materials-note { padding: 20px; }
+      .materials-table th, .materials-table td { padding: 14px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar"></div>
+
+  <div class="top-bar">
+    <div class="container">
+      <span class="tb-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+        GIẢI PHÁP KHÍ CANH TOÀN DIỆN
+      </span>
+      <span class="socials">
+        <a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+        <a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a>
+        <a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a>
+      </span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+        <span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="products.html">Sản phẩm</a>
+        <a href="contact.html">Liên hệ</a>
+      </nav>
+      <span class="nav-cta"><a href="contact.html" class="btn">Tư vấn miễn phí</a></span>
+      <button class="burger" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="overlay"></div>
+  <nav class="mobile-nav">
+    <a href="index.html">Trang chủ</a>
+    <a href="about.html">Giới thiệu</a>
+    <a href="services.html">Dịch vụ</a>
+    <a href="products.html">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+    <a href="contact.html" class="btn">Tư vấn miễn phí</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <span>Giá vật tư &amp; thiết bị</span></div>
+      <h1>Bảng giá vật tư &amp; thiết bị khí canh</h1>
+      <p>Tham khảo các nhóm thiết bị thường dùng cho hệ thống khí canh Aeroponics tại gia đình.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="materials-intro">
+          <div class="reveal">
+            <span class="eyebrow">Vật tư khí canh</span>
+            <h2>Chọn đúng thiết bị cho hệ thống phù hợp</h2>
+            <p>Danh sách dưới đây giúp bạn hình dung các nhóm vật tư cần quan tâm khi lắp đặt hoặc bảo trì hệ thống khí canh. Cấu hình thực tế phụ thuộc vào không gian và thiết kế được tư vấn.</p>
+          </div>
+          <div class="materials-note reveal d1"><strong>Giá bán đang cập nhật</strong><span>Repo hiện chưa có bảng giá vật tư được xác thực. Các mục chưa có giá hiển thị “Liên hệ báo giá” để tránh tạo thông tin không chính xác.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Danh mục tham khảo</span>
+          <h2>Vật tư và thiết bị khí canh</h2>
+          <p>Thông số sẽ được chốt theo cấu hình và hiện trạng không gian thực tế.</p>
+        </div>
+        <div class="materials-table-wrap reveal">
+          <table class="materials-table">
+            <thead><tr><th>Thiết bị</th><th>Mô tả sử dụng</th><th>Thông số tham khảo</th><th>Giá</th></tr></thead>
+            <tbody>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Trụ khí canh</span></div></td><td>Khung/trụ chính để bố trí các vị trí trồng cây theo chiều đứng.</td><td>Chọn theo số lỗ và kích thước hệ thống</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Máy bơm nước</span></div></td><td>Luân chuyển dung dịch dinh dưỡng trong hệ thống.</td><td>Lưu lượng chọn theo quy mô hệ thống</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Đầu phun sương</span></div></td><td>Tạo sương để đưa dung dịch tới vùng rễ cây.</td><td>Chọn theo sơ đồ ống và số vị trí phun</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Béc phun</span></div></td><td>Đầu phun thay thế hoặc bổ sung cho cụm phun.</td><td>Kiểu ren và lưu lượng cần xác nhận</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Bồn chứa dung dịch</span></div></td><td>Chứa nước và dung dịch dinh dưỡng tuần hoàn.</td><td>Dung tích chọn theo số lỗ trồng</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Bộ hẹn giờ</span></div></td><td>Điều khiển chu kỳ vận hành bơm theo cấu hình được tư vấn.</td><td>Thời gian bật/tắt cần cài theo hệ thống</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Rọ trồng cây</span></div></td><td>Giữ cây tại vị trí trồng và hỗ trợ vùng rễ.</td><td>Kích thước chọn theo trụ và lỗ trồng</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Dung dịch dinh dưỡng</span></div></td><td>Bổ sung dưỡng chất cho cây trong hệ thống tuần hoàn.</td><td>Chọn theo loại cây và hướng dẫn sử dụng</td><td class="price">Liên hệ báo giá</td></tr>
+              <tr><td><div class="material-name"><span class="material-placeholder">Ảnh đang cập nhật</span><span>Ống dẫn và phụ kiện</span></div></td><td>Kết nối bồn, bơm, cụm phun và các vị trí trong hệ.</td><td>Đường kính, chiều dài và khớp nối theo thiết kế</td><td class="price">Liên hệ báo giá</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="quote-note"><strong>Lưu ý:</strong> Đây là danh mục vật tư tham khảo cho khí canh, không phải bảng giá đã chốt. Vui lòng nhận tư vấn trước khi mua thiết bị rời để bảo đảm tương thích.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Gợi ý theo cấu hình</span>
+          <h2>Vật tư cho từng gói khí canh</h2>
+          <p>Các nhóm dưới đây được suy ra từ thông số sản phẩm hiện có; số lượng vật tư cụ thể cần được xác nhận khi tư vấn.</p>
+        </div>
+        <div class="kit-materials">
+          <article class="kit-material-card reveal d1">
+            <h3>Mini Kit</h3>
+            <p>20 lỗ trồng · 40 × 40 × 120 cm · Ban công / Căn hộ nhỏ</p>
+            <ul><li>Trụ khí canh quy mô nhỏ</li><li>Bơm và cụm phun phù hợp</li><li>Bồn dung dịch, rọ trồng và ống dẫn</li><li>Bộ hẹn giờ và dung dịch dinh dưỡng</li></ul>
+            <a href="contact.html" class="btn">Nhận tư vấn</a>
+          </article>
+          <article class="kit-material-card featured reveal d2">
+            <h3>Family Kit</h3>
+            <p>40 lỗ trồng · 60 × 60 × 160 cm · Gia đình 4–6 người</p>
+            <ul><li>Trụ và cụm phun cho quy mô gia đình</li><li>Bơm, bồn dung dịch và bộ hẹn giờ</li><li>Rọ trồng theo số vị trí</li><li>Ống dẫn, phụ kiện và dinh dưỡng</li></ul>
+            <a href="contact.html" class="btn">Nhận tư vấn</a>
+          </article>
+          <article class="kit-material-card reveal d3">
+            <h3>Rooftop Kit</h3>
+            <p>80 lỗ trồng · 100 × 100 × 180 cm · Sân thượng / Diện tích lớn</p>
+            <ul><li>Trụ khí canh quy mô lớn</li><li>Bơm và nhiều điểm phun theo thiết kế</li><li>Bồn dung dịch và đường ống tương ứng</li><li>Hẹn giờ, rọ trồng và dinh dưỡng</li></ul>
+            <a href="contact.html" class="btn">Nhận tư vấn</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Trước khi lắp đặt</span>
+          <h2>Ba điều nên xác nhận</h2>
+        </div>
+        <div class="materials-guidance">
+          <article class="guidance-card reveal d1"><h3>Không gian</h3><p>Đo vị trí đặt hệ, lối đi, nguồn điện và đường cấp thoát nước trước khi chốt vật tư.</p></article>
+          <article class="guidance-card reveal d2"><h3>Tương thích</h3><p>Không nên mua riêng bơm, béc hoặc ống dẫn trước khi biết thông số của toàn bộ hệ thống.</p></article>
+          <article class="guidance-card reveal d3"><h3>Chăm sóc</h3><p>Hỏi rõ cách vệ sinh, thay dung dịch, kiểm tra đầu phun và phạm vi bảo trì sau lắp đặt.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band materials-cta reveal">
+          <h2>Cần chọn vật tư đúng cho hệ thống?</h2>
+          <p>Gửi thông tin không gian và nhu cầu của bạn để VƯỜN PHỐ tư vấn cấu hình phù hợp.</p>
+          <div class="hero-actions"><a href="contact.html" class="btn btn-white">Nhận tư vấn</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo"><span class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="logo-text"><h2>VƯỜN PHỐ</h2><p>Sống xanh · Sống khỏe</p></span></div>
+          <p class="f-about">Nền tảng trung gian tư vấn và kết nối giải pháp khí canh cho hộ gia đình — giúp bạn trồng rau sạch tại nhà dễ dàng hơn.</p>
+          <div class="socials"><a href="https://www.facebook.com/logisticsnyvcorp/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a><a href="https://www.tiktok.com/@vuonphofarming" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245h-3.332v13.672a2.896 2.896 0 1 1-2-2.757V9.969a6.227 6.227 0 1 0 5.332 6.144V9.19a8.1 8.1 0 0 0 4.773 1.526V7.383a4.807 4.807 0 0 1-1.003-.697z"/></svg></a><a href="mailto:vuonphofarming@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg></a></div>
+        </div>
+        <div><h4>Liên kết</h4><ul><li><a href="index.html">Trang chủ</a></li><li><a href="about.html">Giới thiệu</a></li><li><a href="services.html">Dịch vụ</a></li><li><a href="products.html">Sản phẩm</a></li><li><a href="contact.html">Liên hệ</a></li></ul></div>
+        <div><h4>Sản phẩm</h4><ul><li><a href="products.html">Mini Kit</a></li><li><a href="products.html">Family Kit</a></li><li><a href="products.html">Rooftop Kit</a></li><li><a href="quotation.html">Báo giá trọn gói</a></li></ul></div>
+        <div><h4>Liên hệ</h4><ul class="f-contact"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 0354841103</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg> vuonphofarming@gmail.com</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> TP. Hồ Chí Minh</li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 VƯỜN PHỐ. Đã đăng ký bản quyền.</span><span>Sống xanh · Sống khỏe · Bền vững</span></div>
+    </div>
+  </footer>
+
+  <div class="fab"><a class="fab-zalo" href="https://zalo.me/0354841103" target="_blank" rel="noopener" aria-label="Chat Zalo"><span class="fab-zalo-label">Zalo</span></a><button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Lên đầu trang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api-loader.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
