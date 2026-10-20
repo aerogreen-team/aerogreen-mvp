@@ -11,7 +11,7 @@ const PRODUCTS = [
     size: "40cm x 40cm x 120cm",
     price: 5990000,
     price_label: "5.990.000₫",
-    image: "../images/tower.png",
+    image: "../images/anh3.webp",
     features: JSON.stringify([
       "20 lỗ trồng",
       "Phù hợp ban công nhỏ",
@@ -22,13 +22,13 @@ const PRODUCTS = [
   {
     name: "Family Kit",
     description:
-      "Mẫu bán chạy nhất. Đủ sản lượng cung cấp rau sạch cho cả gia đình mỗi ngày.",
+      "Gói khí canh để cân nhắc cho gia đình. Sản lượng phụ thuộc cây trồng, ánh sáng và cách vận hành.",
     holes: 40,
     suitable_for: "Gia đình 4–6 người",
     size: "60cm x 60cm x 160cm",
     price: 8490000,
     price_label: "8.490.000₫",
-    image: "../images/Family Kit.png",
+    image: "../images/anh7.webp",
     features: JSON.stringify([
       "40 lỗ trồng",
       "Phù hợp gia đình 4-6 người",
@@ -45,7 +45,7 @@ const PRODUCTS = [
     size: "100cm x 100cm x 180cm",
     price: 12990000,
     price_label: "12.990.000₫",
-    image: "../images/Rooftop Kit.png",
+    image: "../images/anh5.webp",
     features: JSON.stringify([
       "80 lỗ trồng",
       "Phù hợp sân thượng",

@@ -1,0 +1,75 @@
+/* Phông tự phục vụ, giữ đầy đủ ký tự tiếng Việt; giấy phép tại fonts/OFL.txt. */
+@font-face {
+  font-family: "Be Vietnam Pro";
+  font-style: normal;
+  font-weight: 100 450;
+  font-display: swap;
+  src: url("../fonts/be-vietnam-pro-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  font-style: normal;
+  font-weight: 451 650;
+  font-display: swap;
+  src: url("../fonts/be-vietnam-pro-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  font-style: normal;
+  font-weight: 651 900;
+  font-display: swap;
+  src: url("../fonts/be-vietnam-pro-700.woff2") format("woff2");
+}
+/* Chỉ đồng bộ màu, chữ và bo góc; giữ nguyên logic hợp đồng và kiểu in. */
+* {
+  font-family: "Be Vietnam Pro", system-ui, sans-serif;
+}
+body {
+  background: #f3f3e9;
+  color: #173c2c;
+}
+.contract-header {
+  background: linear-gradient(115deg, #123d2b, #24553a);
+}
+.card {
+  border: 1px solid #dfe5d9;
+  border-radius: 24px;
+  background: #fffefa;
+  box-shadow: 0 12px 38px #1a3b2412;
+}
+.card h2 {
+  color: #1d563b;
+}
+.info-item,
+.price-table th {
+  background: #f3f3e9;
+}
+.btn {
+  border-radius: 100px;
+  min-height: 48px;
+}
+.btn-primary,
+.timeline-step.done {
+  background: #1d563b;
+}
+.btn-outline {
+  color: #1d563b;
+  border-color: #1d563b;
+}
+.contract-footer {
+  color: #5e6c61;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+@media print {
+  body {
+    background: white;
+  }
+  .card {
+    box-shadow: none;
+  }
+}
