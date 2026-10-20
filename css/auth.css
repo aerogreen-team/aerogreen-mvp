@@ -106,3 +106,11 @@
   .account-grid { grid-template-columns: 1fr; }
   .auth-card { padding: 32px 24px; }
 }
+
+/* Đồng bộ với nền kem và hệ thống xanh lá; giữ nguyên bố cục các form. */
+.auth-card, .account-panel { border-color: var(--line); border-radius: 26px; box-shadow: var(--shadow); }
+.auth-aside h1 { font-weight: 600; line-height: 1.3; letter-spacing: -.04em; }
+.account-head { border-radius: 28px; }
+.auth-card input, .auth-card select, .account-panel input, .account-panel select, .account-panel textarea { background: #fffefa; border-color: var(--line); }
+.auth-switch a { text-underline-offset: 4px; }
+@media (max-width: 767px) { .auth-card, .account-panel { padding: 26px 22px; } }

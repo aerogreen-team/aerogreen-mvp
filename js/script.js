@@ -28,18 +28,37 @@
   const burger = $(".burger");
   const drawer = $(".mobile-nav");
   const overlay = $(".overlay");
+  let menuFocus = null;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const closeButton = $('.drawer-close');
   function closeMenu() {
     burger && burger.classList.remove("open");
     drawer && drawer.classList.remove("open");
     overlay && overlay.classList.remove("open");
     document.body.style.overflow = "";
+    if (burger) { burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Mở menu'); }
+    if (drawer) { drawer.inert = true; drawer.setAttribute('aria-hidden', 'true'); }
+    if (menuFocus) { menuFocus.focus(); menuFocus = null; }
   }
   function toggleMenu() {
     const open = drawer && drawer.classList.toggle("open");
     burger && burger.classList.toggle("open", open);
     overlay && overlay.classList.toggle("open", open);
     document.body.style.overflow = open ? "hidden" : "";
+    if (burger) { burger.setAttribute('aria-expanded', String(!!open)); burger.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu'); }
+    if (drawer) { drawer.inert = !open; drawer.setAttribute('aria-hidden', String(!open)); }
+    if (open) { menuFocus = document.activeElement; (closeButton || drawer.querySelector('a')).focus(); }
+    else if (menuFocus) { menuFocus.focus(); menuFocus = null; }
   }
+  closeButton && closeButton.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (event) => {
+    if (!drawer || !drawer.classList.contains('open') || event.key !== 'Tab') return;
+    const focusable = [...drawer.querySelectorAll('a, button')];
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  window.addEventListener('resize', () => { if (window.innerWidth > 1100 && drawer && drawer.classList.contains('open')) closeMenu(); });
   burger && burger.addEventListener("click", toggleMenu);
   overlay && overlay.addEventListener("click", closeMenu);
   $$(".mobile-nav a").forEach((a) => a.addEventListener("click", closeMenu));
@@ -67,11 +86,12 @@
         const el = en.target;
         const target = parseFloat(el.dataset.count);
         const suffix = el.dataset.suffix || "";
+        if (reducedMotion.matches) { el.textContent = String(target).replace('.', ',') + suffix; cio.unobserve(el); return; }
         const dur = 1400, start = performance.now();
         const step = (now) => {
           const p = Math.min((now - start) / dur, 1);
           const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.round(target * eased) + suffix;
+          el.textContent = (Number.isInteger(target) ? Math.round(target * eased) : (target * eased).toFixed(1).replace(".", ",")) + suffix;
           if (p < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
@@ -193,7 +213,7 @@
       reason = "Phù hợp với chung cư, ban công nhỏ và khách hàng muốn bắt đầu trải nghiệm khí canh với chi phí hợp lý. Dễ lắp đặt, dễ chăm sóc.";
     } else if (area === "medium" || budget === "mid") {
       product = "Family Kit";
-      reason = "Mẫu bán chạy nhất — phù hợp nhà phố hoặc ban công vừa, đủ sản lượng rau sạch cho cả gia đình mỗi ngày.";
+      reason = "Phù hợp để cân nhắc cho nhà phố hoặc ban công vừa; sản lượng cần đánh giá theo điều kiện thực tế.";
     } else {
       product = "Rooftop Kit";
       reason = "Năng suất tối đa cho sân thượng hoặc không gian lớn, dành cho khách hàng muốn xây dựng vườn rau đô thị thực sự tại nhà.";
@@ -209,7 +229,7 @@
       "<button class=\"btn\" type=\"button\" onclick=\"chooseProduct('" + product + "')\">Đăng ký tư vấn gói này" +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>';
     result.classList.add("show");
-    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    result.scrollIntoView({ behavior: reducedMotion.matches ? "instant" : "smooth", block: "nearest" });
   };
 
   /* ---------- Prefill note + thông số từ trợ lý chọn gói ---------- */
