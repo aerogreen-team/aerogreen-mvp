@@ -1,0 +1,35 @@
+{
+  "name": "aerogreen-mvp",
+  "version": "1.0.0",
+  "description": "> **Giải pháp khí canh toàn diện: Tư vấn — So sánh — Lắp đặt — Bảo trì**\r > Nền tảng giúp hộ gia đình tại TP.HCM chọn đúng hệ thống khí canh phù hợp với diện tích và ngân sách của mình.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aerogreen-team/aerogreen-mvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aerogreen-team/aerogreen-mvp/issues"
+  },
+  "homepage": "https://github.com/aerogreen-team/aerogreen-mvp#readme",
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "mysql2": "^3.24.6",
+    "nodemailer": "^10.1.7"
+  }
+}
