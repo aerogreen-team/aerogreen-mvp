@@ -29,49 +29,88 @@
   const drawer = $(".mobile-nav");
   const overlay = $(".overlay");
   let menuFocus = null;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const closeButton = $('.drawer-close');
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const closeButton = $(".drawer-close");
   function closeMenu() {
     burger && burger.classList.remove("open");
     drawer && drawer.classList.remove("open");
     overlay && overlay.classList.remove("open");
     document.body.style.overflow = "";
-    if (burger) { burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Mở menu'); }
-    if (drawer) { drawer.inert = true; drawer.setAttribute('aria-hidden', 'true'); }
-    if (menuFocus) { menuFocus.focus(); menuFocus = null; }
+    if (burger) {
+      burger.setAttribute("aria-expanded", "false");
+      burger.setAttribute("aria-label", "Mở menu");
+    }
+    if (drawer) {
+      drawer.inert = true;
+      drawer.setAttribute("aria-hidden", "true");
+    }
+    if (menuFocus) {
+      menuFocus.focus();
+      menuFocus = null;
+    }
   }
   function toggleMenu() {
     const open = drawer && drawer.classList.toggle("open");
     burger && burger.classList.toggle("open", open);
     overlay && overlay.classList.toggle("open", open);
     document.body.style.overflow = open ? "hidden" : "";
-    if (burger) { burger.setAttribute('aria-expanded', String(!!open)); burger.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu'); }
-    if (drawer) { drawer.inert = !open; drawer.setAttribute('aria-hidden', String(!open)); }
-    if (open) { menuFocus = document.activeElement; (closeButton || drawer.querySelector('a')).focus(); }
-    else if (menuFocus) { menuFocus.focus(); menuFocus = null; }
+    if (burger) {
+      burger.setAttribute("aria-expanded", String(!!open));
+      burger.setAttribute("aria-label", open ? "Đóng menu" : "Mở menu");
+    }
+    if (drawer) {
+      drawer.inert = !open;
+      drawer.setAttribute("aria-hidden", String(!open));
+    }
+    if (open) {
+      menuFocus = document.activeElement;
+      (closeButton || drawer.querySelector("a")).focus();
+    } else if (menuFocus) {
+      menuFocus.focus();
+      menuFocus = null;
+    }
   }
-  closeButton && closeButton.addEventListener('click', closeMenu);
-  document.addEventListener('keydown', (event) => {
-    if (!drawer || !drawer.classList.contains('open') || event.key !== 'Tab') return;
-    const focusable = [...drawer.querySelectorAll('a, button')];
-    const first = focusable[0], last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  closeButton && closeButton.addEventListener("click", closeMenu);
+  document.addEventListener("keydown", (event) => {
+    if (!drawer || !drawer.classList.contains("open") || event.key !== "Tab")
+      return;
+    const focusable = [...drawer.querySelectorAll("a, button")];
+    const first = focusable[0],
+      last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
-  window.addEventListener('resize', () => { if (window.innerWidth > 1100 && drawer && drawer.classList.contains('open')) closeMenu(); });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1100 && drawer && drawer.classList.contains("open"))
+      closeMenu();
+  });
   burger && burger.addEventListener("click", toggleMenu);
   overlay && overlay.addEventListener("click", closeMenu);
   $$(".mobile-nav a").forEach((a) => a.addEventListener("click", closeMenu));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
 
   /* ---------- Scroll reveal ---------- */
   const reveals = $$(".reveal");
   if ("IntersectionObserver" in window && reveals.length) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add("in");
+            io.unobserve(en.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
     reveals.forEach((el) => io.observe(el));
   } else {
     reveals.forEach((el) => el.classList.add("in"));
@@ -80,24 +119,35 @@
   /* ---------- Animated counters ---------- */
   const counters = $$("[data-count]");
   if ("IntersectionObserver" in window && counters.length) {
-    const cio = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        const el = en.target;
-        const target = parseFloat(el.dataset.count);
-        const suffix = el.dataset.suffix || "";
-        if (reducedMotion.matches) { el.textContent = String(target).replace('.', ',') + suffix; cio.unobserve(el); return; }
-        const dur = 1400, start = performance.now();
-        const step = (now) => {
-          const p = Math.min((now - start) / dur, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = (Number.isInteger(target) ? Math.round(target * eased) : (target * eased).toFixed(1).replace(".", ",")) + suffix;
-          if (p < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-        cio.unobserve(el);
-      });
-    }, { threshold: 0.6 });
+    const cio = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          const target = parseFloat(el.dataset.count);
+          const suffix = el.dataset.suffix || "";
+          if (reducedMotion.matches) {
+            el.textContent = String(target).replace(".", ",") + suffix;
+            cio.unobserve(el);
+            return;
+          }
+          const dur = 1400,
+            start = performance.now();
+          const step = (now) => {
+            const p = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent =
+              (Number.isInteger(target)
+                ? Math.round(target * eased)
+                : (target * eased).toFixed(1).replace(".", ",")) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+          cio.unobserve(el);
+        });
+      },
+      { threshold: 0.6 },
+    );
     counters.forEach((el) => cio.observe(el));
   }
 
@@ -107,7 +157,8 @@
     if (!t) {
       t = document.createElement("div");
       t.className = "toast";
-      t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span></span>';
+      t.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span></span>';
       document.body.appendChild(t);
     }
     $("span", t).textContent = msg;
@@ -124,7 +175,8 @@
   window.chooseProduct = function (productName) {
     try {
       localStorage.setItem("selectedProduct", productName);
-      if (advisorParams) localStorage.setItem("selectedParams", JSON.stringify(advisorParams));
+      if (advisorParams)
+        localStorage.setItem("selectedParams", JSON.stringify(advisorParams));
       else localStorage.removeItem("selectedParams");
     } catch (e) {}
     window.location.href = "contact.html";
@@ -132,7 +184,10 @@
 
   /* ---------- Contact form ---------- */
   window.submitForm = async function () {
-    const val = (s) => { const el = $(s); return el ? el.value : ""; };
+    const val = (s) => {
+      const el = $(s);
+      return el ? el.value : "";
+    };
     const name = val("#name");
     const phone = val("#phone");
     const email = val("#email");
@@ -142,10 +197,30 @@
     const goal = val("#goal");
     const note = val("#note");
 
-    if (name.trim() === "") { toast("Vui lòng nhập họ và tên."); const n = $("#name"); n && n.focus(); return; }
-    if (!/^[0-9 +().-]{8,15}$/.test(phone.trim())) { toast("Số điện thoại chưa hợp lệ."); const p = $("#phone"); p && p.focus(); return; }
-    if (email.trim() === "") { toast("Vui lòng nhập email."); const em = $("#email"); em && em.focus(); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast("Email chưa hợp lệ."); const em2 = $("#email"); em2 && em2.focus(); return; }
+    if (name.trim() === "") {
+      toast("Vui lòng nhập họ và tên.");
+      const n = $("#name");
+      n && n.focus();
+      return;
+    }
+    if (!/^[0-9 +().-]{8,15}$/.test(phone.trim())) {
+      toast("Số điện thoại chưa hợp lệ.");
+      const p = $("#phone");
+      p && p.focus();
+      return;
+    }
+    if (email.trim() === "") {
+      toast("Vui lòng nhập email.");
+      const em = $("#email");
+      em && em.focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      toast("Email chưa hợp lệ.");
+      const em2 = $("#email");
+      em2 && em2.focus();
+      return;
+    }
 
     // Nguồn kênh (utm_source) — dùng cho báo cáo OC2
     const utmSource =
@@ -153,13 +228,26 @@
         ? window.VuonPho.utm().source || ""
         : "";
 
-    const payload = { name: name.trim(), phone: phone.trim(), email: email.trim(), house_type: houseType, area: areaInstall, budget: budgetContact, goal, note, source: utmSource };
+    const payload = {
+      name: name.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      house_type: houseType,
+      area: areaInstall,
+      budget: budgetContact,
+      goal,
+      note,
+      source: utmSource,
+    };
 
     // Gửi lên API (base URL do js/auth.js quyết định), fallback local nếu backend không chạy
     let apiSuccess = false;
     try {
       if (window.VuonPho && window.VuonPho.api) {
-        const r = await window.VuonPho.api("/contact", { method: "POST", body: payload });
+        const r = await window.VuonPho.api("/contact", {
+          method: "POST",
+          body: payload,
+        });
         apiSuccess = !!(r.ok && r.json && r.json.success);
         if (!apiSuccess) console.warn("API trả lỗi:", r.json && r.json.error);
       }
@@ -179,22 +267,44 @@
         apiSuccess && loggedIn
           ? 'Đã lưu vào <a href="account.html" style="color:inherit;text-decoration:underline">Yêu cầu tư vấn của tôi</a> — VƯỜN PHỐ sẽ liên hệ trong vòng 24 giờ.'
           : "Đã ghi nhận! VƯỜN PHỐ sẽ liên hệ tư vấn trong vòng 24 giờ.";
-      ok.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>' + msg + "</span>";
+      ok.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>' +
+        msg +
+        "</span>";
       ok.classList.add("show");
     }
     toast("Gửi thông tin thành công!");
-    ["#name", "#phone", "#email", "#areaInstall", "#budgetContact", "#note"].forEach((s) => { const el = $(s); if (el) el.value = ""; });
-    try { localStorage.removeItem("selectedProduct"); } catch (e) {}
-    try { localStorage.removeItem("selectedParams"); } catch (e) {}
+    [
+      "#name",
+      "#phone",
+      "#email",
+      "#areaInstall",
+      "#budgetContact",
+      "#note",
+    ].forEach((s) => {
+      const el = $(s);
+      if (el) el.value = "";
+    });
+    try {
+      localStorage.removeItem("selectedProduct");
+    } catch (e) {}
+    try {
+      localStorage.removeItem("selectedParams");
+    } catch (e) {}
   };
 
   /* ---------- Kit advisor ---------- */
   window.showAdvice = function () {
-    const val = (s) => { const el = $(s); return el ? el.value : ""; };
+    const val = (s) => {
+      const el = $(s);
+      return el ? el.value : "";
+    };
     // Lấy nhãn hiển thị của <select> (vd "Vừa (5–15m²)") để điền vào ô văn bản
     const label = (s) => {
       const el = $(s);
-      return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text.trim() : "";
+      return el && el.selectedIndex >= 0
+        ? el.options[el.selectedIndex].text.trim()
+        : "";
     };
     const houseType = val("#houseType");
     const area = val("#area");
@@ -210,26 +320,38 @@
     let product, reason;
     if (houseType === "chungcu" || area === "small" || budget === "low") {
       product = "Mini Kit";
-      reason = "Phù hợp với chung cư, ban công nhỏ và khách hàng muốn bắt đầu trải nghiệm khí canh với chi phí hợp lý. Dễ lắp đặt, dễ chăm sóc.";
+      reason =
+        "Phù hợp với chung cư, ban công nhỏ và khách hàng muốn bắt đầu trải nghiệm khí canh với chi phí hợp lý. Dễ lắp đặt, dễ chăm sóc.";
     } else if (area === "medium" || budget === "mid") {
       product = "Family Kit";
-      reason = "Phù hợp để cân nhắc cho nhà phố hoặc ban công vừa; sản lượng cần đánh giá theo điều kiện thực tế.";
+      reason =
+        "Phù hợp để cân nhắc cho nhà phố hoặc ban công vừa; sản lượng cần đánh giá theo điều kiện thực tế.";
     } else {
       product = "Rooftop Kit";
-      reason = "Năng suất tối đa cho sân thượng hoặc không gian lớn, dành cho khách hàng muốn xây dựng vườn rau đô thị thực sự tại nhà.";
+      reason =
+        "Năng suất tối đa cho sân thượng hoặc không gian lớn, dành cho khách hàng muốn xây dựng vườn rau đô thị thực sự tại nhà.";
     }
 
     const result = $("#adviceResult");
     if (!result) return;
     result.innerHTML =
-      "<h3>Gợi ý phù hợp cho bạn: " + product + "</h3>" +
+      "<h3>Gợi ý phù hợp cho bạn: " +
+      product +
+      "</h3>" +
       '<p class="rec-price">Giá: Liên hệ báo giá — tư vấn miễn phí</p>' +
-      "<p><b>Vì sao phù hợp:</b> " + reason + "</p>" +
+      "<p><b>Vì sao phù hợp:</b> " +
+      reason +
+      "</p>" +
       "<p><b>Vai trò của VƯỜN PHỐ:</b> Tư vấn trung lập và kết nối bạn với giải pháp khí canh phù hợp nhất.</p>" +
-      "<button class=\"btn\" type=\"button\" onclick=\"chooseProduct('" + product + "')\">Đăng ký tư vấn gói này" +
+      '<button class="btn" type="button" onclick="chooseProduct(\'' +
+      product +
+      "')\">Đăng ký tư vấn gói này" +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>';
     result.classList.add("show");
-    result.scrollIntoView({ behavior: reducedMotion.matches ? "instant" : "smooth", block: "nearest" });
+    result.scrollIntoView({
+      behavior: reducedMotion.matches ? "instant" : "smooth",
+      block: "nearest",
+    });
   };
 
   /* ---------- Prefill note + thông số từ trợ lý chọn gói ---------- */

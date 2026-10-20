@@ -22,7 +22,7 @@ const PRODUCTS = [
   {
     name: "Family Kit",
     description:
-      "Mẫu bán chạy nhất. Đủ sản lượng cung cấp rau sạch cho cả gia đình mỗi ngày.",
+      "Gói khí canh để cân nhắc cho gia đình. Sản lượng phụ thuộc cây trồng, ánh sáng và cách vận hành.",
     holes: 40,
     suitable_for: "Gia đình 4–6 người",
     size: "60cm x 60cm x 160cm",
