@@ -1,0 +1,17 @@
+﻿/* Scoped additions for the combined home and introduction content. */
+.home-introduction .intro-copy h3{font-size:18px;line-height:1.5;color:var(--green-800);margin-top:24px}
+.home-introduction .intro-copy>p{margin-block:16px}
+.home-services .text-link{display:inline-block;margin-top:20px}
+.home-services .micro-label{display:block;margin-bottom:14px}
+#gioi-thieu,#loi-ich,#dich-vu,#packages,#quy-trinh,#lien-he,#comparison,#how-it-works{scroll-margin-top:120px}
+.home-explainer{margin-top:30px;border:1px solid var(--line);border-radius:18px;background:var(--bg);overflow:hidden}
+.home-explainer>summary{padding:22px 24px;display:flex;justify-content:space-between;gap:16px;font-weight:600;cursor:pointer;list-style:none;color:var(--green-900)}
+.home-explainer>summary::-webkit-details-marker{display:none}
+.home-explainer>summary>span{font-size:22px;line-height:1;transition:transform .2s}
+.home-explainer[open]>summary>span{transform:rotate(45deg)}
+.home-explainer>summary:focus-visible{outline:3px solid var(--green-600);outline-offset:-4px;border-radius:16px}
+.home-considerations{padding:0 28px 24px;max-width:900px}.home-considerations h3{font-size:21px;margin:8px 0 14px;color:var(--green-900)}.home-considerations p{font-size:14px;line-height:1.9;color:var(--slate-500);margin:12px 0}
+.home-flow{padding:32px 28px;border-top:1px solid var(--line)}.home-flow .section-head{margin-bottom:30px}.home-flow .section-head h2{font-size:30px}
+.home-gallery{padding:24px 28px}.home-gallery .section-head{margin-bottom:30px}.home-gallery .section-head h2{font-size:30px}
+.home-gallery .gallery-open{height:260px}
+@media(max-width:767px){.home-introduction .intro-copy h3{font-size:17px}.home-explainer>summary{padding:18px;font-size:14px}.home-considerations,.home-flow,.home-gallery{padding:18px}.home-flow .section-head h2,.home-gallery .section-head h2{font-size:25px}#gioi-thieu,#loi-ich,#dich-vu,#packages,#quy-trinh,#lien-he,#comparison,#how-it-works{scroll-margin-top:100px}}
