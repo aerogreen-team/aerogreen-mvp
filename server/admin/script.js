@@ -90,6 +90,23 @@ function formatCurrency(amount) {
   }).format(amount);
 }
 
+
+/** Escape dữ liệu do người dùng nhập trước khi chèn vào innerHTML */
+function escapeHtml(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+const PAGE_CATEGORY_MAP = {
+  "bo-khi-canh": "Bộ khí canh",
+  "kien-thuc": "Kiến thức",
+  "huong-dan": "Hướng dẫn",
+};
+
 const STATUS_MAP = {
   pending: "Chưa gọi",
   contacted: "Đã tư vấn",
@@ -101,6 +118,7 @@ const TAB_TITLES = {
   dashboard: "Dashboard",
   contacts: "Yêu cầu tư vấn",
   products: "Sản phẩm",
+  pages: "Bài viết",
   quotations: "Báo giá & Hợp đồng",
   account: "Tài khoản",
 };
@@ -122,6 +140,7 @@ document.querySelectorAll(".nav-item").forEach((item) => {
     if (tab === "dashboard") loadDashboard();
     if (tab === "contacts") loadContacts();
     if (tab === "products") loadProducts();
+    if (tab === "pages") loadPages();
     if (tab === "quotations") { loadQuotations(); loadContactsForQuotation(); }
     if (tab === "account") resetPasswordForm();
   });
@@ -360,6 +379,339 @@ function renderProducts(products) {
   html += "</div>";
   container.innerHTML = html;
 }
+
+
+// ===== Upload ảnh (kéo thả) =====
+const MAX_UPLOAD_MB = 5;
+const ALLOWED_UPLOAD_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+/** Gửi 1 file ảnh lên server, trả về đường dẫn công khai. Ném Error nếu thất bại. */
+async function uploadImage(file) {
+  if (!file) throw new Error("Chưa chọn ảnh.");
+  if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) {
+    throw new Error("Chỉ nhận ảnh JPG, PNG, WEBP hoặc GIF.");
+  }
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+    throw new Error(`Ảnh vượt quá ${MAX_UPLOAD_MB}MB, vui lòng chọn ảnh nhỏ hơn.`);
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  // Không dùng apiFetch được: phải để trình duyệt tự đặt Content-Type kèm boundary.
+  const res = await fetch(`${API_BASE}/uploads`, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${getToken()}` },
+    body: formData,
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("aerogreen_token");
+    sessionStorage.removeItem("aerogreen_token");
+    window.location.href = "/login";
+    throw new Error("Phiên đăng nhập đã hết hạn.");
+  }
+
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(result.error || "Không tải được ảnh.");
+  return result.data.url;
+}
+
+function updatePreview(previewId, url) {
+  const box = document.getElementById(previewId);
+  if (!box) return;
+  const img = box.querySelector("img");
+  if (img) {
+    if (url) img.src = url;
+    else img.removeAttribute("src");
+  }
+  box.hidden = !url;
+}
+
+function initUploadZones() {
+  document.querySelectorAll("[data-upload-dropzone]").forEach((zone) => {
+    const field = document.getElementById(zone.dataset.uploadInput);
+    const previewId = zone.dataset.uploadPreview;
+    const fileInput = zone.querySelector("[data-upload-file]");
+    const hint = zone.querySelector(".uz-sub");
+    if (!field || !fileInput) return;
+
+    const defaultHint = hint ? hint.textContent : "";
+    const setHint = (text) => {
+      if (!hint) return;
+      hint.textContent = text || defaultHint;
+      hint.classList.toggle("uz-error", Boolean(text));
+    };
+
+    const handleFile = async (file) => {
+      if (!file) return;
+      zone.classList.add("uploading");
+      setHint("⏳ Đang tải ảnh lên…");
+      try {
+        const url = await uploadImage(file);
+        field.value = url;
+        updatePreview(previewId, url);
+        setHint("");
+      } catch (err) {
+        setHint("⚠️ " + err.message);
+        setTimeout(() => setHint(""), 5000);
+      } finally {
+        zone.classList.remove("uploading");
+      }
+    };
+
+    zone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", () => {
+      handleFile(fileInput.files[0]);
+      fileInput.value = "";
+    });
+
+    ["dragenter", "dragover"].forEach((ev) =>
+      zone.addEventListener(ev, (e) => {
+        e.preventDefault();
+        zone.classList.add("dragover");
+      })
+    );
+    ["dragleave", "dragend"].forEach((ev) =>
+      zone.addEventListener(ev, (e) => {
+        e.preventDefault();
+        zone.classList.remove("dragover");
+      })
+    );
+    zone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      zone.classList.remove("dragover");
+      handleFile(e.dataTransfer && e.dataTransfer.files[0]);
+    });
+
+    field.addEventListener("input", () => updatePreview(previewId, field.value.trim()));
+  });
+
+  document.querySelectorAll("[data-upload-clear]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const box = btn.closest(".upload-preview");
+      if (!box) return;
+      const field = document.getElementById(box.id.replace(/-preview$/, ""));
+      if (field) field.value = "";
+      updatePreview(box.id, "");
+    });
+  });
+}
+
+/** Chèn "![mô tả](đường-dẫn)" vào vị trí con trỏ, tách thành dòng riêng để hiện dạng khối ảnh. */
+function insertImageMarkdown(textarea, url, alt) {
+  const value = textarea.value;
+  const start = typeof textarea.selectionStart === "number" ? textarea.selectionStart : value.length;
+  const end = typeof textarea.selectionEnd === "number" ? textarea.selectionEnd : start;
+  const before = value.slice(0, start);
+  const after = value.slice(end);
+  const label = String(alt || "Ảnh minh hoạ").replace(/[[\]]/g, "").trim() || "Ảnh minh hoạ";
+
+  const lead = before === "" || /\n\s*$/.test(before) ? "" : "\n\n";
+  const trail = after === "" || /^\s*\n/.test(after) ? "\n" : "\n\n";
+  const snippet = `${lead}![${label}](${url})${trail}`;
+
+  textarea.value = before + snippet + after;
+  const caret = before.length + snippet.length;
+  textarea.focus();
+  textarea.setSelectionRange(caret, caret);
+}
+
+function initInsertImage() {
+  document.querySelectorAll("[data-insert-image]").forEach((btn) => {
+    const textarea = document.getElementById(btn.dataset.insertImage);
+    const fileInput = document.querySelector(`[data-insert-file="${btn.dataset.insertImage}"]`);
+    if (!textarea) return;
+
+    const handleFile = async (file) => {
+      if (!file) return;
+      const original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "⏳ Đang tải ảnh…";
+      try {
+        const url = await uploadImage(file);
+        insertImageMarkdown(textarea, url, file.name.replace(/\.[^.]+$/, ""));
+      } catch (err) {
+        alert("❌ " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    };
+
+    if (fileInput) {
+      btn.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", () => {
+        handleFile(fileInput.files[0]);
+        fileInput.value = "";
+      });
+    }
+
+    textarea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      textarea.classList.add("dragover");
+    });
+    textarea.addEventListener("dragleave", () => textarea.classList.remove("dragover"));
+    textarea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      textarea.classList.remove("dragover");
+      handleFile(e.dataTransfer && e.dataTransfer.files[0]);
+    });
+  });
+}
+
+// ===== Bài viết =====
+async function loadPages() {
+  const tbody = document.getElementById("pages-table-body");
+  try {
+    const res = await apiFetch(`${API_BASE}/pages`);
+    const result = await res.json();
+    renderPagesTable(result.data);
+  } catch (err) {
+    console.error("Load pages error:", err);
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="6" class="loading">Không tải được danh sách</td></tr>';
+    }
+  }
+}
+
+function renderPagesTable(pages) {
+  const tbody = document.getElementById("pages-table-body");
+  if (!tbody) return;
+
+  if (!pages || pages.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Chưa có bài viết nào</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = pages
+    .map((p) => {
+      const cat = PAGE_CATEGORY_MAP[p.category] || p.category;
+      const badge = Number(p.published)
+        ? '<span style="color:#155c2e;font-weight:700;">● Đã xuất bản</span>'
+        : '<span style="color:#b45309;font-weight:700;">● Bản nháp</span>';
+      return `
+      <tr>
+        <td><strong style="color:#155c2e;">${escapeHtml(p.title)}</strong></td>
+        <td><code style="font-size:12.5px;">${escapeHtml(p.slug)}</code></td>
+        <td>${escapeHtml(cat)}</td>
+        <td>${badge}</td>
+        <td>${formatDate(p.updated_at)}</td>
+        <td style="white-space:nowrap;">
+          <button class="page-btn" style="padding:4px 10px;font-size:12px;color:#3b82f6;border-color:#bfdbfe;" onclick="editPage(${p.id})">✏️ Sửa</button>
+          <a class="page-btn" style="padding:4px 10px;font-size:12px;color:#155c2e;border-color:#bbf7d0;text-decoration:none;" href="/noi-dung.html?slug=${encodeURIComponent(p.slug)}" target="_blank" rel="noopener">🔗 Xem</a>
+          <button class="page-btn" style="padding:4px 10px;font-size:12px;color:#ef4444;border-color:#fecaca;" onclick="deletePage(${p.id})">🗑️</button>
+        </td>
+      </tr>`;
+    })
+    .join("");
+}
+
+async function handlePageSubmit(event) {
+  event.preventDefault();
+
+  const editId = document.getElementById("page-edit-id").value;
+  const payload = {
+    title: document.getElementById("page-title-input").value.trim(),
+    slug: document.getElementById("page-slug").value.trim(),
+    category: document.getElementById("page-category").value,
+    sort_order: Number(document.getElementById("page-sort").value || 0),
+    cover_image: document.getElementById("page-cover").value.trim(),
+    related_product: document.getElementById("page-related").value.trim(),
+    summary: document.getElementById("page-summary").value.trim(),
+    body: document.getElementById("page-body").value,
+    published: document.getElementById("page-published").checked,
+  };
+
+  const btn = document.getElementById("page-submit-btn");
+  btn.disabled = true;
+
+  try {
+    const res = await apiFetch(editId ? `${API_BASE}/pages/${editId}` : `${API_BASE}/pages`, {
+      method: editId ? "PUT" : "POST",
+      body: JSON.stringify(payload),
+    });
+    const result = await res.json();
+
+    if (!res.ok) {
+      alert("❌ " + (result.error || "Không lưu được bài viết."));
+      return;
+    }
+
+    alert(
+      (editId ? "✅ Đã cập nhật bài viết." : "✅ Đã đăng bài viết.") +
+        `\nXem tại: /noi-dung.html?slug=${result.data.slug}`
+    );
+    resetPageForm();
+    loadPages();
+  } catch (err) {
+    console.error("Save page error:", err);
+    alert("❌ Không kết nối được máy chủ.");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function editPage(id) {
+  try {
+    const res = await apiFetch(`${API_BASE}/pages`);
+    const list = (await res.json()).data || [];
+    const page = list.find((p) => p.id === id);
+    if (!page) {
+      alert("❌ Không tìm thấy bài viết.");
+      return;
+    }
+
+    document.getElementById("page-edit-id").value = page.id;
+    document.getElementById("page-title-input").value = page.title || "";
+    document.getElementById("page-slug").value = page.slug || "";
+    document.getElementById("page-category").value = page.category || "huong-dan";
+    document.getElementById("page-sort").value = page.sort_order || 0;
+    document.getElementById("page-cover").value = page.cover_image || "";
+    document.getElementById("page-related").value = page.related_product || "";
+    document.getElementById("page-summary").value = page.summary || "";
+    document.getElementById("page-body").value = page.body || "";
+    document.getElementById("page-published").checked = Number(page.published) === 1;
+    updatePreview("page-cover-preview", page.cover_image || "");
+
+    document.getElementById("page-form-title").textContent = "✏️ Sửa bài viết";
+    document.getElementById("page-submit-btn").textContent = "💾 Lưu thay đổi";
+    document.getElementById("page-cancel-btn").style.display = "inline-block";
+    document.getElementById("page-form-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (err) {
+    console.error("Edit page error:", err);
+  }
+}
+
+async function deletePage(id) {
+  if (!confirm("Xoá bài viết này?")) return;
+
+  try {
+    const res = await apiFetch(`${API_BASE}/pages/${id}`, { method: "DELETE" });
+    const result = await res.json();
+    if (!res.ok) {
+      alert("❌ " + (result.error || "Không xoá được."));
+      return;
+    }
+    loadPages();
+  } catch (err) {
+    console.error("Delete page error:", err);
+  }
+}
+
+function resetPageForm() {
+  document.getElementById("page-form").reset();
+  document.getElementById("page-edit-id").value = "";
+  document.getElementById("page-published").checked = true;
+  document.getElementById("page-sort").value = 0;
+  document.getElementById("page-form-title").textContent = "➕ Tạo bài viết mới";
+  document.getElementById("page-submit-btn").textContent = "📝 Đăng bài";
+  document.getElementById("page-cancel-btn").style.display = "none";
+  updatePreview("page-cover-preview", "");
+}
+
+initUploadZones();
+initInsertImage();
 
 // ===== Clock =====
 function updateClock() {

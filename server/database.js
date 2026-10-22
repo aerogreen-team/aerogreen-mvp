@@ -112,6 +112,25 @@ async function doInit() {
       created_at DATETIME DEFAULT (datetime('now', '+7 hours'))
     );
 
+    -- Bài viết / trang nội dung do quản trị viên tạo
+    CREATE TABLE IF NOT EXISTS content_pages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      summary TEXT DEFAULT '',
+      category TEXT DEFAULT 'kien-thuc',
+      cover_image TEXT DEFAULT '',
+      body TEXT DEFAULT '',
+      related_product TEXT DEFAULT '',
+      sort_order INTEGER DEFAULT 0,
+      published INTEGER DEFAULT 1,
+      created_at DATETIME DEFAULT (datetime('now', '+7 hours')),
+      updated_at DATETIME DEFAULT (datetime('now', '+7 hours'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_content_pages_slug ON content_pages(slug);
+    CREATE INDEX IF NOT EXISTS idx_content_pages_published ON content_pages(published);
+
     CREATE TABLE IF NOT EXISTS quotations (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       requestId TEXT NOT NULL UNIQUE,

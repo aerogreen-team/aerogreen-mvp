@@ -25,6 +25,7 @@
 Người dùng ──► Render (Node.js + Express) ──► Turso (libSQL — tương thích SQLite)
                      │
                      ├── Phục vụ trang tĩnh: index/about/services/products/contact
+                     ├── Thư viện bài viết:  /noi-dung.html
                      ├── Trang tài khoản: register / login / account
                      ├── Trang quản trị:  /login → /admin
                      └── REST API:        /api/*
@@ -56,24 +57,27 @@ aerogreen-mvp/
 ├── login.html            # Đăng nhập
 ├── account.html          # Hồ sơ + gửi & theo dõi yêu cầu tư vấn
 ├── contract.html         # Trang hợp đồng dịch vụ (mở bằng link chia sẻ)
+├── noi-dung.html         # Thư viện bài viết + chi tiết bài viết
 ├── css/style.css         # Design system
 ├── css/auth.css          # Style riêng cho trang tài khoản
 ├── js/auth.js            # Phiên đăng nhập, điều hướng, UTM, tracking
 ├── js/api-loader.js      # Tiện ích gọi API
 ├── js/products-api.js    # Tải sản phẩm động từ API
+├── js/articles-data.js   # Nội dung các bài viết có sẵn
+├── js/content-page.js    # Danh sách + chi tiết bài viết (API và nội dung có sẵn)
 ├── js/script.js          # Tương tác chung
 └── server/
     ├── server.js         # Khởi động: init DB → seed → listen
     ├── database.js       # Kết nối Turso/libSQL + lớp truy cập dữ liệu
-    ├── seed.js           # Dữ liệu mẫu (3 gói giải pháp)
+    ├── seed.js           # Dữ liệu mẫu (3 gói giải pháp + bài viết mẫu)
     ├── smoke-test.js     # 14 kiểm tra tự động
     ├── db-info.js        # Xem đang kết nối DB nào, có bao nhiêu bản ghi
     ├── clear-test-data.js# Xoá dữ liệu smoke test
     ├── .env.example      # Mẫu biến môi trường
     ├── middleware/       # auth (admin) · customer-auth (khách)
     ├── routes/           # auth · customers · contacts · products
-    │                     # recommend · quotations · stats · track
-    └── admin/            # Dashboard quản trị
+    │                     # pages · uploads · recommend · quotations · stats · track
+    └── admin/            # Dashboard quản trị (+ tab Bài viết)
 ```
 
 ---
@@ -294,6 +298,8 @@ Các endpoint công khai:
 | `GET` | `/api/products/:id` | Chi tiết một gói |
 | `GET` | `/api/products/compare/list?ids=1,2` | So sánh nhiều gói |
 | `GET` | `/api/recommend?house_type=&area=&budget=` | Gợi ý gói phù hợp |
+| `GET` | `/api/pages` | Danh sách bài viết đã xuất bản |
+| `GET` | `/api/pages/:slug` | Chi tiết bài viết theo slug |
 | `POST` | `/api/contact` | Gửi yêu cầu tư vấn (không cần đăng nhập) |
 | `POST` | `/api/track` | Ghi nhận lượt truy cập / sự kiện |
 | `POST` | `/api/customers/register` | Đăng ký tài khoản khách |
@@ -302,7 +308,8 @@ Các endpoint công khai:
 
 Cần đăng nhập **khách** (JWT): `GET/PUT /api/customers/me`, `GET/POST /api/customers/me/requests`
 
-Cần đăng nhập **quản trị** (JWT): `/api/contacts/*`, `/api/stats`, `/api/stats/funnel`, `/api/quotations/*`
+Cần đăng nhập **quản trị** (JWT): `/api/contacts/*`, `/api/stats`, `/api/stats/funnel`, `/api/quotations/*`,
+`POST/PUT/DELETE /api/pages/*`, `POST /api/uploads` (field `image`, tối đa 5MB).
 
 ### Đo lường cho Outcome 2
 

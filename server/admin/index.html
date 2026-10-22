@@ -27,6 +27,9 @@
         <a href="#" class="nav-item" data-tab="products">
           <span>📦</span> Sản phẩm
         </a>
+        <a href="#" class="nav-item" data-tab="pages">
+          <span>📝</span> Bài viết
+        </a>
         <a href="#" class="nav-item" data-tab="quotations">
           <span>📄</span> Báo giá & Hợp đồng
         </a>
@@ -147,6 +150,98 @@
         <div class="card">
           <h3>Danh sách sản phẩm</h3>
           <div id="products-list"></div>
+        </div>
+      </section>
+
+
+      <!-- Content Pages Tab -->
+      <section id="tab-pages" class="tab-content">
+        <div class="card" id="page-form-card" style="margin-bottom: 24px;">
+          <h3 id="page-form-title">➕ Tạo bài viết mới</h3>
+          <form id="page-form" onsubmit="handlePageSubmit(event)">
+            <input type="hidden" id="page-edit-id" value="">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="page-title-input">Tiêu đề *</label>
+                <input type="text" id="page-title-input" placeholder="VD: Kinh nghiệm chọn vị trí đặt hệ khí canh" required>
+              </div>
+              <div class="form-group">
+                <label for="page-slug">🔗 Slug (để trống sẽ tự tạo)</label>
+                <input type="text" id="page-slug" placeholder="VD: kinh-nghiem-chon-vi-tri">
+              </div>
+              <div class="form-group">
+                <label for="page-category">🗂️ Danh mục</label>
+                <select id="page-category">
+                  <option value="bo-khi-canh">Bộ khí canh</option>
+                  <option value="kien-thuc">Kiến thức</option>
+                  <option value="huong-dan" selected>Hướng dẫn</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="page-sort">🔢 Thứ tự hiển thị</label>
+                <input type="number" id="page-sort" value="0">
+              </div>
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="page-cover">🖼️ Ảnh bìa</label>
+                <div class="upload-zone" data-upload-dropzone data-upload-input="page-cover" data-upload-preview="page-cover-preview">
+                  <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-upload-file hidden>
+                  <span class="uz-title">⬆️ Kéo thả ảnh bìa vào đây</span>
+                  <span class="uz-sub">hoặc bấm để chọn từ máy · JPG, PNG, WEBP, GIF · tối đa 5MB</span>
+                </div>
+                <input type="text" id="page-cover" placeholder="Hoặc dán đường dẫn, VD: /images/anh3.webp">
+                <div class="upload-preview" id="page-cover-preview" hidden>
+                  <img alt="Ảnh bìa xem trước">
+                  <button type="button" class="btn-ghost" data-upload-clear>🗑️ Bỏ ảnh</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="page-related">📦 Bộ sản phẩm liên quan</label>
+                <input type="text" id="page-related" placeholder="VD: Family Kit">
+              </div>
+              <div class="form-group">
+                <label for="page-published">👁️ Trạng thái</label>
+                <label class="checkbox-inline" for="page-published" style="display:flex;align-items:center;gap:8px;font-weight:500;">
+                  <input type="checkbox" id="page-published" checked style="width:auto;">
+                  Xuất bản ngay
+                </label>
+              </div>
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="page-summary">Tóm tắt</label>
+                <textarea id="page-summary" rows="2" placeholder="Một hai câu mô tả ngắn, hiển thị ở thư viện bài viết"></textarea>
+              </div>
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="page-body">📄 Nội dung</label>
+                <div class="editor-toolbar">
+                  <button type="button" class="btn-ghost" data-insert-image="page-body">🖼️ Chèn ảnh vào nội dung</button>
+                  <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-insert-file="page-body" hidden>
+                  <span class="editor-hint">Dòng trống ngăn đoạn · <code>##</code> tiêu đề mục · <code>-</code> gạch đầu dòng · <code>**đậm**</code> · <code>[chữ](link)</code></span>
+                </div>
+                <textarea id="page-body" class="drop-target" rows="14" placeholder="Dòng trống ngăn cách các đoạn văn&#10;&#10;## Tiêu đề mục&#10;- Gạch đầu dòng thứ nhất&#10;- Gạch đầu dòng thứ hai&#10;&#10;![Ảnh thực tế hệ khí canh](/images/uploads/ten-anh.jpg)&#10;&#10;**Chữ in đậm** và [link nội bộ](products.html)"></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="page-submit-btn">📝 Đăng bài</button>
+              <button type="button" class="btn btn-secondary" id="page-cancel-btn" style="display:none;" onclick="resetPageForm()">❌ Hủy</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tiêu đề</th>
+                <th>Slug</th>
+                <th>Danh mục</th>
+                <th>Trạng thái</th>
+                <th>Cập nhật</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="pages-table-body">
+              <tr><td colspan="6" class="loading">Đang tải...</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
