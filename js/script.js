@@ -74,7 +74,7 @@
   document.addEventListener("keydown", (event) => {
     if (!drawer || !drawer.classList.contains("open") || event.key !== "Tab")
       return;
-    const focusable = [...drawer.querySelectorAll("a, button")];
+    const focusable = [...drawer.querySelectorAll("a, button, summary")].filter((el) => el.getClientRects().length);
     const first = focusable[0],
       last = focusable[focusable.length - 1];
     if (event.shiftKey && document.activeElement === first) {
@@ -97,6 +97,14 @@
     if (e.key === "Escape") closeMenu();
   });
 
+  document.addEventListener("click", (event) => {
+    document.querySelectorAll(".product-menu[open]").forEach((menu) => {
+      if (!menu.contains(event.target)) menu.open = false;
+    });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") document.querySelectorAll(".product-menu[open]").forEach((menu) => { menu.open = false; });
+  });
   /* ---------- Scroll reveal ---------- */
   const reveals = $$(".reveal");
   if ("IntersectionObserver" in window && reveals.length) {
@@ -364,6 +372,10 @@
     } catch (e) {}
 
     const note = $("#note");
+    const material = new URLSearchParams(window.location.search).get("material");
+    if (material && note && !note.value) {
+      note.value = "Tôi muốn được tư vấn vật tư: " + material.slice(0, 200) + ".";
+    }
     if (selected && note && !note.value) {
       note.value = "Tôi muốn được tư vấn gói " + selected + ".";
     }
