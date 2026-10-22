@@ -676,3 +676,6 @@ html{scroll-behavior:auto;}
 .contact-box{grid-template-columns:minmax(0,1fr);}
 .contact-info,.form{min-width:0;}
 .ci-v{overflow-wrap:anywhere;}}
+
+/* Shared product navigation */
+.product-menu{position:relative}.product-menu summary{list-style:none;cursor:pointer;padding:10px 12px;border-radius:24px;font-size:13px;font-weight:600;color:var(--slate-700);white-space:nowrap}.product-menu summary::-webkit-details-marker{display:none}.product-menu summary.active,.product-menu[open]>summary{background:var(--green-100);color:var(--green-800)}.product-submenu{position:absolute;top:100%;left:0;min-width:260px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:var(--shadow-lg);z-index:100}.product-submenu a{display:block;border-radius:10px;white-space:normal}.product-menu summary:focus-visible{outline:2px solid var(--green-700);outline-offset:3px}.mobile-nav{overflow-y:auto}.mobile-nav .product-menu summary{padding:14px 16px;font-size:16px}.mobile-nav .product-submenu{position:static;min-width:0;box-shadow:none;margin-top:4px}.mobile-nav .product-submenu a{font-size:14px}
