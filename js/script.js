@@ -346,7 +346,7 @@
       "<h3>Gợi ý phù hợp cho bạn: " +
       product +
       "</h3>" +
-      '<p class="rec-price">Giá: Liên hệ báo giá — tư vấn miễn phí</p>' +
+      '<p class="rec-price">' + (window.VuonPhoPackageCatalog?.products.find(item => item.name === product)?.price_label || 'Liên hệ báo giá') + '</p>' +
       "<p><b>Vì sao phù hợp:</b> " +
       reason +
       "</p>" +

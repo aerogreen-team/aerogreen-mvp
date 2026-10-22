@@ -1,0 +1,6 @@
+﻿/* Loaded only by products.html. Keep card design and consultation unchanged. */
+.product-kit{position:relative}
+.product-article-link::after{content:"";position:absolute;inset:0;border-radius:24px;z-index:1}
+.product-article-link:focus-visible{outline:none}
+.product-article-link:focus-visible::after{outline:3px solid var(--green-600);outline-offset:-3px}
+.product-kit .product-foot button,.product-kit .product-foot>a{position:relative;z-index:2}

@@ -14,6 +14,8 @@
       crossorigin
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/product-cards.css" />
+    <link rel="stylesheet" href="css/product-article-links.css" />
     <meta
       name="description"
       content="So sánh cấu hình, kích thước và giá tham khảo ba gói khí canh. Dùng trợ lý chọn gói theo không gian và nhận tư vấn tại TP.HCM."
@@ -161,7 +163,7 @@
       <a href="contact.html" class="btn">Tư vấn miễn phí</a>
     </nav>
 
-    <main id="main-content">
+    <main id="main-content" class="products-page">
       <section class="page-hero photo-banner">
         <div class="banner-photo">
           <picture
@@ -183,112 +185,20 @@
           <span class="eyebrow">Các gói khí canh</span>
           <h1>Chọn một khởi đầu xanh.</h1>
           <p>
-            Từ ban công nhỏ đến sân thượng rộng. Đối chiếu cấu hình và nhận tư
-            vấn theo diện tích thực tế.
-          </p>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container">
-          <div class="section-head reveal">
-            <span class="eyebrow">Chọn gói theo diện tích</span>
-            <h2>Bắt đầu từ không gian nhà bạn.</h2>
-            <p>
-              Đối chiếu kích thước thiết bị; cần chừa thêm lối đi, khoảng thao
-              tác và ánh sáng.
-            </p>
-          </div>
-          <div class="table-wrap">
-            <table class="responsive-table package-table">
-              <caption>
-                Thông số tham khảo từ danh mục hiện có. Diện tích lắp đặt tối
-                thiểu cần khảo sát.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Gói</th>
-                  <th scope="col">Số lỗ</th>
-                  <th scope="col">Kích thước</th>
-                  <th scope="col">Phù hợp</th>
-                  <th scope="col">Giá tham khảo</th>
-                  <th scope="col">Số người ăn</th>
-                  <th scope="col">Tư vấn</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Mini Kit</th>
-                  <td data-label="Số lỗ">20 lỗ</td>
-                  <td data-label="Kích thước">40 × 40 × 120 cm</td>
-                  <td data-label="Phù hợp">Ban công / căn hộ nhỏ</td>
-                  <td data-label="Giá tham khảo">5.990.000₫</td>
-                  <td data-label="Số người ăn">[CẦN BỔ SUNG: số người ăn]</td>
-                  <td data-label="Tư vấn">
-                    <button
-                      type="button"
-                      class="btn btn-ghost"
-                      onclick="chooseProduct('Mini Kit')"
-                    >
-                      Nhận tư vấn
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Family Kit</th>
-                  <td data-label="Số lỗ">40 lỗ</td>
-                  <td data-label="Kích thước">60 × 60 × 160 cm</td>
-                  <td data-label="Phù hợp">Gia đình 4–6 người</td>
-                  <td data-label="Giá tham khảo">8.490.000₫</td>
-                  <td data-label="Số người ăn">
-                    4–6 người (tham khảo từ dữ liệu gói)
-                  </td>
-                  <td data-label="Tư vấn">
-                    <button
-                      type="button"
-                      class="btn btn-ghost"
-                      onclick="chooseProduct('Family Kit')"
-                    >
-                      Nhận tư vấn
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Rooftop Kit</th>
-                  <td data-label="Số lỗ">80 lỗ</td>
-                  <td data-label="Kích thước">100 × 100 × 180 cm</td>
-                  <td data-label="Phù hợp">Sân thượng / diện tích lớn</td>
-                  <td data-label="Giá tham khảo">12.990.000₫</td>
-                  <td data-label="Số người ăn">[CẦN BỔ SUNG: số người ăn]</td>
-                  <td data-label="Tư vấn">
-                    <button
-                      type="button"
-                      class="btn btn-ghost"
-                      onclick="chooseProduct('Rooftop Kit')"
-                    >
-                      Nhận tư vấn
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="data-note">
-            [CẦN BỔ SUNG: diện tích lắp đặt tối thiểu cho mỗi gói, phạm vi giá
-            gồm thiết bị, vận chuyển và công lắp đặt]. Số người ăn không phải
-            cam kết cung cấp đủ rau mỗi ngày.
+            Từ ban công nhỏ đến sân thượng rộng, VƯỜN PHỐ mang đến giải pháp trồng rau khí canh lắp đặt trọn gói ngay tại nhà.
           </p>
         </div>
       </section>
       <section class="section" id="packages">
         <div class="container">
           <div class="section-head reveal">
-            <span class="eyebrow">Bắt đầu khu vườn của bạn</span>
-            <h2>Ba gói, nhiều cách sống xanh.</h2>
-            <p>Chọn theo không gian. Hoàn thiện cấu hình cùng người tư vấn.</p>
+            <span class="eyebrow">GIẢI PHÁP DÀNH CHO BẠN</span>
+            <h2>Khám phá 3 gói khí canh tại nhà</h2>
+            <p>Từ Mini Kit nhỏ gọn đến Rooftop Kit quy mô lớn, lựa chọn hệ thống phù hợp với không gian và nhu cầu của gia đình bạn.</p>
           </div>
           <div class="product-grid">
             <article class="product-kit">
-              <div class="product-media">
+<div class="product-media">
                 <picture
                   ><source
                     type="image/webp"
@@ -301,41 +211,11 @@
                     alt="Mô hình bốn trụ khí canh với thùng xanh tại sân nhà"
                     loading="lazy"
                     decoding="async" /></picture
-                ><span class="kit-tag">20 lỗ trồng</span>
+                ><span class="kit-tag">84 lỗ trồng</span>
               </div>
-              <div class="product-body">
-                <span class="micro-label">Gói khí canh tại nhà</span>
-                <h3>Mini Kit</h3>
-                <p class="product-desc">
-                  Ban công / căn hộ nhỏ. Cấu hình cần xác nhận sau khảo sát.
-                </p>
-                <dl class="kit-specs">
-                  <div>
-                    <dt>Kích thước</dt>
-                    <dd>40 × 40 × 120 cm</dd>
-                  </div>
-                  <div>
-                    <dt>Số lỗ trồng</dt>
-                    <dd>20 lỗ</dd>
-                  </div>
-                </dl>
-                <div class="product-foot">
-                  <div class="product-price">
-                    <span class="pl">Giá tham khảo</span>
-                    <p class="pv">5.990.000₫</p>
-                  </div>
-                  <button
-                    class="btn"
-                    type="button"
-                    onclick="chooseProduct('Mini Kit')"
-                  >
-                    Nhận tư vấn
-                  </button>
-                </div>
-              </div>
-            </article>
+<div class="product-body"><span class="micro-label">Gói khí canh tại nhà</span><h3>Mini Kit</h3><p class="product-desc">Giải pháp khí canh nhỏ gọn cho ban công và căn hộ.</p><dl class="kit-specs"><div><dt>Số trụ</dt><dd>4 trụ</dd></div><div><dt>Số lỗ trồng</dt><dd>84 lỗ</dd></div><div><dt>Diện tích bố trí</dt><dd>Khoảng 0,6 m²</dd></div></dl><div class="product-foot"><div class="product-price"><span class="pl">Giá lắp đặt trọn gói</span><p class="pv">3.190.000đ</p></div><button class="btn" type="button" onclick="chooseProduct('Mini Kit')">Nhận tư vấn</button></div></div></article>
             <article class="product-kit">
-              <div class="product-media">
+<div class="product-media">
                 <picture
                   ><source
                     type="image/webp"
@@ -348,41 +228,11 @@
                     alt="Dãy tháp xà lách xanh tươi"
                     loading="lazy"
                     decoding="async" /></picture
-                ><span class="kit-tag">40 lỗ trồng</span>
+                ><span class="kit-tag">168 lỗ trồng</span>
               </div>
-              <div class="product-body">
-                <span class="micro-label">Gói khí canh tại nhà</span>
-                <h3>Family Kit</h3>
-                <p class="product-desc">
-                  Gia đình 4–6 người. Cấu hình cần xác nhận sau khảo sát.
-                </p>
-                <dl class="kit-specs">
-                  <div>
-                    <dt>Kích thước</dt>
-                    <dd>60 × 60 × 160 cm</dd>
-                  </div>
-                  <div>
-                    <dt>Số lỗ trồng</dt>
-                    <dd>40 lỗ</dd>
-                  </div>
-                </dl>
-                <div class="product-foot">
-                  <div class="product-price">
-                    <span class="pl">Giá tham khảo</span>
-                    <p class="pv">8.490.000₫</p>
-                  </div>
-                  <button
-                    class="btn"
-                    type="button"
-                    onclick="chooseProduct('Family Kit')"
-                  >
-                    Nhận tư vấn
-                  </button>
-                </div>
-              </div>
-            </article>
+<div class="product-body"><span class="micro-label">Gói khí canh tại nhà</span><h3>Family Kit</h3><p class="product-desc">Vườn rau khí canh dành cho gia đình, phù hợp không gian vừa.</p><dl class="kit-specs"><div><dt>Số trụ</dt><dd>8 trụ</dd></div><div><dt>Số lỗ trồng</dt><dd>168 lỗ</dd></div><div><dt>Diện tích bố trí</dt><dd>Khoảng 1,2 m²</dd></div></dl><div class="product-foot"><div class="product-price"><span class="pl">Giá lắp đặt trọn gói</span><p class="pv">5.990.000đ</p></div><button class="btn" type="button" onclick="chooseProduct('Family Kit')">Nhận tư vấn</button></div></div></article>
             <article class="product-kit">
-              <div class="product-media">
+<div class="product-media">
                 <picture
                   ><source
                     type="image/webp"
@@ -395,49 +245,15 @@
                     alt="Dãy tám tháp khí canh sử dụng thùng đen"
                     loading="lazy"
                     decoding="async" /></picture
-                ><span class="kit-tag">80 lỗ trồng</span>
+                ><span class="kit-tag">336 lỗ trồng</span>
               </div>
-              <div class="product-body">
-                <span class="micro-label">Gói khí canh tại nhà</span>
-                <h3>Rooftop Kit</h3>
-                <p class="product-desc">
-                  Sân thượng / diện tích lớn. Cấu hình cần xác nhận sau khảo
-                  sát.
-                </p>
-                <dl class="kit-specs">
-                  <div>
-                    <dt>Kích thước</dt>
-                    <dd>100 × 100 × 180 cm</dd>
-                  </div>
-                  <div>
-                    <dt>Số lỗ trồng</dt>
-                    <dd>80 lỗ</dd>
-                  </div>
-                </dl>
-                <div class="product-foot">
-                  <div class="product-price">
-                    <span class="pl">Giá tham khảo</span>
-                    <p class="pv">12.990.000₫</p>
-                  </div>
-                  <button
-                    class="btn"
-                    type="button"
-                    onclick="chooseProduct('Rooftop Kit')"
-                  >
-                    Nhận tư vấn
-                  </button>
-                </div>
-              </div>
-            </article>
+<div class="product-body"><span class="micro-label">Gói khí canh tại nhà</span><h3>Rooftop Kit</h3><p class="product-desc">Hệ thống khí canh quy mô lớn dành cho sân thượng và sân vườn.</p><dl class="kit-specs"><div><dt>Số trụ</dt><dd>16 trụ</dd></div><div><dt>Số lỗ trồng</dt><dd>336 lỗ</dd></div><div><dt>Diện tích bố trí</dt><dd>Khoảng 2,4 m²</dd></div></dl><div class="product-foot"><div class="product-price"><span class="pl">Giá lắp đặt trọn gói</span><p class="pv">11.490.000đ</p></div><button class="btn" type="button" onclick="chooseProduct('Rooftop Kit')">Nhận tư vấn</button></div></div></article>
           </div>
-          <p class="data-note">
-            Thông số và giá tham khảo từ dữ liệu gói hiện có, cần xác nhận khi
-            báo giá. Ảnh thực tế minh họa mô hình, không đại diện chính xác số
-            trụ hoặc cấu hình của từng gói.
-          </p>
+          <p class="data-note">Giá áp dụng cho cấu hình cơ bản và điều kiện lắp đặt tiêu chuẩn. Chi phí phát sinh theo vị trí, vật tư và yêu cầu thi công sẽ được báo riêng trước khi thực hiện.</p>
+          <p class="data-note product-area-note">Diện tích mang tính tham khảo, chưa bao gồm lối đi và không gian thao tác; bố trí thực tế phụ thuộc điều kiện lắp đặt.</p>
         </div>
       </section>
-      <section class="section section-soft">
+      <section class="section section-soft" id="package-advisor">
         <div class="container">
           <div class="section-head reveal">
             <span class="eyebrow">Trợ lý chọn gói</span>
@@ -516,9 +332,9 @@
                 <div class="field">
                   <label for="budget">Ngân sách dự kiến</label>
                   <select id="budget">
-                    <option value="low">Tiết kiệm (~6 triệu)</option>
-                    <option value="mid">Trung bình (~8,5 triệu)</option>
-                    <option value="high">Đầu tư bài bản (~13 triệu)</option>
+                    <option value="low">Cơ bản (3,19 triệu)</option>
+                    <option value="mid">Gia đình (5,99 triệu)</option>
+                    <option value="high">Sân thượng (11,49 triệu)</option>
                   </select>
                 </div>
               </div>
@@ -543,102 +359,6 @@
               <div class="advice-result" id="adviceResult"></div>
             </div>
           </div>
-        </div>
-      </section>
-      <section class="section" id="comparison">
-        <div class="container">
-          <div class="section-head reveal">
-            <span class="eyebrow">Hiểu đúng để chọn đúng</span>
-            <h2>Khí canh, thủy canh hay trồng đất?</h2>
-            <p>Không có một phương pháp tốt nhất cho mọi ngôi nhà.</p>
-          </div>
-          <div class="table-wrap">
-            <table class="responsive-table comparison-table">
-              <caption>
-                So sánh định tính để định hướng. Kết quả thay đổi theo mô hình
-                và điều kiện vận hành.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Tiêu chí</th>
-                  <th scope="col">Khí canh</th>
-                  <th scope="col">Thủy canh</th>
-                  <th scope="col">Thổ canh</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Oxy cho rễ</th>
-                  <td data-label="Khí canh">
-                    Rễ tiếp xúc nhiều không khí; phụ thuộc chu kỳ phun
-                  </td>
-                  <td data-label="Thủy canh">
-                    Phụ thuộc sục khí và thiết kế dung dịch
-                  </td>
-                  <td data-label="Thổ canh">Phụ thuộc độ thoáng của đất</td>
-                </tr>
-                <tr>
-                  <th scope="row">Năng suất</th>
-                  <td data-label="Khí canh">
-                    Tiềm năng cao; ≥ 2 lần trồng đất là số liệu tham khảo
-                  </td>
-                  <td data-label="Thủy canh">
-                    Phụ thuộc mô hình, cây và chăm sóc
-                  </td>
-                  <td data-label="Thổ canh">
-                    Phụ thuộc đất, thời tiết và chăm sóc
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Nước</th>
-                  <td data-label="Khí canh">
-                    Tuần hoàn; tiết kiệm 98% là số liệu tham khảo
-                  </td>
-                  <td data-label="Thủy canh">Có thể tuần hoàn dung dịch</td>
-                  <td data-label="Thổ canh">
-                    Phụ thuộc tưới và khả năng giữ ẩm
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Rủi ro lây bệnh</th>
-                  <td data-label="Khí canh">
-                    Cần loại cây bệnh sớm; vòng hồi vẫn cần quản lý vệ sinh
-                  </td>
-                  <td data-label="Thủy canh">
-                    Dung dịch chung có thể lan tác nhân gây bệnh
-                  </td>
-                  <td data-label="Thổ canh">Có thể có mầm bệnh trong đất</td>
-                </tr>
-                <tr>
-                  <th scope="row">Chi phí đầu tư</th>
-                  <td data-label="Khí canh">
-                    Cao; bơm, đầu phun và điều khiển chuyên dụng
-                  </td>
-                  <td data-label="Thủy canh">
-                    Tùy mô hình; cần bể, ống và có thể cần sục khí
-                  </td>
-                  <td data-label="Thổ canh">
-                    Thường thấp hơn với chậu, đất quy mô nhỏ
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Không gian</th>
-                  <td data-label="Khí canh">
-                    Trụ đứng tận dụng chiều cao, cần đủ sáng
-                  </td>
-                  <td data-label="Thủy canh">Có thể bố trí giàn hoặc trụ</td>
-                  <td data-label="Thổ canh">
-                    Cần không gian cho chậu, luống và đất
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="data-note">
-            Số liệu tham khảo do dự án cung cấp, chưa có nguồn đối chứng. Rễ
-            được cấp oxy không đồng nghĩa miễn nhiễm bệnh; hệ tuần hoàn vẫn cần
-            vệ sinh và kiểm soát dung dịch.
-          </p>
         </div>
       </section>
       <section class="section">
@@ -866,7 +586,10 @@
 
     <script defer src="js/auth.js"></script>
     <script defer src="js/api-loader.js"></script>
+    <script defer src="js/articles-data.js"></script>
+    <script defer src="js/package-catalog.js"></script>
     <script defer src="js/products-api.js"></script>
+    <script defer src="js/product-article-links.js"></script>
     <script defer src="js/script.js"></script>
     <script defer src="js/garden.js"></script>
   </body>

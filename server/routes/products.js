@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { apply: applyPackageCatalog } = require("../../js/package-catalog");
 const { getDatabase } = require("../database");
 
 // GET /api/products — List all products
@@ -7,7 +8,7 @@ router.get("/", async (req, res) => {
   try {
     const db = getDatabase();
     const products = await db.all("SELECT * FROM products ORDER BY price ASC");
-    res.json({ data: products });
+    res.json({ data: products.map(applyPackageCatalog) });
   } catch (error) {
     console.error("GET /api/products error:", error);
     res.status(500).json({ error: "Lỗi server." });
@@ -25,7 +26,7 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm." });
     }
 
-    res.json({ data: product });
+    res.json({ data: applyPackageCatalog(product) });
   } catch (error) {
     console.error("GET /api/products/:id error:", error);
     res.status(500).json({ error: "Lỗi server." });
@@ -60,7 +61,7 @@ router.get("/compare/list", async (req, res) => {
       return res.status(404).json({ error: "Không tìm thấy sản phẩm." });
     }
 
-    res.json({ data: products });
+    res.json({ data: products.map(applyPackageCatalog) });
   } catch (error) {
     console.error("GET /api/products/compare error:", error);
     res.status(500).json({ error: "Lỗi server." });

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { apply: applyPackageCatalog } = require("../../js/package-catalog");
 const { getDatabase } = require("../database");
 
 // GET /api/recommend?house_type=...&area=...&budget=...
@@ -36,7 +37,7 @@ router.get("/", async (req, res) => {
 
     res.json({
       success: true,
-      data: recommended,
+      data: applyPackageCatalog(recommended),
       reason,
     });
   } catch (error) {

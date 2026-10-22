@@ -16,7 +16,7 @@ function loadArticles() {
 
 test("bài viết có sẵn có slug duy nhất và đủ trường hiển thị", () => {
   const articles = loadArticles();
-  assert.equal(articles.length, 5);
+  assert.equal(articles.length, 6);
 
   const slugs = new Set();
   for (const item of articles) {
@@ -70,4 +70,9 @@ test("CSS bài viết dùng token thiết kế hiện tại và có breakpoint",
   assert.match(css, /\.article-layout\{display:grid/);
   assert.match(css, /var\(--green-900\)/);
   assert.match(css, /@media \(max-width: 640px\)\{/);
+});
+
+test("bài so sánh dùng danh mục Kiến thức, đủ sáu tiêu chí và CTA sản phẩm", () => {
+ const articles=loadArticles();assert.equal(articles.filter(a=>a.category==='kien-thuc').length,2);const article=articles.find(a=>a.slug==='so-sanh-khi-canh-thuy-canh-va-trong-dat');assert.ok(article);assert.equal(article.category,'kien-thuc');
+ for(const label of ['Oxy cho rễ','Năng suất','Nước','Rủi ro lây bệnh','Chi phí đầu tư','Không gian'])assert.ok(article.body_html.includes(label));assert.equal((article.body_html.match(/scope="row"/g)||[]).length,6);assert.match(article.body_html,/href="products.html"/);assert.doesNotMatch(article.body_html,/98%|≥ 2|gấp đôi|sinh trưởng vượt trội/);for(const file of ['index.html','about.html'])assert.doesNotMatch(read(file),/<table[^>]*comparison-table/);
 });

@@ -1,0 +1,11 @@
+﻿/* Only the new comparison article uses these classes. */
+.article-comparison-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:18px;background:var(--bg);margin:16px 0 26px}
+.article-comparison-scroll:focus-visible{outline:3px solid var(--green-600);outline-offset:3px}
+.article-content .article-comparison-table{display:table;min-width:720px;width:100%;border-collapse:collapse;text-align:left;margin:0;font-size:13px}
+.article-comparison-table thead{background:var(--green-900);color:#fffefa}
+.article-comparison-table th,.article-comparison-table td{padding:16px;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.8}
+.article-comparison-table tbody th{color:var(--green-800);background:var(--bg-soft);min-width:130px}
+.article-comparison-table thead th{font-weight:600}
+.article-comparison-table caption{caption-side:bottom;padding:16px;text-align:left;color:var(--slate-500);font-size:12px}
+.comparison-scroll-hint{font-size:12px!important;color:var(--slate-500)}
+@media(max-width:640px){.article-comparison-table th,.article-comparison-table td{padding:12px;font-size:12px}}

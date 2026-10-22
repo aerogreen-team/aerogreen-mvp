@@ -38,7 +38,8 @@
     );
   }
   const fragment = document.createDocumentFragment();
-  products.forEach((product) => {
+  products.forEach((storedProduct) => {
+    const product = window.VuonPhoPackageCatalog ? window.VuonPhoPackageCatalog.apply(storedProduct) : storedProduct;
     // Dùng ảnh thật theo tên gói để DB cũ chưa cập nhật vẫn không hiển thị ảnh đã bỏ.
     const image = images[product.name] || images["Mini Kit"];
     const card = element("article", "product-kit");
@@ -75,14 +76,16 @@
       element(
         "p",
         "product-desc",
-        product.suitable_for + ". Cấu hình cần xác nhận sau khảo sát.",
+        product.card_description || product.description || product.suitable_for,
       ),
     );
     const specs = element("dl", "kit-specs");
     [
-      ["Kích thước", product.size],
+      ["Số trụ", product.towers ? product.towers + " trụ" : ""],
       ["Số lỗ trồng", product.holes + " lỗ"],
+      ["Diện tích bố trí", product.layout_area],
     ].forEach(([label, value]) => {
+      if (!value) return;
       const row = element("div");
       row.append(element("dt", "", label), element("dd", "", value));
       specs.append(row);
@@ -91,7 +94,7 @@
     const foot = element("div", "product-foot");
     const price = element("div", "product-price");
     price.append(
-      element("span", "pl", "Giá tham khảo"),
+      element("span", "pl", "Giá lắp đặt trọn gói"),
       element("p", "pv", priceLabel(product)),
     );
     const button = element("button", "btn", "Nhận tư vấn");
@@ -101,15 +104,6 @@
     body.append(foot);
     card.append(media, body);
     fragment.append(card);
-    // Đồng bộ thông số và giá trong bảng so sánh với cùng dữ liệu API.
-    document.querySelectorAll(".package-table tbody tr").forEach((row) => {
-      if (row.querySelector("th").textContent !== product.name) return;
-      const cells = row.querySelectorAll("td");
-      cells[0].textContent = product.holes + " lỗ";
-      cells[1].textContent = product.size;
-      cells[2].textContent = product.suitable_for;
-      cells[3].textContent = priceLabel(product);
-    });
   });
   grid.replaceChildren(fragment);
 })();
