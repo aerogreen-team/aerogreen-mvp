@@ -2,7 +2,7 @@
 const root=path.join(__dirname,'..');const catalog=require('../js/package-catalog');const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 test('shared catalog replaces stale prices/configurations without mutating database objects',()=>{
  const expected=[[4,84,3190000],[8,168,5990000],[16,336,11490000]];
- catalog.products.forEach((p,i)=>{const old={id:i+1,name:p.name,holes:[20,40,80][i],price:[5990000,8490000,12990000][i],image:'existing.webp'};const original=JSON.stringify(old),updated=catalog.apply(old);assert.deepEqual([updated.towers,updated.holes,updated.price],expected[i]);assert.equal(updated.id,old.id);assert.equal(updated.image,old.image);assert.equal(updated.size,'Theo phương án lắp đặt');assert.equal(updated.proposed,i>0);assert.match(updated.price_label,/^[0-9.]+đ$/);assert.doesNotMatch(updated.price_label,/từ|dự kiến|đề xuất/i);assert.equal(JSON.stringify(old),original);});
+ catalog.products.forEach((p,i)=>{const old={id:i+1,name:p.name,holes:[20,40,80][i],price:[5990000,8490000,12990000][i],image:'existing.webp'};const original=JSON.stringify(old),updated=catalog.apply(old);assert.deepEqual([updated.towers,updated.holes,updated.price],expected[i]);assert.equal(updated.id,old.id);assert.equal(updated.image,i===2?'public/images/installations/optimized/ban-cong-05.jpg':old.image);assert.equal(updated.size,'Theo phương án lắp đặt');assert.equal(updated.proposed,i>0);assert.match(updated.price_label,/^[0-9.]+đ$/);assert.doesNotMatch(updated.price_label,/từ|dự kiến|đề xuất/i);assert.equal(JSON.stringify(old),original);});
  const other={id:9,name:'Other product',price:123};assert.equal(catalog.apply(other),other);
 });
 test('static cards and article summaries/sidebar/body all use current package prices',()=>{

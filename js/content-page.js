@@ -127,7 +127,7 @@
       title: String(item.title || ""),
       summary: String(item.summary || ""),
       category: CATEGORY_LABELS[item.category] ? item.category : "kien-thuc",
-      cover_image: String(item.cover_image || ""),
+      cover_image: item.related_product === "Rooftop Kit" ? "public/images/installations/optimized/ban-cong-05.jpg" : String(item.cover_image || ""),
       related_product: String(item.related_product || ""),
       sort_order: Number(item.sort_order) || 0,
       updated_at: item.updated_at || "",

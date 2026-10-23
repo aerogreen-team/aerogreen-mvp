@@ -4,7 +4,7 @@ const { db, client, initDb } = require("./database");
 const { products: packageCatalog } = require("../js/package-catalog");
 const PRODUCTS = packageCatalog.map(({ imageFile, features, ...product }) => ({
   ...product,
-  image: "../images/" + imageFile + ".webp",
+  image: product.image || "../images/" + imageFile + ".webp",
   features: JSON.stringify(features),
 }));
 

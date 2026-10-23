@@ -120,7 +120,7 @@ window.VUONPHO_ARTICLES = [
     "title": "Rooftop Kit — hệ khí canh quy mô sân thượng",
     "summary": "Rooftop Kit là giải pháp dành cho những gia đình muốn tận dụng sân thượng hoặc khu vực có diện tích rộng để xây dựng vườn rau khí canh tại nhà. Cấu hình đề xuất gồm 16 trụ đứng và 336 vị trí trồng, được điều chỉnh theo diện tích và nhu cầu thực tế. Giá lắp đặt trọn gói: 11.490.000đ.",
     "category": "bo-khi-canh",
-    "cover_image": "images/anh5.webp",
+    "cover_image": "public/images/installations/optimized/ban-cong-05.jpg",
     "related_product": "Rooftop Kit",
     "sort_order": 3,
     "specs": [

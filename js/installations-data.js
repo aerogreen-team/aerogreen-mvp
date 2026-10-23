@@ -1,14 +1,13 @@
 // Real photos supplied by the user; original files remain unchanged.
-// credit.type: project-provided | vuonpho | partner; ownership must be confirmed separately.
+// credit.type identifies attribution separately; ownership is not inferred.
 window.VuonPhoInstallations = [
   {
-    "id": "ban-cong-05",
-    "src": "public/images/installations/optimized/ban-cong-05.jpg",
-    "thumbnail": "public/images/installations/optimized/ban-cong-05-800.jpg",
-    "width": 2048,
-    "height": 1536,
-    "alt": "Toàn cảnh khu vườn với các hàng trụ khí canh nhìn từ trên cao.",
-    "caption": "Toàn cảnh khu vườn với các hàng trụ khí canh nhìn từ trên cao.",
+    "id": "ban-cong-06",
+    "src": "public/images/installations/optimized/ban-cong-06.jpg",
+    "width": 1080,
+    "height": 720,
+    "alt": "Các trụ rau xanh dưới mái che.",
+    "caption": "Các trụ rau xanh dưới mái che.",
     "confirmedReal": true,
     "credit": {
       "type": "project-provided",
@@ -23,6 +22,20 @@ window.VuonPhoInstallations = [
     "height": 720,
     "alt": "Các hàng trụ khí canh với rau xanh trong không gian ngoài trời.",
     "caption": "Các hàng trụ khí canh với rau xanh trong không gian ngoài trời.",
+    "confirmedReal": true,
+    "credit": {
+      "type": "project-provided",
+      "name": ""
+    }
+  },
+  {
+    "id": "ban-cong-05",
+    "src": "public/images/installations/optimized/ban-cong-05.jpg",
+    "thumbnail": "public/images/installations/optimized/ban-cong-05-800.jpg",
+    "width": 2048,
+    "height": 1536,
+    "alt": "Toàn cảnh khu vườn với các hàng trụ khí canh nhìn từ trên cao.",
+    "caption": "Toàn cảnh khu vườn với các hàng trụ khí canh nhìn từ trên cao.",
     "confirmedReal": true,
     "credit": {
       "type": "project-provided",
@@ -62,19 +75,6 @@ window.VuonPhoInstallations = [
     "height": 1536,
     "alt": "Khung và các trụ khí canh trong không gian ban công.",
     "caption": "Khung và các trụ khí canh trong không gian ban công.",
-    "confirmedReal": true,
-    "credit": {
-      "type": "project-provided",
-      "name": ""
-    }
-  },
-  {
-    "id": "ban-cong-06",
-    "src": "public/images/installations/optimized/ban-cong-06.jpg",
-    "width": 1080,
-    "height": 720,
-    "alt": "Các trụ rau xanh dưới mái che.",
-    "caption": "Các trụ rau xanh dưới mái che.",
     "confirmedReal": true,
     "credit": {
       "type": "project-provided",
