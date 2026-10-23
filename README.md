@@ -42,6 +42,9 @@ Người dùng ──► Render (Node.js + Express) ──► Turso (libSQL — 
 (ephemeral) — file SQLite sẽ mất mỗi lần deploy hoặc restart. Turso lưu dữ liệu ở nơi khác nên
 dữ liệu khách hàng tồn tại lâu dài, còn server có thể deploy lại thoải mái.
 
+> Chi tiết kiến trúc mục tiêu (modular monolith) cho luồng bán hàng — module, tầng, luồng dữ liệu,
+> bảo mật và lộ trình mở rộng: **[`docs/KIEN_TRUC_ECOMMERCE.md`](docs/KIEN_TRUC_ECOMMERCE.md)**
+
 ---
 
 ## 📁 Cấu trúc thư mục
