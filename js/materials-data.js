@@ -196,14 +196,68 @@ window.VuonPhoMaterials = {
     },
     {
       "id": "demo-3",
-      "name": "Máy bơm khí canh (DEMO)",
+      "productCode": "AP3100",
+      "name": "Máy bơm tuần hoàn khí canh Lifetech AP3100 – 28W",
       "category": "Máy bơm & thiết bị",
       "price": null,
-      "image": null,
-      "description": "Dữ liệu DEMO dùng để xem trước giao diện. Nội dung sản phẩm thực tế sẽ được bổ sung sau.",
-      "specifications": {},
+      "image": "public/images/materials/lifetech-ap3100/3.webp",
+      "images": [
+        {
+          "src": "public/images/materials/lifetech-ap3100/3.webp",
+          "alt": "Máy bơm tuần hoàn khí canh Lifetech AP3100 – 28W – Ảnh đại diện"
+        },
+        {
+          "src": "public/images/materials/lifetech-ap3100/1.jpeg",
+          "alt": "Máy bơm tuần hoàn khí canh Lifetech AP3100 – 28W – Ảnh bổ sung 1"
+        },
+        {
+          "src": "public/images/materials/lifetech-ap3100/2.webp",
+          "alt": "Máy bơm tuần hoàn khí canh Lifetech AP3100 – 28W – Ảnh bổ sung 2"
+        },
+        {
+          "src": "public/images/materials/lifetech-ap3100/4.webp",
+          "alt": "Máy bơm tuần hoàn khí canh Lifetech AP3100 – 28W – Ảnh bổ sung 3"
+        }
+      ],
+      "description": "Máy bơm Lifetech AP3100 là thiết bị hỗ trợ tuần hoàn dung dịch dinh dưỡng trong hệ thống trồng rau khí canh. Máy đưa dung dịch từ bồn chứa qua đường ống đến các đầu phun, giúp cung cấp nước và dưỡng chất cho bộ rễ cây. Thiết kế nhỏ gọn, dễ lắp đặt và vệ sinh định kỳ.",
+      "specifications": {
+        "Thương hiệu": "Lifetech",
+        "Model": "AP3100",
+        "Xuất xứ": "Trung Quốc",
+        "Loại máy": "Máy bơm chìm",
+        "Điện áp": "220–240V / 50Hz",
+        "Công suất": "28W",
+        "Lưu lượng tối đa": "1.350L/H",
+        "Đẩy cao tối đa": "2,8m",
+        "Đầu nối": "Phi 16mm",
+        "Chiều dài dây điện": "190cm",
+        "Cấp bảo vệ": "IPX8 (theo tem)"
+      },
       "stockStatus": "Đang cập nhật",
-      "isDemo": true
+      "isDemo": false,
+      "shortDescription": "Máy bơm chìm hỗ trợ tuần hoàn dung dịch dinh dưỡng từ bồn chứa đến hệ thống đường ống và đầu phun, phù hợp để xem xét sử dụng trong các mô hình khí canh quy mô nhỏ.",
+      "advantages": [
+        "Thiết kế nhỏ gọn, dễ bố trí trong bồn chứa.",
+        "Hỗ trợ tuần hoàn dung dịch dinh dưỡng.",
+        "Lưu lượng tối đa 1.350 lít/giờ.",
+        "Chiều cao đẩy tối đa 2,8m.",
+        "Dễ tháo lắp và vệ sinh định kỳ.",
+        "Có thể sử dụng trong các mô hình tuần hoàn phù hợp với thông số máy."
+      ],
+      "uses": [
+        "Hỗ trợ đưa dung dịch dinh dưỡng từ bồn chứa đến hệ thống cấp nước.",
+        "Kết hợp với đường ống và đầu phun phù hợp để cung cấp dung dịch cho bộ rễ.",
+        "Hỗ trợ quá trình tuần hoàn và tái sử dụng dung dịch dinh dưỡng."
+      ],
+      "instructions": [
+        "Đặt máy ngập hoàn toàn trong dung dịch trước khi cấp điện.",
+        "Kết nối đường ống phù hợp.",
+        "Kiểm tra hoạt động của máy và hệ thống đầu phun.",
+        "Không để máy chạy khô.",
+        "Ngắt điện trước khi vệ sinh hoặc tháo lắp.",
+        "Vệ sinh định kỳ để hạn chế tắc nghẽn."
+      ],
+      "technicalNote": "Lưu lượng và chiều cao đẩy tối đa không đạt đồng thời. Cần kiểm tra áp lực yêu cầu của đầu phun và tổn thất đường ống trước khi sử dụng trong hệ thống khí canh."
     },
     {
       "id": "demo-4",
