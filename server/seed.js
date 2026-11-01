@@ -52,6 +52,7 @@ async function seedProducts() {
 const PAGES = [
   {
     slug: "kinh-nghiem-chon-vi-tri-dat-he-khi-canh",
+    cover_image: "public/images/installations/optimized/ban-cong-06.jpg",
     title: "Kinh nghiệm chọn vị trí đặt hệ khí canh",
     summary:
       "Ánh sáng, độ thoáng, nguồn điện – nước và khả năng chịu tải — bốn yếu tố quyết định hệ khí canh chạy tốt quanh năm.",
@@ -84,37 +85,6 @@ const PAGES = [
 
 VƯỜN PHỐ khảo sát trực tiếp các yếu tố này trước khi chốt phương án, nên bạn không cần tự tính toán.`,
   },
-  {
-    slug: "pha-dung-dich-dinh-duong-a-b-dung-cach",
-    title: "Pha dung dịch dinh dưỡng A–B đúng cách",
-    summary:
-      "Trình tự pha, nồng độ EC theo nhóm rau và cách xử lý khi cây có dấu hiệu thiếu hoặc thừa dinh dưỡng.",
-    category: "huong-dan",
-    related_product: "Family Kit",
-    sort_order: 2,
-    body: `Bộ dinh dưỡng A–B tách riêng hai thành phần vì canxi và phốt phát sẽ kết tủa nếu để chung ở dạng đậm đặc. Vì vậy luôn pha A trước, khuấy đều rồi mới pha B.
-
-## Trình tự pha chuẩn
-- Đổ nước sạch vào bồn khoảng 70% thể tích cần dùng.
-- Cho dung dịch A, khuấy đều và chờ dung dịch trong trở lại.
-- Cho dung dịch B, khuấy đều.
-- Châm nước tới mức quy định rồi đo lại EC và pH.
-
-## Nồng độ EC tham khảo
-- Rau ăn lá non: EC 1,2–1,8 mS/cm.
-- Rau ăn lá trưởng thành: EC 1,8–2,2 mS/cm.
-- Cà chua, ớt, dưa leo: EC 2,0–2,8 mS/cm.
-- pH luôn giữ trong khoảng 5,5–6,5.
-
-## Dấu hiệu cần điều chỉnh
-- Lá non vàng, cây chậm lớn: EC đang thấp, kiểm tra lại liều lượng.
-- Chóp lá cháy khô: EC quá cao, thay bớt 20–30% nước trong bồn.
-- Rêu xanh trong bồn: bồn bị lọt sáng, cần che kín nắp.
-
-## Vệ sinh định kỳ
-- Thay 20–30% nước mỗi 2 tuần, thay toàn bộ mỗi 4–6 tuần.
-- Súc bồn và đường ống mỗi 2 tháng để tránh cặn làm tắc béc phun.`,
-  },
 ];
 
 /**
@@ -131,13 +101,14 @@ async function seedPages() {
 
   await client.batch(
     PAGES.map((p) => ({
-      sql: `INSERT INTO content_pages (slug, title, summary, category, body, related_product, sort_order, published)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
+      sql: `INSERT INTO content_pages (slug, title, summary, category, cover_image, body, related_product, sort_order, published)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)`,
       args: [
         p.slug,
         p.title,
         p.summary,
         p.category,
+        p.cover_image || "",
         p.body,
         p.related_product || "",
         p.sort_order || 0,
