@@ -398,3 +398,16 @@ Ba điều chỉ có thể biết sau khi deploy — đã sửa vào mã:
 | Rewrite `/(.*)` → `/index.html` làm `/api/*` trả HTML | Rewrite của người dùng chạy **trước** route function | Bỏ catch-all rewrite, chỉ giữ rewrite cho `/login`, `/admin`, `/hop-dong`, `/public/*` |
 
 > Đã thử chuyển sang mô hình "static + `api/` function" bằng `outputDirectory: "public"`: Vercel báo `No entrypoint found in output directory` → không dùng. Giữ mô hình zero-config Express (framework preset `Express`).
+
+### 12.2 Trạng thái deploy (14/11/2026 17:00 +07)
+
+| Hạng mục | Kết quả |
+|---|---|
+| Production | **https://aerogreen-mvp-two.vercel.app** (project `nam-ee25/aerogreen-mvp`, region function `hnd1`, Node 22.x) |
+| Deploy tự động | Repo GitHub đã nối với project, Production Branch = `main` (merge vào `main` là deploy production) |
+| Kiểm tra công khai | `/`, `/login`, `/admin`, `/hop-dong?code=AGH001`, `/about.html`, `/materials.html`, `/css/style.css`, `/images/*`, `/fonts/*` = 200 đúng MIME; `/api/health`, `/api/products`, `/api/pages` trả JSON |
+| Upload ảnh | POST `/api/uploads` (token admin) → trả `https://<store>.public.blob.vercel-storage.com/uploads/...`, ảnh mở công khai (200, `image/png`) |
+| Không lộ mã nguồn | `/server/database.js` → 404 |
+| Còn lại | Gắn tên miền riêng, chạy `npm run smoke` trên production (ghi dữ liệu thật), tắt workflow Render sau 1–2 tuần |
+
+> File test 70 byte `uploads/upload-test-mwg8hoqm.png` còn trong Blob store (xoá qua `vercel blob delete` khi cần) — không ảnh hưởng site.

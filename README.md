@@ -11,8 +11,9 @@
 
 | | |
 |---|---|
-| **Website (đang chạy)** | **https://vuonpho.onrender.com** *(bản Vercel: đang triển khai — xem [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md))* |
-| **Trang quản trị** | `https://vuonpho.onrender.com/login` — tài khoản `admin` *(mật khẩu mặc định `admin123` đã được đổi; quên thì chạy `npm run reset-password`)* |
+| **Website (Vercel)** | **https://aerogreen-mvp-two.vercel.app** |
+| **Website (Render — bản cũ, giữ tạm)** | https://vuonpho.onrender.com |
+| **Trang quản trị** | `/login` — tài khoản `admin` *(mật khẩu mặc định `admin123` đã được đổi; quên thì chạy `npm run reset-password`)* |
 | **Database** | Turso `vuonpho` — region `aws-ap-northeast-1` (Tokyo) |
 | **Tên miền riêng** | *(cập nhật sau khi gắn tên miền .me từ GitHub Student Pack)* |
 | **Tài liệu** | `EXE201/User_Manual_VuonPho.md` · `EXE201/User_Manual_Video_Script_NAM.md` · `../OC1_OC2_Readiness_Plan.md` |
