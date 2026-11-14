@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const { initDb } = require("./server/database");
 const { authMiddleware } = require("./server/middleware/auth");
@@ -93,6 +95,16 @@ app.get("/api", (req, res) => {
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+// Trên Vercel, function được mount tại "/" nên request vào "/" luôn rơi vào đây
+// (CDN chỉ phục vụ các đường dẫn file cụ thể). Đọc sẵn index.html để bundler đóng
+// gói kèm function; khi chạy local, server/server.js đã phục vụ file tĩnh.
+if (process.env.VERCEL) {
+  const indexHtml = fs.readFileSync(path.join(__dirname, "public", "index.html"));
+  app.get("/", (req, res) => {
+    res.type("html").send(indexHtml);
+  });
+}
 
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err && err.message);

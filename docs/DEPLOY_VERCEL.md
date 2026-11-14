@@ -384,3 +384,17 @@ Nhánh `feat/vercel`, dựa trên `main` @ `01b3496`. Chưa deploy, chưa cutove
 - Thiếu `TURSO_DATABASE_URL` khi `VERCEL=1` → lỗi rõ ràng ngay khi function khởi động (không tạo DB file rỗng).
 
 **Việc còn lại (cần tài khoản Vercel):** P5.1 (tạo project + Blob store trên dashboard), P5.2–P5.8 (Preview + smoke + đo cold start), P6 (cutover, domain), P7 phần còn lại (tắt workflow Render sau khi ổn định).
+
+### 12.1 Phát hiện khi deploy thật (14/11/2026)
+
+Đã tạo trên Vercel: project `nam-ee25/aerogreen-mvp`, Blob store `vuonpho-uploads` (public, `hnd1`), biến môi trường `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` / `JWT_SECRET` / `BLOB_READ_WRITE_TOKEN` cho Production + Preview.
+
+Ba điều chỉ có thể biết sau khi deploy — đã sửa vào mã:
+
+| Hiện tượng | Nguyên nhân | Cách xử lý đã áp dụng |
+|---|---|---|
+| `Cannot find module 'express'` ở lần deploy đầu | Project đặt **Root Directory = `server`** (theo README cũ) nên Vercel build trong `server/`, không thấy `app.js` ở gốc | Xoá Root Directory (`rootDirectory = ""`), framework preset `Express` |
+| `/` trả `Cannot GET /` dù `/about.html` chạy | Function được mount tại `/`: request `/` luôn vào function trước khi tới rewrite; rewrite `source: "/"` không có tác dụng | `app.js` đọc sẵn `public/index.html` khi `VERCEL=1` và trả về ở route `/`; file được bundler đóng gói kèm function |
+| Rewrite `/(.*)` → `/index.html` làm `/api/*` trả HTML | Rewrite của người dùng chạy **trước** route function | Bỏ catch-all rewrite, chỉ giữ rewrite cho `/login`, `/admin`, `/hop-dong`, `/public/*` |
+
+> Đã thử chuyển sang mô hình "static + `api/` function" bằng `outputDirectory: "public"`: Vercel báo `No entrypoint found in output directory` → không dùng. Giữ mô hình zero-config Express (framework preset `Express`).

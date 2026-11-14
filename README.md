@@ -223,6 +223,7 @@ Chi tiết từng bước, rủi ro và checklist nghiệm thu: [docs/DEPLOY_VER
 | Trang tĩnh | Chỉ `public/**` được CDN phục vụ — `express.static()` bị bỏ qua |
 | `/login` vs `/login.html` | `/login` = đăng nhập **quản trị**, `/login.html` = đăng nhập **khách** (rewrite trong `vercel.json`) |
 | Upload ảnh | Ảnh đi thẳng lên Vercel Blob; giới hạn **4 MB/ảnh** (Vercel chặn body > 4,5 MB) |
+| Trang chủ `/` | Vercel mount Express function tại `/` nên `/` do function trả `public/index.html` (đọc sẵn lúc khởi động); các trang khác vẫn qua CDN |
 | Database | Bắt buộc Turso — thiếu `TURSO_DATABASE_URL` server báo lỗi ngay khi khởi động |
 | Preview | Nên tạo Turso riêng cho Preview để không ghi vào dữ liệu thật |
 
