@@ -408,6 +408,6 @@ Ba điều chỉ có thể biết sau khi deploy — đã sửa vào mã:
 | Kiểm tra công khai | `/`, `/login`, `/admin`, `/hop-dong?code=AGH001`, `/about.html`, `/materials.html`, `/css/style.css`, `/images/*`, `/fonts/*` = 200 đúng MIME; `/api/health`, `/api/products`, `/api/pages` trả JSON |
 | Upload ảnh | POST `/api/uploads` (token admin) → trả `https://<store>.public.blob.vercel-storage.com/uploads/...`, ảnh mở công khai (200, `image/png`) |
 | Không lộ mã nguồn | `/server/database.js` → 404 |
-| Còn lại | Gắn tên miền riêng, chạy `npm run smoke` trên production (ghi dữ liệu thật), tắt workflow Render sau 1–2 tuần |
+| Còn lại | Gắn tên miền riêng (hiện dùng `aerogreen-mvp-two.vercel.app`), chạy `npm run smoke` trên production (ghi dữ liệu thật), tắt workflow Render sau 1–2 tuần |
 
 > File test 70 byte `uploads/upload-test-mwg8hoqm.png` còn trong Blob store (xoá qua `vercel blob delete` khi cần) — không ảnh hưởng site.
