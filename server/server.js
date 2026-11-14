@@ -1,129 +1,38 @@
-const express = require("express");
-const cors = require("cors");
 const path = require("path");
-const fs = require("fs");
+const express = require("express");
 
+const app = require("../app");
 const { initDb, DB_URL } = require("./database");
-const { authMiddleware } = require("./middleware/auth");
 
-const app = express();
 const PORT = process.env.PORT || 3000;
+const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/**
+ * Bootstrap cho môi trường chạy dài hạn (local, Docker, Render).
+ *
+ * Trên Vercel, CDN phục vụ `public/**` và `vercel.json` lo các rewrite, nên file
+ * này không được dùng tới. Ở đây ta tự gắn lại phần file tĩnh + các đường dẫn
+ * đẹp mà trước kia nằm trong `server.js`.
+ */
 
-// Serve admin dashboard as static files
-app.use("/admin", express.static(path.join(__dirname, "admin")));
+app.use(express.static(PUBLIC_DIR));
 
-// Serve main website static files (HTML, CSS, JS, images) from parent folder
-app.use(express.static(path.join(__dirname, "..")));
+// Tương thích đường dẫn cũ "public/images/..." vẫn còn trong DB (cover_image…),
+// đồng thời khớp rewrite tương ứng trong vercel.json.
+app.use("/public", express.static(PUBLIC_DIR));
 
-// API Routes — Public (no auth required)
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/customers", require("./routes/customers"));
-app.use("/api/track", require("./routes/track"));
-app.use("/api/contact", require("./routes/contacts"));
-app.use("/api/contacts", require("./routes/contacts"));
-app.use("/api/products", require("./routes/products"));
-app.use("/api/recommend", require("./routes/recommend"));
-
-// Bài viết: đọc công khai (chỉ bản đã xuất bản), quản trị yêu cầu đăng nhập
-const pageRoutes = require("./routes/pages");
-app.use("/api/pages", pageRoutes.publicRouter);
-app.use("/api/pages", authMiddleware, pageRoutes);
-
-// API Routes — Protected (auth required)
-app.use("/api/stats", authMiddleware, require("./routes/stats"));
-
-// Upload ảnh cho trình soạn bài viết — chỉ admin đã đăng nhập.
-// Ảnh được phục vụ tại PUBLIC_PREFIX, kể cả khi UPLOAD_DIR trỏ ra ngoài repo.
+// Ảnh admin upload khi chưa cấu hình object storage.
 const uploadRoutes = require("./routes/uploads");
 app.use(uploadRoutes.PUBLIC_PREFIX, express.static(uploadRoutes.UPLOAD_DIR));
-app.use("/api/uploads", authMiddleware, uploadRoutes);
 
-// Quotations: nhóm endpoint công khai (trang hợp đồng khách tự mở) phải
-// được đăng ký TRƯỚC nhóm cần đăng nhập, nếu không khách sẽ bị 401.
-const quotationRoutes = require("./routes/quotations");
-app.use("/api/quotations", quotationRoutes.publicRouter);
-app.use("/api/quotations", authMiddleware, quotationRoutes);
-
-// API root — welcome message
-app.get("/api", (req, res) => {
-  res.json({
-    name: "VƯỜN PHỐ API",
-    version: "1.0.0",
-    status: "running",
-    endpoints: {
-      health: "/api/health",
-      contact: "POST /api/contact",
-      contacts: "GET /api/contacts",
-      contactDetail: "PATCH /api/contacts/:id",
-      products: "GET /api/products",
-      productDetail: "GET /api/products/:id",
-      compare: "GET /api/products/compare?ids=1,2",
-      pages: "GET /api/pages",
-      pageBySlug: "GET /api/pages/:slug",
-      pageCreate: "POST /api/pages (cần đăng nhập)",
-      pageUpdate: "PUT /api/pages/:id (cần đăng nhập)",
-      pageDelete: "DELETE /api/pages/:id (cần đăng nhập)",
-      upload: "POST /api/uploads (cần đăng nhập, field 'image')",
-      recommend: "GET /api/recommend?house_type=&area=&budget=",
-      stats: "GET /api/stats",
-      quotations: "GET/POST /api/quotations",
-      quotationById: "GET/PUT/DELETE /api/quotations/:id",
-      quotationByRequest: "GET /api/quotations/by-request/:requestId",
-      quotationStatus: "PATCH /api/quotations/:id/status",
-    },
-    contract: "/hop-dong?code=AGH001",
-    admin: "/admin",
-  });
-});
-
-// Health check
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
-});
-
-// Serve login page
+// Trang đăng nhập quản trị (tách với /login.html là trang đăng nhập khách hàng).
 app.get("/login", (req, res) => {
-  const loginPath = path.join(__dirname, "admin", "login.html");
-  if (fs.existsSync(loginPath)) {
-    res.sendFile(loginPath);
-  } else {
-    res.status(404).json({ error: "Trang đăng nhập không tìm thấy." });
-  }
+  res.sendFile(path.join(PUBLIC_DIR, "admin", "login.html"));
 });
 
-// Admin fallback (SPA-like)
-app.get("/admin*", (req, res) => {
-  const adminPath = path.join(__dirname, "admin", "index.html");
-  if (fs.existsSync(adminPath)) {
-    res.sendFile(adminPath);
-  } else {
-    res.status(404).json({ error: "Admin dashboard not found" });
-  }
-});
-
-// Root — serve main website
-app.get("/", (req, res) => {
-  const indexPath = path.join(__dirname, "..", "index.html");
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).json({ error: "Trang chủ không tìm thấy." });
-  }
-});
-
-// Public contract page (hợp đồng)
+// Trang hợp đồng công khai
 app.get("/hop-dong", (req, res) => {
-  const contractPath = path.join(__dirname, "..", "contract.html");
-  if (fs.existsSync(contractPath)) {
-    res.sendFile(contractPath);
-  } else {
-    res.status(404).json({ error: "Trang hợp đồng không tìm thấy." });
-  }
+  res.sendFile(path.join(PUBLIC_DIR, "contract.html"));
 });
 
 // Khởi động: tạo bảng + seed dữ liệu trước, rồi mới mở cổng

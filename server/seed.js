@@ -1,7 +1,7 @@
 const { db, client, initDb } = require("./database");
 
 // Danh sách sản phẩm mẫu — dùng chung cho `npm run seed` và auto-seed khi server khởi động
-const { products: packageCatalog } = require("../js/package-catalog");
+const { products: packageCatalog } = require("../public/js/package-catalog");
 const PRODUCTS = packageCatalog.map(({ imageFile, features, ...product }) => ({
   ...product,
   image: product.image || "../images/" + imageFile + ".webp",

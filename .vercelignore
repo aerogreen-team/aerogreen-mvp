@@ -1,0 +1,11 @@
+# Chỉ upload phần cần cho runtime + tài nguyên tĩnh.
+server/node_modules
+server/.env
+**/*.db
+**/*.db-shm
+**/*.db-wal
+.env
+.env.*
+tests
+docs
+render.yaml

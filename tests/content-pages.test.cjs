@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.join(__dirname, "..");
-const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
+const read = (file) => fs.readFileSync(path.join(root, "public", file), "utf8");
 
 function loadArticles() {
   const context = { window: {} };
@@ -28,7 +28,7 @@ test("bài viết có sẵn có slug duy nhất và đủ trường hiển thị
     slugs.add(item.slug);
     assert.ok(item.body_html.trim().length > 200);
     assert.ok(!/<script/i.test(item.body_html), "nội dung tĩnh không được chứa script");
-    assert.ok(fs.existsSync(path.join(root, item.cover_image)), `thiếu ảnh ${item.cover_image}`);
+    assert.ok(fs.existsSync(path.join(root, "public", item.cover_image)), `thiếu ảnh ${item.cover_image}`);
   }
 });
 

@@ -11,8 +11,8 @@
 
 | | |
 |---|---|
-| **Website (đang chạy)** | **https://vuonpho.onrender.com** |
-| **Trang quản trị** | https://vuonpho.onrender.com/login — tài khoản `admin` *(mật khẩu mặc định `admin123` đã được đổi; quên thì chạy `node admin-reset-password.js`)* |
+| **Website (đang chạy)** | **https://vuonpho.onrender.com** *(bản Vercel: đang triển khai — xem [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md))* |
+| **Trang quản trị** | `https://vuonpho.onrender.com/login` — tài khoản `admin` *(mật khẩu mặc định `admin123` đã được đổi; quên thì chạy `npm run reset-password`)* |
 | **Database** | Turso `vuonpho` — region `aws-ap-northeast-1` (Tokyo) |
 | **Tên miền riêng** | *(cập nhật sau khi gắn tên miền .me từ GitHub Student Pack)* |
 | **Tài liệu** | `EXE201/User_Manual_VuonPho.md` · `EXE201/User_Manual_Video_Script_NAM.md` · `../OC1_OC2_Readiness_Plan.md` |
@@ -22,21 +22,25 @@
 ## 🧱 Kiến trúc
 
 ```
-Người dùng ──► Render (Node.js + Express) ──► Turso (libSQL — tương thích SQLite)
+Người dùng ──► Vercel: CDN phục vụ public/**  +  1 Express Function cho /api/*
                      │
-                     ├── Phục vụ trang tĩnh: index/about/services/products/contact
+                     ├── Trang tĩnh: public/index, about, services, products, contact…
                      ├── Thư viện bài viết:  /noi-dung.html
                      ├── Trang tài khoản: register / login / account
-                     ├── Trang quản trị:  /login → /admin
+                     ├── Trang quản trị:  /login → public/admin, API qua Function
                      └── REST API:        /api/*
+                                  │
+                                  ├── Turso (libSQL) — toàn bộ dữ liệu
+                                  └── Vercel Blob — ảnh admin upload
 ```
 
 | Thành phần | Công nghệ | Chi phí |
 |---|---|---|
 | Frontend | HTML + CSS + JS thuần (không framework) | $0 |
-| Backend | Node.js 20.12+ · Express 4 | $0 |
+| Backend | Node.js 22 · Express 4 (một Vercel Function) | $0 |
 | Database | **Turso** (libSQL, tương thích cú pháp SQLite) | $0 |
-| Hosting | **Render** (Web Service, free tier) | $0 |
+| Hosting | **Vercel** (Hobby) — Render giữ làm bản dự phòng | $0 |
+| Lưu ảnh | **Vercel Blob** (1 GB free) | $0 |
 
 **Vì sao tách database ra khỏi máy chủ?** Free tier của các nền tảng hosting dùng ổ đĩa tạm thời
 (ephemeral) — file SQLite sẽ mất mỗi lần deploy hoặc restart. Turso lưu dữ liệu ở nơi khác nên
@@ -48,36 +52,37 @@ dữ liệu khách hàng tồn tại lâu dài, còn server có thể deploy l�
 
 ```
 aerogreen-mvp/
-├── index.html            # Trang chủ
-├── about.html            # Giới thiệu
-├── services.html         # 4 dịch vụ
-├── products.html         # 3 gói giải pháp + trợ lý chọn gói
-├── contact.html          # Form liên hệ (cho khách chưa đăng nhập)
-├── register.html         # Đăng ký tài khoản khách
-├── login.html            # Đăng nhập
-├── account.html          # Hồ sơ + gửi & theo dõi yêu cầu tư vấn
-├── contract.html         # Trang hợp đồng dịch vụ (mở bằng link chia sẻ)
-├── noi-dung.html         # Thư viện bài viết + chi tiết bài viết
-├── css/style.css         # Design system
-├── css/auth.css          # Style riêng cho trang tài khoản
-├── js/auth.js            # Phiên đăng nhập, điều hướng, UTM, tracking
-├── js/api-loader.js      # Tiện ích gọi API
-├── js/products-api.js    # Tải sản phẩm động từ API
-├── js/articles-data.js   # Nội dung các bài viết có sẵn
-├── js/content-page.js    # Danh sách + chi tiết bài viết (API và nội dung có sẵn)
-├── js/script.js          # Tương tác chung
-└── server/
-    ├── server.js         # Khởi động: init DB → seed → listen
-    ├── database.js       # Kết nối Turso/libSQL + lớp truy cập dữ liệu
-    ├── seed.js           # Dữ liệu mẫu (3 gói giải pháp + bài viết mẫu)
-    ├── smoke-test.js     # 14 kiểm tra tự động
-    ├── db-info.js        # Xem đang kết nối DB nào, có bao nhiêu bản ghi
-    ├── clear-test-data.js# Xoá dữ liệu smoke test
-    ├── .env.example      # Mẫu biến môi trường
-    ├── middleware/       # auth (admin) · customer-auth (khách)
-    ├── routes/           # auth · customers · contacts · products
-    │                     # pages · uploads · recommend · quotations · stats · track
-    └── admin/            # Dashboard quản trị (+ tab Bài viết)
+├── app.js                # Express app — entry point Vercel (export app, không listen)
+├── vercel.json           # Region hnd1 + rewrite /login, /admin, /hop-dong
+├── public/               # Toàn bộ tài nguyên công khai (CDN phục vụ)
+│   ├── index.html        # Trang chủ
+│   ├── about.html        # Giới thiệu
+│   ├── services.html     # 4 dịch vụ
+│   ├── products.html     # 3 gói giải pháp + trợ lý chọn gói
+│   ├── contact.html      # Form liên hệ (khách chưa đăng nhập)
+│   ├── register.html     # Đăng ký tài khoản khách
+│   ├── login.html        # Đăng nhập KHÁCH HÀNG
+│   ├── account.html      # Hồ sơ + gửi & theo dõi yêu cầu tư vấn
+│   ├── contract.html     # Trang hợp đồng dịch vụ (mở bằng link chia sẻ)
+│   ├── noi-dung.html     # Thư viện bài viết + chi tiết bài viết
+│   ├── admin/            # Dashboard quản trị + login.html của admin (/login)
+│   ├── css/  fonts/  images/
+│   └── js/               # script.js, auth.js, articles-data.js…
+│                         # package-catalog.js dùng chung: browser nạp, server require()
+├── server/
+│   ├── server.js         # Bootstrap chạy dài hạn: static + /login + /hop-dong + listen
+│   ├── database.js       # Kết nối Turso/libSQL + lớp truy cập dữ liệu
+│   ├── seed.js           # Dữ liệu mẫu (3 gói giải pháp + bài viết mẫu)
+│   ├── lib/storage.js    # Lưu ảnh lên Vercel Blob (đổi sang R2/S3 chỉ sửa file này)
+│   ├── smoke-test.js     # 14 kiểm tra tự động
+│   ├── db-info.js        # Xem đang kết nối DB nào, có bao nhiêu bản ghi
+│   ├── clear-test-data.js# Xoá dữ liệu smoke test
+│   ├── .env.example      # Mẫu biến môi trường
+│   ├── middleware/       # auth (admin) · customer-auth (khách)
+│   └── routes/           # auth · customers · contacts · products · pages
+│                         # uploads · recommend · quotations · stats · track
+├── tests/                # 22 unit test (npm test)
+└── docs/                 # Kế hoạch deploy Vercel, ghi chú nâng cấp giao diện
 ```
 
 ---
@@ -88,12 +93,12 @@ aerogreen-mvp/
 `server/aerogreen.db` (libSQL hỗ trợ `file:`).
 
 ```bash
-cd server
-npm install
-npm start
+npm install       # cài ở GỐC repo (app.js nằm ở gốc)
+npm run dev       # http://localhost:3000
 ```
 
-Mở http://localhost:3000
+> `server/.env` (nếu có) vẫn được tự nạp — đặt file ở đó như trước.
+> Chạy test: `npm test` (22 unit test, không cần server).
 
 | Đường dẫn | Dùng để |
 |---|---|
@@ -131,7 +136,8 @@ không cần deploy lại. (Đăng nhập vẫn không cần xoá token cũ: tok
 ```bash
 cd server
 cp .env.example .env      # rồi điền TURSO_DATABASE_URL và TURSO_AUTH_TOKEN
-npm start
+cd ..
+npm run dev
 ```
 
 ---
@@ -143,6 +149,7 @@ npm start
 | `TURSO_DATABASE_URL` | Production | `libsql://<db>-<org>.turso.io` |
 | `TURSO_AUTH_TOKEN` | Production | Token của database (bí mật) |
 | `JWT_SECRET` | Production | Chuỗi ngẫu nhiên ≥ 32 byte |
+| `BLOB_READ_WRITE_TOKEN` | Production (Vercel) | Token của Blob store — bắt buộc để upload ảnh |
 | `PORT` | Không | Mặc định 3000; hosting tự set |
 | `DB_PATH` | Không | Chỉ khi tự host kèm volume, thay cho `TURSO_*` |
 
@@ -183,94 +190,63 @@ turso db tokens create vuonpho
 
 ---
 
-## ☁️ Deploy lên Render
+## ☁️ Deploy lên Vercel
 
-### Cách A — Dùng Blueprint (nhanh nhất, đã có sẵn `render.yaml`)
+Repo đã cấu hình sẵn cho Vercel: `app.js` (entry Express) + `public/**` (tài nguyên tĩnh) + `vercel.json`.
+Chi tiết từng bước, rủi ro và checklist nghiệm thu: [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md).
 
-1. Đăng nhập **https://dashboard.render.com** bằng GitHub
-2. **New** → **Blueprint**
-3. Chọn repo `aerogreen-team/aerogreen-mvp` → Render đọc `render.yaml` và tạo service
-4. Render chỉ hỏi **2** biến (`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`) → dán từ `server/.env`; `JWT_SECRET` do Render tự sinh.
-5. Bấm **Apply** → chờ build (~2–3 phút)
+### Các bước
 
-### Cách B — Tạo Web Service thủ công
+1. **Tạo Blob store** — Vercel → project → **Storage** → **Blob** → tạo store. Vercel tự sinh `BLOB_READ_WRITE_TOKEN`.
+2. **Import repo** — Vercel → **Add New** → **Project** → chọn `aerogreen-team/aerogreen-mvp` (branch `main`).
+   Framework để **tự nhận diện** (Express) — không cần build command.
+3. **Environment Variables** (Production + Preview):
 
-| Trường | Giá trị |
+   ```
+   TURSO_DATABASE_URL      = libsql://...
+   TURSO_AUTH_TOKEN        = eyJ...
+   JWT_SECRET              = <chuỗi ngẫu nhiên>
+   BLOB_READ_WRITE_TOKEN   = <do bước 1 sinh ra>
+   ```
+
+4. **Deploy** → mở URL `*.vercel.app`, rồi chạy smoke test:
+
+   ```bash
+   npm run smoke https://<ten-project>.vercel.app     # 14 kiểm tra trên bản deploy
+   ```
+
+### Lưu ý khi chạy trên Vercel
+
+| Điểm | Chi tiết |
 |---|---|
-| **Repository** | `aerogreen-team/aerogreen-mvp` |
-| **Branch** | `main` |
-| **Root Directory** | `server` |
-| **Runtime** | Node |
-| **Build Command** | `npm install` |
-| **Start Command** | `npm start` |
-| **Instance Type** | Free |
-| **Health Check Path** | `/api/health` |
+| Vùng chạy | `vercel.json` đặt `hnd1` (Tokyo) cho gần Turso `aws-ap-northeast-1` |
+| Trang tĩnh | Chỉ `public/**` được CDN phục vụ — `express.static()` bị bỏ qua |
+| `/login` vs `/login.html` | `/login` = đăng nhập **quản trị**, `/login.html` = đăng nhập **khách** (rewrite trong `vercel.json`) |
+| Upload ảnh | Ảnh đi thẳng lên Vercel Blob; giới hạn **4 MB/ảnh** (Vercel chặn body > 4,5 MB) |
+| Database | Bắt buộc Turso — thiếu `TURSO_DATABASE_URL` server báo lỗi ngay khi khởi động |
+| Preview | Nên tạo Turso riêng cho Preview để không ghi vào dữ liệu thật |
 
-**Environment Variables** (thêm cả 3):
+### Render (bản dự phòng, không còn cập nhật)
+
+`render.yaml` vẫn giữ để dựng lại service trong vài phút nếu Vercel gặp sự cố. Blueprint đã đổi sang
+cài ở **gốc repo** và chạy `node server/server.js` cho khớp cấu trúc mới (`public/` + `app.js`).
 
 ```
-TURSO_DATABASE_URL = libsql://...
-TURSO_AUTH_TOKEN   = eyJ...
-JWT_SECRET         = <chuỗi ngẫu nhiên>
+Build Command  = npm install
+Start Command  = node server/server.js
+Health Check   = /api/health
 ```
 
-### Cách C — Không cần cấp quyền GitHub (repo đang public)
-
-Dùng khi chưa được owner của tổ chức duyệt Render GitHub App. Render đọc repo
-public trực tiếp, **không cần cài GitHub App**, nhưng **mất auto-deploy**.
-
-1. **New** → **Web Service** → chọn tab **Public Git Repository**
-2. Dán `https://github.com/aerogreen-team/aerogreen-mvp` → **Connect**
-3. Điền:
-
-| Trường | Giá trị |
-|---|---|
-| **Name** | `vuonpho` |
-| **Branch** | `main` |
-| **Runtime** | Node |
-| **Region** | Singapore |
-| **Build Command** | `cd server && npm install` |
-| **Start Command** | `cd server && npm start` |
-| **Instance Type** | Free |
-| **Health Check Path** | `/api/health` |
-
-> Vì `package.json` nằm trong `server/`, dùng `cd server && ...` thay cho Root Directory
-> (trường này có thể không có ở luồng Public Git Repository).
-
-4. **Advanced → Environment Variables**: thêm `TURSO_DATABASE_URL` và `TURSO_AUTH_TOKEN`
-
-#### Lấy lại auto-deploy bằng Deploy Hook
-
-1. Render → service → **Settings** → **Deploy Hook** → copy URL
-2. GitHub repo → **Settings → Secrets and variables → Actions** → **New repository secret**
-   - Name: `RENDER_DEPLOY_HOOK`
-   - Secret: dán URL vừa copy
-3. Xong. Workflow `.github/workflows/deploy-render.yml` sẽ tự gọi hook mỗi khi push `main`
-
-> Chưa đặt được secret (cần quyền admin repo)? Workflow sẽ tự bỏ qua và ghi chú,
-> không báo lỗi. Khi đó deploy tay: Render → **Manual Deploy** → **Deploy latest commit**.
-
-### Sau khi deploy
-
-```bash
-cd server
-npm run smoke https://<ten-service>.onrender.com   # 14 kiểm tra trên bản deploy
-npm run db:info                                    # xem dữ liệu trên Turso
-npm run db:clean                                   # xoá dữ liệu test
-npm run reset-password                             # quên mật khẩu quản trị → đặt lại
-```
-
-⚠️ **Free tier ngủ sau ~15 phút** không có truy cập; lần truy cập đầu chậm ~30–60 giây.
-**Trước buổi báo cáo, mở link một lần để đánh thức service.**
+⚠️ Trên Render, ảnh upload ghi vào `public/images/uploads` (ổ đĩa tạm) — mất sau mỗi lần deploy.
 
 ---
 
 ## 🌐 Gắn tên miền
 
 1. Lấy tên miền miễn phí 1 năm qua **GitHub Student Pack** (Namecheap `.me`, hoặc Name.com `.app`/`.dev`, hoặc `.TECH`)
-2. Render → service → **Settings** → **Custom Domains** → thêm tên miền
-3. Tại nhà đăng ký tên miền, thêm bản ghi DNS theo hướng dẫn Render (thường là `CNAME` → `<ten-service>.onrender.com`)
-4. Chờ DNS (~5–30 phút). Render tự cấp HTTPS.
+2. Vercel → project → **Settings** → **Domains** → thêm tên miền
+3. Tại nhà đăng ký tên miền, thêm bản ghi DNS theo hướng dẫn Vercel (thường là `CNAME` → `cname.vercel-dns.com`)
+4. Chờ DNS (~5–30 phút). Vercel tự cấp HTTPS.
 
 ---
 
@@ -280,6 +256,7 @@ npm run reset-password                             # quên mật khẩu quản t
 |---|---|
 | `npm start` | Chạy server (cổng 3000) |
 | `npm run dev` | Chạy kèm tự động nạp lại khi sửa code |
+| `npm test` | **22 unit test** (đọc thẳng file trong `public/`, không cần server) |
 | `npm run seed` | Nạp dữ liệu mẫu (bỏ qua nếu đã có) |
 | `npm run smoke <URL>` | **14 kiểm tra** toàn bộ luồng cốt lõi |
 | `npm run db:info` | Xem đang kết nối DB nào, số bản ghi, lead mới nhất |
@@ -309,7 +286,7 @@ Các endpoint công khai:
 Cần đăng nhập **khách** (JWT): `GET/PUT /api/customers/me`, `GET/POST /api/customers/me/requests`
 
 Cần đăng nhập **quản trị** (JWT): `/api/contacts/*`, `/api/stats`, `/api/stats/funnel`, `/api/quotations/*`,
-`POST/PUT/DELETE /api/pages/*`, `POST /api/uploads` (field `image`, tối đa 5MB).
+`POST/PUT/DELETE /api/pages/*`, `POST /api/uploads` (field `image`, tối đa 4MB).
 
 ### Đo lường cho Outcome 2
 
@@ -330,12 +307,13 @@ Nguồn kênh được ghi nhận tự động từ tham số UTM trên link:
 
 | Hiện tượng | Nguyên nhân | Cách xử lý |
 |---|---|---|
-| Render không thấy repo trong danh sách | Render GitHub App chưa được cài/duyệt cho tổ chức `aerogreen-team` | Owner duyệt tại `github.com/organizations/aerogreen-team/settings/installations`, hoặc dùng **Cách C** ở trên |
-| Trang mở được nhưng gửi form báo "Không kết nối được máy chủ" | Backend chưa chạy | Chạy `npm start` trong `server/`, hoặc đánh thức service Render |
+| Ảnh upload trả 503 | Chưa cấu hình `BLOB_READ_WRITE_TOKEN` trên Vercel | Tạo Blob store (Vercel → Storage → Blob) rồi redeploy |
+| Upload ảnh báo 413 | Ảnh lớn hơn giới hạn body 4,5 MB của Vercel | Nén ảnh xuống dưới 4 MB |
+| Trang mở được nhưng gửi form báo "Không kết nối được máy chủ" | Backend chưa chạy | Chạy `npm run dev` ở gốc repo |
 | `SQLITE_...` / lỗi kết nối DB | Sai `TURSO_DATABASE_URL` hoặc token hết hạn | Kiểm tra bằng `npm run db:info` |
 | `process.loadEnvFile is not a function` | Node cũ hơn 20.12 | Nâng Node lên 20.12+ (đã khai báo trong `engines`) |
 | Trang tài khoản tự chuyển về Đăng nhập | Phiên hết hạn (30 ngày) | Đăng nhập lại |
-| Quên mật khẩu quản trị (cả trên bản deploy) | Hash bcrypt một chiều, không khôi phục được | `cd server && node admin-reset-password.js` (dùng chung database Turso nên có hiệu lực ngay trên bản deploy) |
+| Quên mật khẩu quản trị (cả trên bản deploy) | Hash bcrypt một chiều, không khôi phục được | `npm run reset-password` (dùng chung database Turso nên có hiệu lực ngay trên bản deploy) |
 | Bản deploy mất dữ liệu sau khi restart | Đang dùng file SQLite trên hosting | Bắt buộc dùng Turso ở production |
 
 ---

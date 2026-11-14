@@ -9,7 +9,7 @@ function setup(failedImages=[]){
  for(const id of ['#materials-grid','#material-search','#material-category','#materials-more','#material-detail','#material-detail-content','#materials-count','#materials-empty','close'])nodes[id]=element();
  const context={Image:class {set src(value){this.path=value;probes.push(this);this.naturalWidth=fs.existsSync(value)&&!failedImages.includes(value)?100:0;(this.naturalWidth?this.onload:this.onerror)();}},window:{},document:{querySelector:id=>nodes[id]},Option:function(text,value){this.text=text;this.value=value;},Intl,URLSearchParams};
  vm.createContext(context);
- for(const file of ['js/materials-data.js','js/materials.js'])vm.runInContext(fs.readFileSync(file,'utf8'),context);
+ for(const file of ['public/js/materials-data.js','public/js/materials.js'])vm.runInContext(fs.readFileSync(file,'utf8'),context);
  return {nodes,data:context.window.VuonPhoMaterials,probes};
 }
 test('demo schema, placeholders, pagination and contact links',()=>{
@@ -28,9 +28,9 @@ test('details open, include missing data fallbacks and close',()=>{
  const {nodes:n}=setup();n['#materials-grid'].events.click({target:{closest:()=>({dataset:{id:'demo-3'}})}});assert.equal(n['#material-detail'].open,true);assert.match(n['#material-detail-content'].innerHTML,/Thông số kỹ thuật/);assert.doesNotMatch(n['#material-detail-content'].innerHTML,/>[^<]*DEMO/i);n.close.events.click();assert.equal(n['#material-detail'].open,false);
 });
 test('shared navigation, footer and responsive breakpoints',()=>{
- for(const file of ['index','about','services','products','contact','account','login','register','materials']){const html=fs.readFileSync(file+'.html','utf8');assert.equal((html.match(/class="product-menu"/g)||[]).length,2);}
- const html=fs.readFileSync('materials.html','utf8');const products=fs.readFileSync('products.html','utf8');assert.equal(html.match(/<footer[\s\S]*?<\/footer>/)[0],products.match(/<footer[\s\S]*?<\/footer>/)[0]);
- const css=fs.readFileSync('css/materials.css','utf8');assert.match(css,/repeat\(4,minmax/);assert.match(css,/@media\(max-width:1100px\)/);assert.match(css,/@media\(max-width:600px\)/);
+ for(const file of ['index','about','services','products','contact','account','login','register','materials']){const html=fs.readFileSync('public/'+file+'.html','utf8');assert.equal((html.match(/class="product-menu"/g)||[]).length,2);}
+ const html=fs.readFileSync('public/materials.html','utf8');const products=fs.readFileSync('public/products.html','utf8');assert.equal(html.match(/<footer[\s\S]*?<\/footer>/)[0],products.match(/<footer[\s\S]*?<\/footer>/)[0]);
+ const css=fs.readFileSync('public/css/materials.css','utf8');assert.match(css,/repeat\(4,minmax/);assert.match(css,/@media\(max-width:1100px\)/);assert.match(css,/@media\(max-width:600px\)/);
 });
 
 test('VT001 has verified PNG files, stored price, gallery switching and full details',()=>{

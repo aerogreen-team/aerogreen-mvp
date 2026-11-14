@@ -5,6 +5,7 @@
 > **Phạm vi:** repo `aerogreen-mvp` (Express + Turso/libSQL), production hiện chạy Render (Singapore).
 > **Mục tiêu:** production trên Vercel (Hobby, $0) giữ nguyên website tĩnh, API, trang quản trị, trang hợp đồng và upload ảnh.
 > **Ước lượng:** ~13,5 giờ công (≈ 2 ngày), rủi ro trung bình, chạy song song Render được trong suốt quá trình.
+> **Đã áp dụng ngày 14/11/2026:** P1–P4 (tái cấu trúc `public/`, `app.js`, Vercel Blob, `vercel.json`) trên nhánh `feat/vercel` — xem mục 12. Còn lại P5–P7 (tạo project Vercel, Preview, cutover).
 
 ---
 
@@ -46,6 +47,9 @@ aerogreen-mvp/
 
 - `api/` tồn tại nhưng **rỗng** (thư mục sót lại, git không track) → xoá.
 - **Không** có `vercel.json`, `.vercelignore`, `Dockerfile`, `docker-compose.yml`, `Caddyfile` trên `main` (các file đó thuộc nhánh VPS đã bỏ).
+- Front-end dùng **hai quy ước đường dẫn ảnh**: `images/...` (favicon, ảnh trang chủ) và `public/images/...`
+  (57 chỗ trong `index.html`, `products.html`, `js/installations-data.js`, `js/materials-data.js`, `js/package-catalog.js`…).
+  Vì `public/` trở thành web root nên quy ước thứ hai phải được xử lý — xem V1.10.
 - Upload ảnh hiện tại: `multer.diskStorage` → `images/uploads/`, giới hạn 5 MB, chặn SVG. Thư mục này **đang rỗng** (chỉ `.gitkeep`) và **không** ảnh nào trong DB trỏ vào đó → không cần migrate dữ liệu ảnh cũ.
 
 ### 2.2 Bảng chênh lệch
@@ -131,7 +135,8 @@ Cột **☐** để tick khi xong. Mã việc dùng tham chiếu ở bảng rủ
 | V1.6 | Cập nhật đường dẫn đọc file trong test | `tests/*.cjs`: `path.join(root, "public", file)` / `read("public/css/style.css")`; `materials.test.cjs` đọc `public/js/...`, `public/css/materials.css` | `node --test tests/*.cjs` = 22/22 | 30' | ☐ |
 | V1.7 | Cho server dev phục vụ `public/` | `server/server.js`: `express.static(path.join(__dirname, "..", "public"))`, admin → `public/admin`, `/login` → `public/admin/login.html`, `/hop-dong` → `public/contract.html` | `npm run dev` mở được 11 trang + `/admin` + `/login` + `/hop-dong?code=AGH001` | 20' | ☐ |
 | V1.8 | Rà link tuyệt đối bị lệch | `rg '(href|src)="/' public` | Chỉ còn `contract.html` → `/` và `login.html` → `/login` (đều hợp lệ) | 15' | ☐ |
-| V1.9 | Dọn thư mục rỗng `api/` | `Remove-Item api` | Không còn `api/` | 5' | ☐ |
+| V1.9 | Dọn thư mục rỗng `api/` | `Remove-Item api` | Không còn `api/` | 5' | ☑ |
+| V1.10 | Giữ tương thích đường dẫn cũ `public/images/...` (57 chỗ trong mã + `cover_image` đã lưu trong Turso) | `vercel.json`: rewrite `/public/:path*` → `/:path*`; dev: `app.use("/public", express.static(PUBLIC_DIR))` | Ảnh mở được ở cả `/images/...` và `/public/images/...` | 15' | ☑ |
 
 > CSS dùng `url("../fonts/be-vietnam-pro-400.woff2")` nên **phải** giữ `css/` và `fonts/` là hai thư mục anh em trong `public/`. Mọi asset trong HTML đều là đường dẫn tương đối → chỉ cần di chuyển nguyên cây, không phải viết lại link.
 
@@ -235,10 +240,14 @@ Cột **☐** để tick khi xong. Mã việc dùng tham chiếu ở bảng rủ
   "rewrites": [
     { "source": "/login", "destination": "/admin/login.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/hop-dong", "destination": "/contract.html" }
+    { "source": "/hop-dong", "destination": "/contract.html" },
+    { "source": "/public/:path*", "destination": "/:path*" }
   ]
 }
 ```
+
+> Rewrite cuối giữ cho các đường dẫn cũ `public/images/...` còn nằm trong mã front-end và trong
+> `cover_image` đã lưu ở Turso — nếu bỏ, khoảng 57 ảnh sẽ 404.
 
 `.vercelignore`:
 
@@ -283,6 +292,7 @@ render.yaml
 | `js/package-catalog.js` bị move mà quên sửa `require()` | Cao | `seed`, `/api/products`, `/api/recommend` chết | V1.5 là điều kiện tiên quyết của V1.6/V2.5 | V1.5 |
 | Ảnh > 4,5 MB bị nền tảng chặn (413) | Cao | Admin không upload được ảnh lớn | Giới hạn 4 MB + thông báo rõ; về sau dùng presigned/direct upload | V3.3, V5.7 |
 | Quên di chuyển file tĩnh → 404 toàn site | Trung bình | Không demo được | Làm P1 trước P5, kiểm tra đủ 11 trang | V1.1–V1.9 |
+| Đường dẫn cũ `public/images/...` bị 404 sau khi `public/` thành web root | Cao (nếu bỏ rewrite) | ~57 ảnh hỏng | Rewrite `/public/:path*` + mount tương thích khi dev | V1.10 |
 | `/login` (admin) đụng `/login.html` (khách) | Trung bình | Không vào được trang quản trị | Giữ `cleanUrls: false`, test cả hai URL | V4.1, V5.3 |
 | `/admin` trả 404 thay vì `index.html` | Thấp | Không vào được dashboard | Rewrite `/admin` → `/admin/index.html` | V4.5 |
 | Test đọc file sai thư mục sau khi move | Cao nếu bỏ qua | CI/local test đỏ, mất lưới an toàn | Sửa cả 4 file test, chạy lại 22/22 | V1.6 |
@@ -344,3 +354,33 @@ render.yaml
 4. **Domain riêng hay dùng `*.vercel.app`?** — ảnh hưởng V6.2.
 5. **Ai là owner thứ hai của Vercel team?**
 6. **Có cần upload ảnh > 4 MB?** — nếu có, phải làm upload trực tiếp từ trình duyệt lên storage (presigned/direct), ngoài phạm vi kế hoạch này.
+
+---
+
+## 12. Trạng thái thực hiện (14/11/2026)
+
+Nhánh `feat/vercel`, dựa trên `main` @ `01b3496`. Chưa deploy, chưa cutover.
+
+| Nhóm | Đã làm | Kiểm chứng |
+|---|---|---|
+| P1 | Toàn bộ 11 HTML + `css/`, `fonts/`, `js/`, `images/`, `server/admin` → `public/`; xoá `api/` rỗng | `git mv`, 11 trang + asset trả 200 khi chạy local |
+| P1 | Sửa 3 chỗ `require()` trỏ `../public/js/package-catalog` + 4 file test đọc `public/…` | `npm test` → **22/22** |
+| P1 | Rewrite tương thích `public/images/...` | `/public/images/installations/optimized/ban-cong-05.jpg` → 200 |
+| P2 | `app.js` ở gốc (export app, `trust proxy`, `json` 1 MB, `ensureDb` memoized, error handler JSON) | `require('./app')` OK; server chạy |
+| P2 | `server/server.js` thành bootstrap dev: static `public/`, `/public` tương thích, `/login`, `/hop-dong`, uploads, seed khi khởi động | `/`, `/admin/`, `/login`, `/hop-dong?code=AGH001` → 200 |
+| P2 | `database.js`: fail-fast khi `VERCEL` thiếu `TURSO_DATABASE_URL`; không `mkdirSync` khi serverless | — |
+| P3 | `server/lib/storage.js` (Vercel Blob) + `uploads.js`: memoryStorage khi có storage, 503 nếu serverless thiếu token, 5 MB → **4 MB** | `require` với `VERCEL=1` không crash; `/api/uploads` → 401 |
+| P4 | `vercel.json` (hnd1 + 4 rewrite), `.vercelignore`, `.gitignore` thêm `.vercel` | — |
+| P4 | `public/admin/index.html` dùng đường dẫn tuyệt đối `/admin/style.css`, `/admin/script.js` để `/admin` (không có dấu `/` cuối, đã rewrite) vẫn tải đúng asset | `/admin/`, `/admin/style.css`, `/admin/script.js` → 200 |
+| P4 | `package.json` gốc: `engines.node 22.x`, scripts `dev/start/seed/smoke/test/db:info/db:clean/reset-password`, bỏ `mysql2`/`nodemailer`/`dotenv`, thêm `@vercel/blob` | `npm install` + `npm test` xanh |
+| P4 | `render.yaml` đổi sang cài ở gốc + `node server/server.js` (giữ Render dự phòng hoạt động) | — |
+| P7 (một phần) | README: kiến trúc, cấu trúc thư mục, chạy local (`npm install` ở gốc), bảng biến môi trường, mục deploy Vercel, xử lý sự cố | — |
+
+**Thay đổi hành vi cần biết**
+
+- Cài dependency ở **gốc repo** (`npm install`), không còn `cd server && npm install` — vì `app.js` nằm ở gốc.
+- `server/package.json` vẫn giữ để Render build theo `rootDir` cũ nếu cần; dependency thật sự dùng khi chạy từ gốc là `package.json` gốc.
+- Upload ảnh trên Vercel cần `BLOB_READ_WRITE_TOKEN`; thiếu token → 503 kèm thông báo, không ghi đĩa.
+- Thiếu `TURSO_DATABASE_URL` khi `VERCEL=1` → lỗi rõ ràng ngay khi function khởi động (không tạo DB file rỗng).
+
+**Việc còn lại (cần tài khoản Vercel):** P5.1 (tạo project + Blob store trên dashboard), P5.2–P5.8 (Preview + smoke + đo cold start), P6 (cutover, domain), P7 phần còn lại (tắt workflow Render sau khi ổn định).

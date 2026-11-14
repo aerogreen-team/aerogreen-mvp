@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { apply: applyPackageCatalog } = require("../../js/package-catalog");
+const { apply: applyPackageCatalog } = require("../../public/js/package-catalog");
 const { getDatabase } = require("../database");
 
 // GET /api/products — List all products

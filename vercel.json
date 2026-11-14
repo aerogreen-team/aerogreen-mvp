@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["hnd1"],
+  "rewrites": [
+    { "source": "/login", "destination": "/admin/login.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/hop-dong", "destination": "/contract.html" },
+    { "source": "/public/:path*", "destination": "/:path*" }
+  ]
+}

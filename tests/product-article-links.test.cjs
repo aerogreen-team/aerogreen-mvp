@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
-const read=file=>fs.readFileSync(path.join(__dirname,'..',file),'utf8');
+const read=file=>fs.readFileSync(path.join(__dirname,'..','public',file),'utf8');
 function setup(){
  const names=['Mini Kit','Family Kit','Rooftop Kit'];
  const titles=names.map(name=>({textContent:name,link:null,querySelector(){return this.link;},replaceChildren(link){this.link=link;}}));

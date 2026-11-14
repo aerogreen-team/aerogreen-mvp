@@ -11,10 +11,10 @@ services:
     runtime: node
     plan: free
     branch: main
-    # Dependencies và code backend nằm trong thư mục server/
-    rootDir: server
+    # Dependencies và code backend: entry point là app.js ở gốc repo (Vercel cũng dùng),
+    # nên service cài ở gốc chứ không phải trong server/.
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server/server.js
     # Render dùng endpoint này để biết service đã sẵn sàng
     healthCheckPath: /api/health
     autoDeployTrigger: commit

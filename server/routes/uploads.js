@@ -2,22 +2,25 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const imageStore = require("../lib/storage");
 
 /**
  * Upload ảnh cho trang quản trị — dùng cho ảnh bìa và ảnh chèn trong nội dung bài.
  *
- * Ảnh lưu vào thư mục tĩnh mà `express.static` đang phục vụ (mặc định `images/uploads`),
- * hàm trả về đường dẫn công khai để lưu vào DB.
+ * Có cấu hình object storage (BLOB_READ_WRITE_TOKEN) thì ảnh được đẩy lên storage
+ * và hàm trả về URL công khai. Không cấu hình thì ảnh lưu vào thư mục tĩnh
+ * `public/images/uploads` như trước — chỉ dùng được khi chạy trên máy có ổ đĩa.
  *
- * ⚠️ Trên hosting có ổ đĩa tạm (vd Render), thư mục này mất khi deploy lại.
- *    Cách xử lý: đặt `UPLOAD_DIR` trỏ tới ổ đĩa gắn ngoài, hoặc commit ảnh vào repo
- *    (chỉ cần đổi UPLOAD_PUBLIC_PREFIX nếu thư mục không còn nằm trong `images/uploads`).
+ * ⚠️ Trên serverless (Vercel) ổ đĩa là chỉ đọc/tạm: bắt buộc phải có storage.
  */
 
 const UPLOAD_DIR =
-  process.env.UPLOAD_DIR || path.join(__dirname, "..", "..", "images", "uploads");
+  process.env.UPLOAD_DIR || path.join(__dirname, "..", "..", "public", "images", "uploads");
 const PUBLIC_PREFIX = (process.env.UPLOAD_PUBLIC_PREFIX || "/images/uploads").replace(/\/$/, "");
-const MAX_SIZE_MB = 5;
+// Vercel giới hạn body 4,5 MB/request, nên để 4 MB cho phần multipart overhead.
+const MAX_SIZE_MB = 4;
+const USE_STORAGE = imageStore.isEnabled();
+const IS_SERVERLESS = Boolean(process.env.VERCEL);
 
 // Chỉ nhận ảnh raster. KHÔNG nhận SVG: SVG có thể chứa JavaScript và sẽ chạy
 // nếu mở trực tiếp cùng origin (nguy cơ stored XSS).
@@ -28,7 +31,10 @@ const ALLOWED_TYPES = {
   "image/gif": ".gif",
 };
 
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// Chỉ tạo thư mục khi thật sự lưu đĩa: trên serverless thao tác này làm function crash.
+if (!USE_STORAGE && !IS_SERVERLESS) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
 
 /** "Ảnh bìa Family Kit.PNG" → "anh-bia-family-kit" */
 function slugifyFilename(input) {
@@ -53,18 +59,25 @@ function decodeOriginalName(name) {
   return fixed.includes("\uFFFD") ? raw : fixed;
 }
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
-  filename: (_req, file, cb) => {
-    const ext = ALLOWED_TYPES[file.mimetype] || ".jpg";
-    const original = decodeOriginalName(file.originalname);
-    const base = slugifyFilename(path.basename(original, path.extname(original))) || "anh";
-    cb(null, `${base}-${Date.now().toString(36)}${ext}`);
-  },
-});
+/** Tên file duy nhất trên storage/đĩa, giữ đuôi theo MIME thật của ảnh. */
+function buildFilename(originalname, mimetype) {
+  const ext = ALLOWED_TYPES[mimetype] || ".jpg";
+  const original = decodeOriginalName(originalname);
+  const base = slugifyFilename(path.basename(original, path.extname(original))) || "anh";
+  return `${base}-${Date.now().toString(36)}${ext}`;
+}
+
+const storageEngine = USE_STORAGE
+  ? multer.memoryStorage()
+  : multer.diskStorage({
+      destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+      filename: (_req, file, cb) => {
+        cb(null, buildFilename(file.originalname, file.mimetype));
+      },
+    });
 
 const upload = multer({
-  storage,
+  storage: storageEngine,
   limits: { fileSize: MAX_SIZE_MB * 1024 * 1024, files: 1 },
   fileFilter: (_req, file, cb) => {
     if (ALLOWED_TYPES[file.mimetype]) return cb(null, true);
@@ -74,9 +87,15 @@ const upload = multer({
 
 const router = express.Router();
 
-// POST /api/uploads — nhận 1 ảnh ở field "image", trả về đường dẫn công khai
+// POST /api/uploads — nhận 1 ảnh ở field "image", trả về URL công khai
 router.post("/", (req, res) => {
-  upload.single("image")(req, res, (err) => {
+  if (!USE_STORAGE && IS_SERVERLESS) {
+    return res.status(503).json({
+      error: "Chưa cấu hình kho lưu trữ ảnh (BLOB_READ_WRITE_TOKEN). Vui lòng báo quản trị viên.",
+    });
+  }
+
+  upload.single("image")(req, res, async (err) => {
     if (err) {
       const message =
         err.code === "LIMIT_FILE_SIZE"
@@ -88,13 +107,28 @@ router.post("/", (req, res) => {
       return res.status(400).json({ error: "Chưa chọn ảnh." });
     }
 
-    res.status(201).json({
-      data: {
-        url: `${PUBLIC_PREFIX}/${req.file.filename}`,
-        filename: req.file.filename,
-        size: req.file.size,
-      },
-    });
+    if (!USE_STORAGE) {
+      return res.status(201).json({
+        data: {
+          url: `${PUBLIC_PREFIX}/${req.file.filename}`,
+          filename: req.file.filename,
+          size: req.file.size,
+        },
+      });
+    }
+
+    const filename = buildFilename(req.file.originalname, req.file.mimetype);
+    try {
+      const { url } = await imageStore.saveImage({
+        buffer: req.file.buffer,
+        filename,
+        contentType: req.file.mimetype,
+      });
+      res.status(201).json({ data: { url, filename, size: req.file.size } });
+    } catch (uploadError) {
+      console.error("Storage upload error:", uploadError && uploadError.message);
+      res.status(502).json({ error: "Không tải được ảnh lên kho lưu trữ. Vui lòng thử lại." });
+    }
   });
 });
 

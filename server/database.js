@@ -18,9 +18,20 @@ try {
  *   - Production — Turso: TURSO_DATABASE_URL=libsql://<db>.turso.io + TURSO_AUTH_TOKEN
  *   - Local/dev  — không cần cấu hình gì: tự dùng file aerogreen.db (libSQL hỗ trợ "file:")
  *   - Override   — DB_PATH=/data/aerogreen.db (khi tự host kèm volume)
+ *
+ * Trên serverless (Vercel) không có ổ đĩa bền nên thiếu TURSO_DATABASE_URL là lỗi
+ * cấu hình: báo rõ ngay thay vì âm thầm tạo file DB mới rỗng.
  */
+const IS_SERVERLESS = Boolean(process.env.VERCEL);
+
 function resolveDbUrl() {
   if (process.env.TURSO_DATABASE_URL) return process.env.TURSO_DATABASE_URL;
+  if (IS_SERVERLESS) {
+    throw new Error(
+      "Thiếu TURSO_DATABASE_URL. Trên Vercel không có ổ đĩa cho file SQLite — " +
+        "khai báo TURSO_DATABASE_URL và TURSO_AUTH_TOKEN trong Project Settings → Environment Variables."
+    );
+  }
   const localPath = process.env.DB_PATH || path.join(__dirname, "aerogreen.db");
   return "file:" + localPath.replace(/\\/g, "/");
 }
@@ -28,7 +39,7 @@ function resolveDbUrl() {
 const DB_URL = resolveDbUrl();
 
 // Nếu dùng file local thì đảm bảo thư mục cha tồn tại
-if (DB_URL.startsWith("file:")) {
+if (DB_URL.startsWith("file:") && !IS_SERVERLESS) {
   try {
     fs.mkdirSync(path.dirname(DB_URL.slice(5)), { recursive: true });
   } catch (e) {
