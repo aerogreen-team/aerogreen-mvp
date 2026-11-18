@@ -433,6 +433,16 @@
     if (listSection) listSection.hidden = true;
     const detailSection = el("nd-detail-section");
     if (detailSection) detailSection.hidden = false;
+
+    const harvestSchedule = el("lich-thu-hoach");
+    if (harvestSchedule) {
+      const showSchedule = item.slug === "thu-hoach-va-cham-soc-rau-khi-canh";
+      const followScheduleLink =
+        showSchedule && harvestSchedule.hidden && window.location.hash === "#lich-thu-hoach";
+      harvestSchedule.hidden = !showSchedule;
+      if (followScheduleLink) harvestSchedule.scrollIntoView();
+    }
+
     const stateSection = el("nd-state-section");
     if (stateSection) stateSection.hidden = true;
   }

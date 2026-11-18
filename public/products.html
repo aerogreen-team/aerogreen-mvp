@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/product-cards.css" />
     <link rel="stylesheet" href="css/product-article-links.css" />
+    <link rel="stylesheet" href="css/harvest.css" />
     <meta
       name="description"
       content="So sánh cấu hình, kích thước và giá tham khảo ba gói khí canh. Dùng trợ lý chọn gói theo không gian và nhận tư vấn tại TP.HCM."
@@ -251,6 +252,74 @@
           </div>
           <p class="data-note">Giá áp dụng cho cấu hình cơ bản và điều kiện lắp đặt tiêu chuẩn. Chi phí phát sinh theo vị trí, vật tư và yêu cầu thi công sẽ được báo riêng trước khi thực hiện.</p>
           <p class="data-note product-area-note">Diện tích mang tính tham khảo, chưa bao gồm lối đi và không gian thao tác; bố trí thực tế phụ thuộc điều kiện lắp đặt.</p>
+          <div class="package-harvest" id="san-luong" role="region" aria-labelledby="package-harvest-title">
+            <div class="harvest-heading">
+              <h2 id="package-harvest-title">Trồng được bao nhiêu rau cho bữa cơm nhà mình?</h2>
+              <p>Chọn loại rau và số lỗ bạn dành để trồng.</p>
+            </div>
+            <div class="harvest-tool" id="harvest-tool" hidden>
+              <div class="harvest-calculator">
+                <div class="harvest-settings">
+                  <h3>Tính theo vườn nhà bạn</h3>
+                  <div class="harvest-inputs">
+                    <label for="harvest-crop">
+                      <span>Loại rau</span>
+                      <select id="harvest-crop"></select>
+                    </label>
+                    <label for="harvest-kit">
+                      <span>Gói khí canh</span>
+                      <select id="harvest-kit"></select>
+                    </label>
+                    <label for="harvest-hole-count">
+                      <span>Số lỗ dành cho loại rau này</span>
+                      <input id="harvest-hole-count" type="number" inputmode="numeric" min="1" step="1" required aria-describedby="harvest-hole-limit" />
+                    </label>
+                    <label for="harvest-people">
+                      <span>Số người ăn</span>
+                      <input id="harvest-people" type="number" inputmode="numeric" value="4" min="1" step="1" required />
+                    </label>
+                    <label for="harvest-portion">
+                      <span>Gram/người/bữa</span>
+                      <input id="harvest-portion" type="number" inputmode="numeric" min="1" step="1" required aria-describedby="harvest-portion-note" />
+                    </label>
+                  </div>
+                  <p class="harvest-help" id="harvest-hole-limit"></p>
+                  <p class="harvest-help" id="harvest-portion-note"></p>
+                </div>
+                <div class="harvest-result" aria-live="polite" aria-atomic="true">
+                  <div>
+                    <span class="harvest-result-label">Cả nhà dùng mỗi bữa</span>
+                    <output id="harvest-meal-mass" for="harvest-people harvest-portion"></output>
+                  </div>
+                  <div>
+                    <span class="harvest-result-label">Thu hoạch bình quân ước tính</span>
+                    <output id="harvest-weekly" for="harvest-crop harvest-kit harvest-hole-count harvest-rate"></output>
+                    <p id="harvest-meals"></p>
+                  </div>
+                  <p class="harvest-result-condition" id="harvest-condition"></p>
+                  <p id="harvest-estimate-type"></p>
+                </div>
+              </div>
+              <details class="harvest-details">
+                <summary>Số liệu</summary>
+                <div class="harvest-detail-body">
+                  <p id="harvest-trial-mass"></p>
+                  <label class="harvest-rate-field" for="harvest-rate">
+                    <span>Tỷ lệ cây cho thu (%)</span>
+                    <input id="harvest-rate" type="number" inputmode="numeric" value="80" min="0" max="100" step="1" required />
+                  </label>
+                  <p class="harvest-help">80% là giả định có thể chỉnh. Công cụ tính một cây hoặc một cụm mỗi lỗ và giả định trồng gối lứa.</p>
+                  <p class="harvest-help">Bình quân tuần lấy số lỗ nhân tỷ lệ cho thu và khối lượng rau mỗi lỗ, rồi chia cho số tuần của đợt trồng.</p>
+                  <div class="harvest-sources" id="harvest-sources"></div>
+                </div>
+              </details>
+              <details class="harvest-details">
+                <summary>Danh mục rau khí canh và số liệu tham khảo</summary>
+                <div class="harvest-detail-body harvest-reference" id="harvest-reference"></div>
+              </details>
+            </div>
+            <noscript>Bật JavaScript trong trình duyệt để dùng bộ tính sản lượng.</noscript>
+          </div>
         </div>
       </section>
       <section class="section section-soft" id="package-advisor">
@@ -588,6 +657,8 @@
     <script defer src="js/api-loader.js"></script>
     <script defer src="js/articles-data.js"></script>
     <script defer src="js/package-catalog.js"></script>
+    <script defer src="js/harvest-crops.js"></script>
+    <script defer src="js/harvest-calculator.js"></script>
     <script defer src="js/products-api.js"></script>
     <script defer src="js/product-article-links.js"></script>
     <script defer src="js/script.js"></script>
